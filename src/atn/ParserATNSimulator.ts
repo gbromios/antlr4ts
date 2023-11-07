@@ -492,8 +492,9 @@ export class ParserATNSimulator extends ATNSimulator {
 						return this.execATN(dfa, input, startIndex, initialState);
 					}
 
-					assert(remainingOuterContext != null);
-					remainingOuterContext = remainingOuterContext.parent;
+					if (assert(remainingOuterContext)) {
+						remainingOuterContext = remainingOuterContext.parent;
+					}
 					s = next;
 				}
 			}
@@ -994,8 +995,9 @@ export class ParserATNSimulator extends ATNSimulator {
 					break;
 				}
 
-				assert(remainingGlobalContext != null);
-				remainingGlobalContext = remainingGlobalContext.parent;
+				if(assert(remainingGlobalContext)) {
+					remainingGlobalContext = remainingGlobalContext.parent;
+				}
 				s = next;
 			}
 		}

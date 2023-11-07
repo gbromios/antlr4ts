@@ -208,12 +208,16 @@ export class AssertionError extends Error {
 }
 
 /**
- * throws an AssertionError when the given condition is false
- * @param condition — the result of some check, causes an AssertionError to be
- * thrown when false.
+ * throws an AssertionError when the argument is falsy. Functions as a type
+ *   predicate which filters out null, undef, 0, empty string and false.
+ * @param arg — the value for which to assert truthiness
  * @param [desc] — description of the check being performed, will be
- * included with any thrown AssertionError's message if provided.
+ *   included with any thrown AssertionError's message if provided.
+ * @returns boolean — true for a truthy value (throws otherwise)
  */
-export function assert (condition: boolean, desc?: string): void {
-	if (!condition) throw new AssertionError(desc);
+export function assert<T> (arg: T, desc?: string):
+	arg is Exclude<T, null|undefined|false|0|''>
+{
+	if (arg as any) return true;
+	else throw new AssertionError(desc);
 }
