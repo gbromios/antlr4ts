@@ -198,3 +198,22 @@ export function toCharArray(str: string | IntegerList): Uint16Array {
 // 	}
 // 	return s;
 // }
+//
+
+export class AssertionError extends Error {
+	name: string = 'AssertionError';
+	constructor(desc?: string) {
+		super('Assertion Failed' + desc === undefined ? '' : `: ${desc}`);
+	}
+}
+
+/**
+ * throws an AssertionError when the given condition is false
+ * @param condition — the result of some check, causes an AssertionError to be
+ * thrown when false.
+ * @param [desc] — description of the check being performed, will be
+ * included with any thrown AssertionError's message if provided.
+ */
+export function assert (condition: boolean, desc?: string): void {
+	if (!condition) throw new AssertionError(desc);
+}
