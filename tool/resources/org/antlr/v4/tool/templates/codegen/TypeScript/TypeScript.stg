@@ -29,7 +29,7 @@ import { Override } from "<basePath()>/Decorators";
 import { Parser } from "<basePath()>/Parser";
 import { ParserRuleContext } from "<basePath()>/ParserRuleContext";
 import { ParserATNSimulator } from "<basePath()>/atn/ParserATNSimulator";
-import { ParseTreeListener } from "<basePath()>/tree/ParseTreeListener";
+import type { ParseTreeListener } from "<basePath()>/tree/ParseTreeListener";
 import { ParseTreeVisitor } from "<basePath()>/tree/ParseTreeVisitor";
 import { RecognitionException } from "<basePath()>/RecognitionException";
 import { RuleContext } from "<basePath()>/RuleContext";
@@ -61,7 +61,7 @@ ListenerFile(file, header, namedActions) ::= <<
 
 <header>
 
-import { ParseTreeListener } from "<basePath()>/tree/ParseTreeListener";
+import type { ParseTreeListener } from "<basePath()>/tree/ParseTreeListener";
 
 <file.listenerNames:{lname | import { <lname; format="cap">Context \} from "./<file.parserName>";}; separator="\n">
 
@@ -874,13 +874,13 @@ LexerFile(file, lexer, namedActions) ::= <<
 
 import { ATN } from "<basePath()>/atn/ATN";
 import { ATNDeserializer } from "<basePath()>/atn/ATNDeserializer";
-import { CharStream } from "<basePath()>/CharStream";
+import type { CharStream } from "<basePath()>/CharStream";
 import { Lexer } from "<basePath()>/Lexer";
 import { LexerATNSimulator } from "<basePath()>/atn/LexerATNSimulator";
 import { NotNull } from "<basePath()>/Decorators";
 import { Override } from "<basePath()>/Decorators";
 import { RuleContext } from "<basePath()>/RuleContext";
-import { Vocabulary } from "<basePath()>/Vocabulary";
+import type { Vocabulary } from "<basePath()>/Vocabulary";
 import { VocabularyImpl } from "<basePath()>/VocabularyImpl";
 
 import * as Utils from "<basePath()>/misc/Utils";
