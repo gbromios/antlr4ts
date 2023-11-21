@@ -88,13 +88,8 @@ export namespace PredictionMode {
 		}
 	}
 
+
 	class AltAndContextConfigEqualityComparator implements EqualityComparator<ATNConfig> {
-		public static readonly INSTANCE: AltAndContextConfigEqualityComparator = new AltAndContextConfigEqualityComparator();
-
-		private AltAndContextConfigEqualityComparator() {
-			// intentionally empty
-		}
-
 		/**
 		 * The hash code is only a function of the {@link ATNState#stateNumber}
 		 * and {@link ATNConfig#context}.
@@ -119,7 +114,17 @@ export namespace PredictionMode {
 			return a.state.stateNumber === b.state.stateNumber
 				&& a.context.equals(b.context);
 		}
+
+		static readonly INSTANCE: AltAndContextConfigEqualityComparator;
+
+		private constructor () {}
 	}
+
+	Object.defineProperty(
+		AltAndContextConfigEqualityComparator,
+		'INSTANCE',
+		{ value: new (AltAndContextConfigEqualityComparator as any)() }
+	);
 
 	/**
 	 * Checks if any configuration in `configs` is in a

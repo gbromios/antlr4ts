@@ -737,20 +737,25 @@ export namespace PredictionContext {
 	}
 
 	export class IdentityEqualityComparator implements EqualityComparator<PredictionContext> {
-		public static readonly INSTANCE: IdentityEqualityComparator = new IdentityEqualityComparator();
-
-		private IdentityEqualityComparator() {
-			// intentionally empty
-		}
 
 		@Override
-		public hashCode(obj: PredictionContext): number {
+		hashCode (obj: PredictionContext): number {
 			return obj.hashCode();
 		}
 
 		@Override
-		public equals(a: PredictionContext, b: PredictionContext): boolean {
+		equals (a: PredictionContext, b: PredictionContext): boolean {
 			return a === b;
 		}
+
+		static readonly INSTANCE: IdentityEqualityComparator;
+
+		private constructor () {}
 	}
+
+	Object.defineProperty(
+		IdentityEqualityComparator,
+		'INSTANCE',
+		{ value: new (IdentityEqualityComparator as any)(), }
+	)
 }
