@@ -13,7 +13,7 @@ import { ParserRuleContext } from "../../ParserRuleContext";
 import { ParseTree } from "../ParseTree";
 import { Token } from "../../Token";
 import { XPathElement } from "./XPathElement";
-import { XPathLexer } from "./XPathLexer";
+import { XPathLexer, XPathLexerToken } from "./XPathLexer";
 import { XPathLexerErrorListener } from "./XPathLexerErrorListener";
 import { XPathRuleAnywhereElement } from "./XPathRuleAnywhereElement";
 import { XPathRuleElement } from "./XPathRuleElement";
@@ -105,12 +105,12 @@ export class XPath {
 			let el: Token = tokens[i];
 			let next: Token | undefined;
 			switch (el.type) {
-				case XPathLexer.ROOT:
-				case XPathLexer.ANYWHERE:
-					let anywhere: boolean = el.type === XPathLexer.ANYWHERE;
+				case XPathLexerToken.ROOT:
+				case XPathLexerToken.ANYWHERE:
+					let anywhere: boolean = el.type === XPathLexerToken.ANYWHERE;
 					i++;
 					next = tokens[i];
-					let invert: boolean = next.type === XPathLexer.BANG;
+					let invert: boolean = next.type === XPathLexerToken.BANG;
 					if (invert) {
 						i++;
 						next = tokens[i];
@@ -121,9 +121,9 @@ export class XPath {
 					i++;
 					break;
 
-				case XPathLexer.TOKEN_REF:
-				case XPathLexer.RULE_REF:
-				case XPathLexer.WILDCARD:
+				case XPathLexerToken.TOKEN_REF:
+				case XPathLexerToken.RULE_REF:
+				case XPathLexerToken.WILDCARD:
 					elements.push(this.getXPathElement(el, false));
 					i++;
 					break;
@@ -156,12 +156,12 @@ export class XPath {
 		let ttype: number = this.parser.getTokenType(word);
 		let ruleIndex: number = this.parser.getRuleIndex(word);
 		switch (wordToken.type) {
-			case XPathLexer.WILDCARD:
+			case XPathLexerToken.WILDCARD:
 				return anywhere ?
 					new XPathWildcardAnywhereElement() :
 					new XPathWildcardElement();
-			case XPathLexer.TOKEN_REF:
-			case XPathLexer.STRING:
+			case XPathLexerToken.TOKEN_REF:
+			case XPathLexerToken.STRING:
 				if (ttype === Token.INVALID_TYPE) {
 					throw new Error(word + " at index " +
 						wordToken.startIndex +

@@ -30,24 +30,26 @@ import { Parser } from "<basePath()>/Parser";
 import { ParserRuleContext } from "<basePath()>/ParserRuleContext";
 import { ParserATNSimulator } from "<basePath()>/atn/ParserATNSimulator";
 import type { ParseTreeListener } from "<basePath()>/tree/ParseTreeListener";
-import { ParseTreeVisitor } from "<basePath()>/tree/ParseTreeVisitor";
+import type { ParseTreeVisitor } from "<basePath()>/tree/ParseTreeVisitor";
 import { RecognitionException } from "<basePath()>/RecognitionException";
 import { RuleContext } from "<basePath()>/RuleContext";
 //import { RuleVersion } from "<basePath()>/RuleVersion";
 import { TerminalNode } from "<basePath()>/tree/TerminalNode";
 import { Token } from "<basePath()>/Token";
-import { TokenStream } from "<basePath()>/TokenStream";
+import type { TokenStream } from "<basePath()>/TokenStream";
 import { Vocabulary } from "<basePath()>/Vocabulary";
 import { VocabularyImpl } from "<basePath()>/VocabularyImpl";
 
 import * as Utils from "<basePath()>/misc/Utils";
 
 <if(file.genListener)>
-import { <file.grammarName>Listener } from "./<file.grammarName>Listener";
+import type { <file.grammarName>Listener } from "./<file.grammarName>Listener";
 <endif>
 <if(file.genVisitor)>
-import { <file.grammarName>Visitor } from "./<file.grammarName>Visitor";
+import type { <file.grammarName>Visitor } from "./<file.grammarName>Visitor";
 <endif>
+
+import { <file.grammarName>LexerToken } from "./<file.grammarName>Lexer";
 
 <namedActions.beforeParser>
 
@@ -63,7 +65,9 @@ ListenerFile(file, header, namedActions) ::= <<
 
 import type { ParseTreeListener } from "<basePath()>/tree/ParseTreeListener";
 
-<file.listenerNames:{lname | import { <lname; format="cap">Context \} from "./<file.parserName>";}; separator="\n">
+import {
+  <file.listenerNames:{lname | <lname; format="cap">Context,}; separator="\n">
+} from "./<file.parserName>";
 
 <namedActions.beforeListener>
 
@@ -105,7 +109,10 @@ VisitorFile(file, header, namedActions) ::= <<
 
 import { ParseTreeVisitor } from "<basePath()>/tree/ParseTreeVisitor";
 
-<file.visitorNames:{lname | import { <lname; format="cap">Context \} from "./<file.parserName>";}; separator="\n">
+import {
+  <file.visitorNames:{lname | <lname; format="cap">Context,}; separator="\n">
+} from "./<file.parserName>";
+
 
 <namedActions.beforeVisitor>
 
@@ -139,16 +146,17 @@ fileHeader(grammarFileName, ANTLRVersion) ::= <<
 >>
 
 Parser(parser, funcs, atn, sempredFuncs, superClass, isLexer=false) ::= <<
+
 <Parser_(ctor="parser_ctor", ...)>
 >>
 
 Parser_(parser, funcs, atn, sempredFuncs, ctor, superClass) ::= <<
+export const enum <parser.grammarName>Rule {
+	<parser.rules:{r | <r.name> = <r.index>,}; separator="\n", wrap, anchor>
+	EOF = -1, // defined on Recognizer
+}
+
 export <if(parser.abstractRecognizer)>abstract <endif>class <parser.name> extends <superClass; null="Parser"> {
-	<if(parser.tokens)>
-	<parser.tokens:{k | public static readonly <k> = <parser.tokens.(k)>;}; separator="\n", wrap, anchor>
-	<endif>
-	<parser.rules:{r | public static readonly RULE_<r.name> = <r.index>;}; separator="\n", wrap, anchor>
-	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
 		<parser.ruleNames:{r | "<r>",}; separator=" ", wrap, anchor>
 	];
@@ -281,7 +289,7 @@ RuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,namedActions,fina
 // @RuleVersion(<namedActions.version; null="0">)
 <if(currentRule.modifiers)><currentRule.modifiers:{f | <f> }><else>public <endif><currentRule.name>(<args; separator=",">): <currentRule.ctxType> {
 	let _localctx: <currentRule.ctxType> = new <currentRule.ctxType>(this._ctx, this.state<currentRule.args:{a | , <a.name>}>);
-	this.enterRule(_localctx, <currentRule.startState>, <parser.name>.RULE_<currentRule.name>);
+	this.enterRule(_localctx, <currentRule.startState>, <parser.grammarName>Rule.<currentRule.name>);
 	<namedActions.init>
 	<locals; separator="\n">
 	try {
@@ -318,7 +326,7 @@ LeftFactoredRuleFunction(currentRule,args,code,locals,namedActions,finallyAction
 
 <if(currentRule.modifiers)><currentRule.modifiers:{f | <f> }><else>private <endif><currentRule.ctxType> <currentRule.name>(<args; separator=",">) {
 	let _localctx: <currentRule.ctxType> = new <currentRule.ctxType>(this._ctx, this.state<currentRule.args:{a | , <a.name>}>);
-	this.enterLeftFactoredRule(_localctx, <currentRule.startState>, <parser.name>.RULE_<currentRule.variantOf>);
+	this.enterLeftFactoredRule(_localctx, <currentRule.startState>, <parser.grammarName>Rule.[<currentRule.variantOf>]);
 	<namedActions.init>
 	<locals; separator="\n">
 	try {
@@ -353,7 +361,7 @@ LeftUnfactoredRuleFunction(currentRule,args,code,locals,namedActions,finallyActi
 
 <if(currentRule.modifiers)><currentRule.modifiers:{f | <f> }><else>private <endif><currentRule.ctxType> <currentRule.name>(<args; separator=",">) {
 	let _localctx: <currentRule.ctxType> = new <currentRule.ctxType>(this._ctx, this.state<currentRule.args:{a | , <a.name>}>);
-	this.enterRule(_localctx, <currentRule.startState>, <parser.name>.RULE_<currentRule.variantOf>);
+	this.enterRule(_localctx, <currentRule.startState>, <parser.grammarName>Rule.<currentRule.variantOf>);
 	<namedActions.init>
 	<locals; separator="\n">
 	try {
@@ -398,7 +406,7 @@ LeftRecursiveRuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,
 	let _localctx: <currentRule.ctxType> = new <currentRule.ctxType>(this._ctx, _parentState<currentRule.args:{a | , <a.name>}>);
 	let _prevctx: <currentRule.ctxType> = _localctx;
 	let _startState: number = <currentRule.startState>;
-	this.enterRecursionRule(_localctx, <currentRule.startState>, <parser.name>.RULE_<currentRule.name>, _p);
+	this.enterRecursionRule(_localctx, <currentRule.startState>, <parser.grammarName>Rule.<currentRule.name>, _p);
 	<namedActions.init>
 	<locals; separator="\n">
 	try {
@@ -578,7 +586,7 @@ testShiftInRange(shiftAmount) ::= <<
 
 // produces smaller bytecode only when bits.ttypes contains more than two items
 bitsetBitfieldComparison(s, bits) ::= <%
-(<testShiftInRange({<offsetShift(s.varName, bits.shift)>})> && ((1 \<\< <offsetShift(s.varName, bits.shift)>) & (<bits.ttypes:{ttype | (1 \<\< <offsetShift({<parser.name>.<ttype>}, bits.shift)>)}; separator=" | ">)) !== 0)
+(<testShiftInRange({<offsetShift(s.varName, bits.shift)>})> && ((1 \<\< <offsetShift(s.varName, bits.shift)>) & (<bits.ttypes:{ttype | (1 \<\< <offsetShift({<parser.grammarName>LexerToken.<ttype>}, bits.shift)>)}; separator=" | ">)) !== 0)
 %>
 
 isZero ::= [
@@ -592,11 +600,11 @@ offsetShift(shiftAmount, offset) ::= <%
 
 // produces more efficient bytecode when bits.ttypes contains at most two items
 bitsetInlineComparison(s, bits) ::= <%
-<bits.ttypes:{ttype | <s.varName> === <parser.name>.<ttype>}; separator=" || ">
+<bits.ttypes:{ttype | <s.varName> === <parser.grammarName>LexerToken.<ttype>}; separator=" || ">
 %>
 
 cases(ttypes) ::= <<
-<ttypes:{t | case <parser.name>.<t>:}; separator="\n">
+<ttypes:{t | case <parser.grammarName>LexerToken.<t>:}; separator="\n">
 >>
 
 InvokeRule(r, argExprsChunks) ::= <<
@@ -606,7 +614,7 @@ this.state = <r.stateNumber>;
 
 MatchToken(m) ::= <<
 this.state = <m.stateNumber>;
-<if(m.labels)><m.labels:{l | <labelref(l)> = }><endif>this.match(<parser.name>.<m.name>);
+<if(m.labels)><m.labels:{l | <labelref(l)> = }><endif>this.match(<parser.grammarName>LexerToken.<m.name>);
 >>
 
 MatchSet(m, expr, capture) ::= "<CommonSetStuff(m, expr, capture, false)>"
@@ -712,16 +720,16 @@ RuleContextDecl(r) ::= "_<r.name>!: <r.ctxName>"
 RuleContextListDecl(rdecl) ::= "_<rdecl.name>: <rdecl.ctxName>[] = []"
 
 ContextTokenGetterDecl(t)      ::=
-	"public <t.name>(): TerminalNode<if(t.optional)> | undefined<endif> { return this.<if(t.optional)>tryG<else>g<endif>etToken(<parser.name>.<t.name>, 0); }"
+	"public <t.name>(): TerminalNode<if(t.optional)> | undefined<endif> { return this.<if(t.optional)>tryG<else>g<endif>etToken(<parser.grammarName>LexerToken.<t.name>, 0); }"
 ContextTokenListGetterDecl(t)  ::=
     "public <t.name>(): TerminalNode[];"
 ContextTokenListIndexedGetterDecl(t)  ::= <<
 public <t.name>(i: number): TerminalNode;
 public <t.name>(i?: number): TerminalNode | TerminalNode[] {
 	if (i === undefined) {
-		return this.getTokens(<parser.name>.<t.name>);
+		return this.getTokens(<parser.grammarName>LexerToken.<t.name>);
 	} else {
-		return this.getToken(<parser.name>.<t.name>, i);
+		return this.getToken(<parser.grammarName>LexerToken.<t.name>, i);
 	}
 }
 >>
@@ -769,7 +777,7 @@ export class <struct.name> extends <if(contextSuperClass)><contextSuperClass><el
 		<struct.ctorAttrs:{a | this.<a.name> = <a.name>;}; separator="\n">
 	}
 	// @Override
-	public get ruleIndex(): number { return <parser.name>.RULE_<struct.derivedFromName>; }
+	public get ruleIndex(): number { return <parser.grammarName>Rule.<struct.derivedFromName>; }
 <if(struct.provideCopyFrom)><! don't need copy unless we have subclasses !>
 	public copyFrom(ctx: <struct.name>): void {
 		super.copyFrom(ctx);
@@ -838,7 +846,7 @@ _localctx._<label>.push(_prevctx);
 _localctx._<label> = _prevctx;
 <endif>
 <endif>
-this.pushNewRecursionContext(_localctx, _startState, <parser.name>.RULE_<ruleName>);
+this.pushNewRecursionContext(_localctx, _startState, <parser.grammarName>Rule.<ruleName>);
 >>
 
 recRuleLabeledAltStartAction(ruleName, ctxName, currentAltLabel, label, isListLabel) ::= <<
@@ -850,7 +858,7 @@ _localctx = new <currentAltLabel; format="cap">Context(new <ctxName>(_parentctx,
 (_localctx as <currentAltLabel; format="cap">Context)._<label> = _prevctx;
 <endif>
 <endif>
-this.pushNewRecursionContext(_localctx, _startState, <parser.name>.RULE_<ruleName>);
+this.pushNewRecursionContext(_localctx, _startState, <parser.grammarName>Rule.<ruleName>);
 >>
 
 recRuleReplaceContext(ctxName) ::= <<
@@ -881,6 +889,7 @@ import { NotNull } from "<basePath()>/Decorators";
 import { Override } from "<basePath()>/Decorators";
 import { RuleContext } from "<basePath()>/RuleContext";
 import type { Vocabulary } from "<basePath()>/Vocabulary";
+import { Token } from "<basePath()>/Token";
 import { VocabularyImpl } from "<basePath()>/VocabularyImpl";
 
 import * as Utils from "<basePath()>/misc/Utils";
@@ -893,8 +902,12 @@ import * as Utils from "<basePath()>/misc/Utils";
 >>
 
 Lexer(lexer, atn, actionFuncs, sempredFuncs, superClass, isLexer=true) ::= <<
+export const enum <lexer.grammarName>Token {
+	<lexer.tokens:{k | <k> = <lexer.tokens.(k)>,}; separator="\n", wrap, anchor>
+	EOF = -1, // defined on recognizer
+}
+
 export <if(lexer.abstractRecognizer)>abstract <endif>class <lexer.name> extends <superClass; null="Lexer"> {
-	<lexer.tokens:{k | public static readonly <k> = <lexer.tokens.(k)>;}; separator="\n">
 	<lexer.channels:{c | public static readonly <c> = <lexer.channels.(c)>;}; separator="\n">
 	<rest(lexer.modes):{m | public static readonly <m> = <i>;}; separator="\n">
 
