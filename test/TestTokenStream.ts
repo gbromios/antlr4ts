@@ -6,7 +6,7 @@
 import { BufferedTokenStream } from "../src/BufferedTokenStream";
 import { CharStreams } from "../src/CharStreams";
 import { Token } from "../src/Token";
-import { XPathLexer, XPathLexerToken } from "../src/tree/xpath/XPathLexer";
+import { XPathLexer, TOKEN } from "../src/tree/xpath/XPathLexer";
 
 import { suite, test } from "@testdeck/mocha";
 
@@ -27,16 +27,16 @@ export class TestTokenStream {
 		let tokenStream = new BufferedTokenStream(new XPathLexer(firstInput));
 		tokenStream.fill();
 		assert.strictEqual(tokenStream.size, 2);
-		assert.strictEqual(tokenStream.get(0).type, XPathLexerToken.TOKEN_REF);
-		assert.strictEqual(tokenStream.get(1).type, Token.EOF);
+		assert.strictEqual(tokenStream.get(0).type, TOKEN.TOKEN_REF);
+		assert.strictEqual(tokenStream.get(1).type, TOKEN.EOF);
 
 		let secondInput = CharStreams.fromString("A/");
 		tokenStream.tokenSource = new XPathLexer(secondInput);
 		tokenStream.fill();
 		assert.strictEqual(tokenStream.size, 3);
-		assert.strictEqual(tokenStream.get(0).type, XPathLexerToken.TOKEN_REF);
-		assert.strictEqual(tokenStream.get(1).type, XPathLexerToken.ROOT);
-		assert.strictEqual(tokenStream.get(2).type, Token.EOF);
+		assert.strictEqual(tokenStream.get(0).type, TOKEN.TOKEN_REF);
+		assert.strictEqual(tokenStream.get(1).type, TOKEN.ROOT);
+		assert.strictEqual(tokenStream.get(2).type, TOKEN.EOF);
 	}
 
 }

@@ -13,7 +13,7 @@ import { ParserRuleContext } from "../../ParserRuleContext";
 import { ParseTree } from "../ParseTree";
 import { Token } from "../../Token";
 import { XPathElement } from "./XPathElement";
-import { XPathLexer, XPathLexerToken } from "./XPathLexer";
+import { XPathLexer, TOKEN } from "./XPathLexer";
 import { XPathLexerErrorListener } from "./XPathLexerErrorListener";
 import { XPathRuleAnywhereElement } from "./XPathRuleAnywhereElement";
 import { XPathRuleElement } from "./XPathRuleElement";
@@ -105,12 +105,12 @@ export class XPath {
 			let el: Token = tokens[i];
 			let next: Token | undefined;
 			switch (el.type) {
-				case XPathLexerToken.ROOT:
-				case XPathLexerToken.ANYWHERE:
-					let anywhere: boolean = el.type === XPathLexerToken.ANYWHERE;
+				case TOKEN.ROOT:
+				case TOKEN.ANYWHERE:
+					let anywhere: boolean = el.type === TOKEN.ANYWHERE;
 					i++;
 					next = tokens[i];
-					let invert: boolean = next.type === XPathLexerToken.BANG;
+					let invert: boolean = next.type === TOKEN.BANG;
 					if (invert) {
 						i++;
 						next = tokens[i];
@@ -121,9 +121,9 @@ export class XPath {
 					i++;
 					break;
 
-				case XPathLexerToken.TOKEN_REF:
-				case XPathLexerToken.RULE_REF:
-				case XPathLexerToken.WILDCARD:
+				case TOKEN.TOKEN_REF:
+				case TOKEN.RULE_REF:
+				case TOKEN.WILDCARD:
 					elements.push(this.getXPathElement(el, false));
 					i++;
 					break;
@@ -156,12 +156,12 @@ export class XPath {
 		let ttype: number = this.parser.getTokenType(word);
 		let ruleIndex: number = this.parser.getRuleIndex(word);
 		switch (wordToken.type) {
-			case XPathLexerToken.WILDCARD:
+			case TOKEN.WILDCARD:
 				return anywhere ?
 					new XPathWildcardAnywhereElement() :
 					new XPathWildcardElement();
-			case XPathLexerToken.TOKEN_REF:
-			case XPathLexerToken.STRING:
+			case TOKEN.TOKEN_REF:
+			case TOKEN.STRING:
 				if (ttype === Token.INVALID_TYPE) {
 					throw new Error(word + " at index " +
 						wordToken.startIndex +

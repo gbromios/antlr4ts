@@ -49,7 +49,7 @@ import type { <file.grammarName>Listener } from "./<file.grammarName>Listener";
 import type { <file.grammarName>Visitor } from "./<file.grammarName>Visitor";
 <endif>
 
-import { <file.grammarName>LexerToken } from "./<file.grammarName>Lexer";
+import { <tokenEnumName()> } from "./<file.grammarName>Lexer";
 
 <namedActions.beforeParser>
 
@@ -151,7 +151,7 @@ Parser(parser, funcs, atn, sempredFuncs, superClass, isLexer=false) ::= <<
 >>
 
 Parser_(parser, funcs, atn, sempredFuncs, ctor, superClass) ::= <<
-export const enum <parser.grammarName>Rule {
+export const enum <ruleEnumName()> {
 	<parser.rules:{r | <r.name> = <r.index>,}; separator="\n", wrap, anchor>
 	EOF = -1, // defined on Recognizer
 }
@@ -289,7 +289,7 @@ RuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,namedActions,fina
 // @RuleVersion(<namedActions.version; null="0">)
 <if(currentRule.modifiers)><currentRule.modifiers:{f | <f> }><else>public <endif><currentRule.name>(<args; separator=",">): <currentRule.ctxType> {
 	let _localctx: <currentRule.ctxType> = new <currentRule.ctxType>(this._ctx, this.state<currentRule.args:{a | , <a.name>}>);
-	this.enterRule(_localctx, <currentRule.startState>, <parser.grammarName>Rule.<currentRule.name>);
+	this.enterRule(_localctx, <currentRule.startState>, <ruleEnumName()>.<currentRule.name>);
 	<namedActions.init>
 	<locals; separator="\n">
 	try {
@@ -326,7 +326,7 @@ LeftFactoredRuleFunction(currentRule,args,code,locals,namedActions,finallyAction
 
 <if(currentRule.modifiers)><currentRule.modifiers:{f | <f> }><else>private <endif><currentRule.ctxType> <currentRule.name>(<args; separator=",">) {
 	let _localctx: <currentRule.ctxType> = new <currentRule.ctxType>(this._ctx, this.state<currentRule.args:{a | , <a.name>}>);
-	this.enterLeftFactoredRule(_localctx, <currentRule.startState>, <parser.grammarName>Rule.[<currentRule.variantOf>]);
+	this.enterLeftFactoredRule(_localctx, <currentRule.startState>, <ruleEnumName()>.[<currentRule.variantOf>]);
 	<namedActions.init>
 	<locals; separator="\n">
 	try {
@@ -361,7 +361,7 @@ LeftUnfactoredRuleFunction(currentRule,args,code,locals,namedActions,finallyActi
 
 <if(currentRule.modifiers)><currentRule.modifiers:{f | <f> }><else>private <endif><currentRule.ctxType> <currentRule.name>(<args; separator=",">) {
 	let _localctx: <currentRule.ctxType> = new <currentRule.ctxType>(this._ctx, this.state<currentRule.args:{a | , <a.name>}>);
-	this.enterRule(_localctx, <currentRule.startState>, <parser.grammarName>Rule.<currentRule.variantOf>);
+	this.enterRule(_localctx, <currentRule.startState>, <ruleEnumName()>.<currentRule.variantOf>);
 	<namedActions.init>
 	<locals; separator="\n">
 	try {
@@ -406,7 +406,7 @@ LeftRecursiveRuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,
 	let _localctx: <currentRule.ctxType> = new <currentRule.ctxType>(this._ctx, _parentState<currentRule.args:{a | , <a.name>}>);
 	let _prevctx: <currentRule.ctxType> = _localctx;
 	let _startState: number = <currentRule.startState>;
-	this.enterRecursionRule(_localctx, <currentRule.startState>, <parser.grammarName>Rule.<currentRule.name>, _p);
+	this.enterRecursionRule(_localctx, <currentRule.startState>, <ruleEnumName()>.<currentRule.name>, _p);
 	<namedActions.init>
 	<locals; separator="\n">
 	try {
@@ -586,7 +586,7 @@ testShiftInRange(shiftAmount) ::= <<
 
 // produces smaller bytecode only when bits.ttypes contains more than two items
 bitsetBitfieldComparison(s, bits) ::= <%
-(<testShiftInRange({<offsetShift(s.varName, bits.shift)>})> && ((1 \<\< <offsetShift(s.varName, bits.shift)>) & (<bits.ttypes:{ttype | (1 \<\< <offsetShift({<parser.grammarName>LexerToken.<ttype>}, bits.shift)>)}; separator=" | ">)) !== 0)
+(<testShiftInRange({<offsetShift(s.varName, bits.shift)>})> && ((1 \<\< <offsetShift(s.varName, bits.shift)>) & (<bits.ttypes:{ttype | (1 \<\< <offsetShift({<tokenEnumName()>.<ttype>}, bits.shift)>)}; separator=" | ">)) !== 0)
 %>
 
 isZero ::= [
@@ -600,11 +600,11 @@ offsetShift(shiftAmount, offset) ::= <%
 
 // produces more efficient bytecode when bits.ttypes contains at most two items
 bitsetInlineComparison(s, bits) ::= <%
-<bits.ttypes:{ttype | <s.varName> === <parser.grammarName>LexerToken.<ttype>}; separator=" || ">
+<bits.ttypes:{ttype | <s.varName> === <tokenEnumName()>.<ttype>}; separator=" || ">
 %>
 
 cases(ttypes) ::= <<
-<ttypes:{t | case <parser.grammarName>LexerToken.<t>:}; separator="\n">
+<ttypes:{t | case <tokenEnumName()>.<t>:}; separator="\n">
 >>
 
 InvokeRule(r, argExprsChunks) ::= <<
@@ -614,7 +614,7 @@ this.state = <r.stateNumber>;
 
 MatchToken(m) ::= <<
 this.state = <m.stateNumber>;
-<if(m.labels)><m.labels:{l | <labelref(l)> = }><endif>this.match(<parser.grammarName>LexerToken.<m.name>);
+<if(m.labels)><m.labels:{l | <labelref(l)> = }><endif>this.match(<tokenEnumName()>.<m.name>);
 >>
 
 MatchSet(m, expr, capture) ::= "<CommonSetStuff(m, expr, capture, false)>"
@@ -720,16 +720,16 @@ RuleContextDecl(r) ::= "_<r.name>!: <r.ctxName>"
 RuleContextListDecl(rdecl) ::= "_<rdecl.name>: <rdecl.ctxName>[] = []"
 
 ContextTokenGetterDecl(t)      ::=
-	"public <t.name>(): TerminalNode<if(t.optional)> | undefined<endif> { return this.<if(t.optional)>tryG<else>g<endif>etToken(<parser.grammarName>LexerToken.<t.name>, 0); }"
+	"public <t.name>(): TerminalNode<if(t.optional)> | undefined<endif> { return this.<if(t.optional)>tryG<else>g<endif>etToken(<tokenEnumName()>.<t.name>, 0); }"
 ContextTokenListGetterDecl(t)  ::=
     "public <t.name>(): TerminalNode[];"
 ContextTokenListIndexedGetterDecl(t)  ::= <<
 public <t.name>(i: number): TerminalNode;
 public <t.name>(i?: number): TerminalNode | TerminalNode[] {
 	if (i === undefined) {
-		return this.getTokens(<parser.grammarName>LexerToken.<t.name>);
+		return this.getTokens(<tokenEnumName()>.<t.name>);
 	} else {
-		return this.getToken(<parser.grammarName>LexerToken.<t.name>, i);
+		return this.getToken(<tokenEnumName()>.<t.name>, i);
 	}
 }
 >>
@@ -777,7 +777,7 @@ export class <struct.name> extends <if(contextSuperClass)><contextSuperClass><el
 		<struct.ctorAttrs:{a | this.<a.name> = <a.name>;}; separator="\n">
 	}
 	// @Override
-	public get ruleIndex(): number { return <parser.grammarName>Rule.<struct.derivedFromName>; }
+	public get ruleIndex(): number { return <ruleEnumName()>.<struct.derivedFromName>; }
 <if(struct.provideCopyFrom)><! don't need copy unless we have subclasses !>
 	public copyFrom(ctx: <struct.name>): void {
 		super.copyFrom(ctx);
@@ -846,7 +846,7 @@ _localctx._<label>.push(_prevctx);
 _localctx._<label> = _prevctx;
 <endif>
 <endif>
-this.pushNewRecursionContext(_localctx, _startState, <parser.grammarName>Rule.<ruleName>);
+this.pushNewRecursionContext(_localctx, _startState, <ruleEnumName()>.<ruleName>);
 >>
 
 recRuleLabeledAltStartAction(ruleName, ctxName, currentAltLabel, label, isListLabel) ::= <<
@@ -858,7 +858,7 @@ _localctx = new <currentAltLabel; format="cap">Context(new <ctxName>(_parentctx,
 (_localctx as <currentAltLabel; format="cap">Context)._<label> = _prevctx;
 <endif>
 <endif>
-this.pushNewRecursionContext(_localctx, _startState, <parser.grammarName>Rule.<ruleName>);
+this.pushNewRecursionContext(_localctx, _startState, <ruleEnumName()>.<ruleName>);
 >>
 
 recRuleReplaceContext(ctxName) ::= <<
@@ -902,7 +902,7 @@ import * as Utils from "<basePath()>/misc/Utils";
 >>
 
 Lexer(lexer, atn, actionFuncs, sempredFuncs, superClass, isLexer=true) ::= <<
-export const enum <lexer.grammarName>Token {
+export const enum <tokenEnumName()> {
 	<lexer.tokens:{k | <k> = <lexer.tokens.(k)>,}; separator="\n", wrap, anchor>
 	EOF = -1, // defined on recognizer
 }
@@ -993,6 +993,14 @@ basePath() ::= <%
 <else>
 antlr4ts
 <endif>
+%>
+
+ruleEnumName() ::= <%
+  RULE
+%>
+
+tokenEnumName() ::= <%
+  TOKEN
 %>
 
 /** Using a type to init value map, try to init a type; if not in table
