@@ -8,7 +8,6 @@ import { CharStream } from './CharStream';
 import { CodePointBuffer } from './CodePointBuffer';
 import { IntStream } from './IntStream';
 import { Interval } from './misc/Interval';
-import { Override } from './Decorators';
 
 /**
  * Alternative to {@link ANTLRInputStream} which treats the input
@@ -87,7 +86,6 @@ export class CodePointCharStream implements CharStream {
 		);
 	}
 
-	@Override
 	public consume(): void {
 		if (this._size - this._position === 0) {
 			assert(this.LA(1) === IntStream.EOF);
@@ -97,43 +95,35 @@ export class CodePointCharStream implements CharStream {
 		this._position++;
 	}
 
-	@Override
 	public get index(): number {
 		return this._position;
 	}
 
-	@Override
 	public get size(): number {
 		return this._size;
 	}
 
 	/** mark/release do nothing; we have entire buffer */
-	@Override
 	public mark(): number {
 		return -1;
 	}
 
-	@Override
 	public release(marker: number): void {
 		// No default implementation since this stream buffers the entire input
 	}
 
-	@Override
 	public seek(index: number): void {
 		this._position = index;
 	}
 
-	@Override
 	public get sourceName(): string {
 		return this._name;
 	}
 
-	@Override
 	public toString(): string {
 		return this.getText(Interval.of(0, this.size - 1));
 	}
 
-	@Override
 	public LA(i: number): number {
 		let offset: number;
 		switch (Math.sign(i)) {
@@ -162,7 +152,6 @@ export class CodePointCharStream implements CharStream {
 	}
 
 	/** Return the UTF-16 encoded string for the given interval */
-	@Override
 	public getText(interval: Interval): string {
 		const startIdx: number = Math.min(interval.a, this.size);
 		const len: number = Math.min(

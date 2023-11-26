@@ -16,7 +16,6 @@ import { BitSet } from '../misc/BitSet';
 import { ConflictInfo } from './ConflictInfo';
 import { EqualityComparator } from '../misc/EqualityComparator';
 import { JavaSet } from '../misc/Stubs';
-import { NotNull, Override } from '../Decorators';
 import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
 import { PredictionContext } from './PredictionContext';
 import { PredictionContextCache } from './PredictionContextCache';
@@ -151,7 +150,6 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 	 * Get the set of all alternatives represented by configurations in this
 	 * set.
 	 */
-	@NotNull
 	public getRepresentedAlternatives(): BitSet {
 		if (this._conflictInfo != null) {
 			return this._conflictInfo.conflictedAlts.clone();
@@ -212,17 +210,14 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		return copy;
 	}
 
-	@Override
 	get size(): number {
 		return this.configs.length;
 	}
 
-	@Override
 	get isEmpty(): boolean {
 		return this.configs.length === 0;
 	}
 
-	@Override
 	public contains(o: any): boolean {
 		if (!(o instanceof ATNConfig)) {
 			return false;
@@ -255,12 +250,10 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		return false;
 	}
 
-	@Override
 	public *[Symbol.iterator](): IterableIterator<ATNConfig> {
 		yield* this.configs;
 	}
 
-	@Override
 	public toArray(): ATNConfig[] {
 		return this.configs;
 	}
@@ -396,7 +389,6 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		return { state: e.state.stateNumber, alt: e.alt };
 	}
 
-	@Override
 	public containsAll(c: Iterable<any>): boolean {
 		for (let o of c) {
 			if (!(o instanceof ATNConfig)) {
@@ -432,7 +424,6 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		return changed;
 	}
 
-	@Override
 	public clear(): void {
 		this.ensureWritable();
 		if (!this.mergedConfigs || !this.unmerged) {
@@ -451,7 +442,6 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		this._conflictInfo = undefined;
 	}
 
-	@Override
 	public equals(obj: any): boolean {
 		if (this === obj) {
 			return true;
@@ -468,7 +458,6 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		);
 	}
 
-	@Override
 	public hashCode(): number {
 		if (this.isReadOnly && this.cachedHashCode !== -1) {
 			return this.cachedHashCode;

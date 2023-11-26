@@ -7,14 +7,12 @@
 
 import { ATNState } from './ATNState';
 import { ATNStateType } from './ATNStateType';
-import { Override } from '../Decorators';
 
 /**
  *
  * @author Sam Harwell
  */
 export class BasicState extends ATNState {
-	@Override
 	get stateType(): ATNStateType {
 		return ATNStateType.BASIC;
 	}

@@ -15,7 +15,6 @@ import { ProxyErrorListener } from './ProxyErrorListener';
 import { ParserErrorListener } from './ParserErrorListener';
 import { SimulatorState } from './atn/SimulatorState';
 import { Token } from './Token';
-import { Override } from './Decorators';
 
 /**
  * @author Sam Harwell
@@ -28,7 +27,6 @@ export class ProxyParserErrorListener
 		super(delegates);
 	}
 
-	@Override
 	public reportAmbiguity(
 		recognizer: Parser,
 		dfa: DFA,
@@ -53,7 +51,6 @@ export class ProxyParserErrorListener
 		});
 	}
 
-	@Override
 	public reportAttemptingFullContext(
 		recognizer: Parser,
 		dfa: DFA,
@@ -76,7 +73,6 @@ export class ProxyParserErrorListener
 		});
 	}
 
-	@Override
 	public reportContextSensitivity(
 		recognizer: Parser,
 		dfa: DFA,

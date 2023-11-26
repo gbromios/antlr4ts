@@ -6,7 +6,6 @@
 // ConvertTo-TS run at 2016-10-04T11:26:46.0343500-07:00
 
 import { CharStream } from '../../CharStream';
-import { NotNull, Override } from '../../Decorators';
 import { Token } from '../../Token';
 import { TokenSource } from '../../TokenSource';
 
@@ -43,7 +42,7 @@ export class RuleTagToken implements Token {
 	 * or empty.
 	 */
 	constructor(
-		@NotNull ruleName: string,
+		ruleName: string,
 		bypassTokenType: number,
 		label?: string,
 	) {
@@ -61,7 +60,6 @@ export class RuleTagToken implements Token {
 	 *
 	 * @returns The name of the parser rule associated with this rule tag.
 	 */
-	@NotNull
 	get ruleName(): string {
 		return this._ruleName;
 	}
@@ -81,7 +79,6 @@ export class RuleTagToken implements Token {
 	 *
 	 * Rule tag tokens are always placed on the {@link #DEFAULT_CHANNEL}.
 	 */
-	@Override
 	get channel(): number {
 		return Token.DEFAULT_CHANNEL;
 	}
@@ -92,7 +89,6 @@ export class RuleTagToken implements Token {
 	 * This method returns the rule tag formatted with `<` and `>`
 	 * delimiters.
 	 */
-	@Override
 	get text(): string {
 		if (this._label != null) {
 			return '<' + this._label + ':' + this._ruleName + '>';
@@ -107,7 +103,6 @@ export class RuleTagToken implements Token {
 	 * Rule tag tokens have types assigned according to the rule bypass
 	 * transitions created during ATN deserialization.
 	 */
-	@Override
 	get type(): number {
 		return this.bypassTokenType;
 	}
@@ -117,7 +112,6 @@ export class RuleTagToken implements Token {
 	 *
 	 * The implementation for {@link RuleTagToken} always returns 0.
 	 */
-	@Override
 	get line(): number {
 		return 0;
 	}
@@ -127,7 +121,6 @@ export class RuleTagToken implements Token {
 	 *
 	 * The implementation for {@link RuleTagToken} always returns -1.
 	 */
-	@Override
 	get charPositionInLine(): number {
 		return -1;
 	}
@@ -137,7 +130,6 @@ export class RuleTagToken implements Token {
 	 *
 	 * The implementation for {@link RuleTagToken} always returns -1.
 	 */
-	@Override
 	get tokenIndex(): number {
 		return -1;
 	}
@@ -147,7 +139,6 @@ export class RuleTagToken implements Token {
 	 *
 	 * The implementation for {@link RuleTagToken} always returns -1.
 	 */
-	@Override
 	get startIndex(): number {
 		return -1;
 	}
@@ -157,7 +148,6 @@ export class RuleTagToken implements Token {
 	 *
 	 * The implementation for {@link RuleTagToken} always returns -1.
 	 */
-	@Override
 	get stopIndex(): number {
 		return -1;
 	}
@@ -167,7 +157,6 @@ export class RuleTagToken implements Token {
 	 *
 	 * The implementation for {@link RuleTagToken} always returns `undefined`.
 	 */
-	@Override
 	get tokenSource(): TokenSource | undefined {
 		return undefined;
 	}
@@ -177,7 +166,6 @@ export class RuleTagToken implements Token {
 	 *
 	 * The implementation for {@link RuleTagToken} always returns `undefined`.
 	 */
-	@Override
 	get inputStream(): CharStream | undefined {
 		return undefined;
 	}
@@ -188,7 +176,6 @@ export class RuleTagToken implements Token {
 	 * The implementation for {@link RuleTagToken} returns a string of the form
 	 * `ruleName:bypassTokenType`.
 	 */
-	@Override
 	public toString(): string {
 		return this._ruleName + ':' + this.bypassTokenType;
 	}

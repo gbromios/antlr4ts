@@ -10,8 +10,6 @@ import { ATNType } from './atn/ATNType';
 import { CharStream } from './CharStream';
 import { Lexer } from './Lexer';
 import { LexerATNSimulator } from './atn/LexerATNSimulator';
-import { NotNull } from './Decorators';
-import { Override } from './Decorators';
 import { Vocabulary } from './Vocabulary';
 
 export class LexerInterpreter extends Lexer {
@@ -21,12 +19,11 @@ export class LexerInterpreter extends Lexer {
 	protected _ruleNames: string[];
 	protected _channelNames: string[];
 	protected _modeNames: string[];
-	@NotNull
 	private _vocabulary: Vocabulary;
 
 	constructor(
 		grammarFileName: string,
-		@NotNull vocabulary: Vocabulary,
+		vocabulary: Vocabulary,
 		ruleNames: string[],
 		channelNames: string[],
 		modeNames: string[],
@@ -51,32 +48,26 @@ export class LexerInterpreter extends Lexer {
 		this._interp = new LexerATNSimulator(atn, this);
 	}
 
-	@Override
 	get atn(): ATN {
 		return this._atn;
 	}
 
-	@Override
 	get grammarFileName(): string {
 		return this._grammarFileName;
 	}
 
-	@Override
 	get ruleNames(): string[] {
 		return this._ruleNames;
 	}
 
-	@Override
 	get channelNames(): string[] {
 		return this._channelNames;
 	}
 
-	@Override
 	get modeNames(): string[] {
 		return this._modeNames;
 	}
 
-	@Override
 	get vocabulary(): Vocabulary {
 		return this._vocabulary;
 	}

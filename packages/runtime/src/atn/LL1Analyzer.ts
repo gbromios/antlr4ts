@@ -12,7 +12,6 @@ import { ATNConfig } from './ATNConfig';
 import { ATNState } from './ATNState';
 import { BitSet } from '../misc/BitSet';
 import { IntervalSet } from '../misc/IntervalSet';
-import { NotNull } from '../Decorators';
 import { NotSetTransition } from './NotSetTransition';
 import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
 import { PredictionContext } from './PredictionContext';
@@ -29,10 +28,9 @@ export class LL1Analyzer {
 	 */
 	public static readonly HIT_PRED: number = Token.INVALID_TYPE;
 
-	@NotNull
 	public atn: ATN;
 
-	constructor(@NotNull atn: ATN) {
+	constructor(atn: ATN) {
 		this.atn = atn;
 	}
 
@@ -101,10 +99,9 @@ export class LL1Analyzer {
 	 * @returns The set of tokens that can follow `s` in the ATN in the
 	 * specified `ctx`.
 	 */
-	// @NotNull
 	public LOOK(
-		/*@NotNull*/ s: ATNState,
-		/*@NotNull*/ ctx: PredictionContext,
+		s: ATNState,
+		ctx: PredictionContext,
 	): IntervalSet;
 
 	/**
@@ -125,17 +122,15 @@ export class LL1Analyzer {
 	 * @returns The set of tokens that can follow `s` in the ATN in the
 	 * specified `ctx`.
 	 */
-	// @NotNull
 	public LOOK(
-		/*@NotNull*/ s: ATNState,
-		/*@NotNull*/ ctx: PredictionContext,
+		s: ATNState,
+		ctx: PredictionContext,
 		stopState: ATNState | null,
 	): IntervalSet;
 
-	@NotNull
 	public LOOK(
-		@NotNull s: ATNState,
-		@NotNull ctx: PredictionContext,
+		s: ATNState,
+		ctx: PredictionContext,
 		stopState?: ATNState | null,
 	): IntervalSet {
 		if (stopState === undefined) {
@@ -198,12 +193,12 @@ export class LL1Analyzer {
 	 * is {@link PredictionContext#EMPTY_LOCAL}.
 	 */
 	protected _LOOK(
-		@NotNull s: ATNState,
+		s: ATNState,
 		stopState: ATNState | undefined,
-		@NotNull ctx: PredictionContext,
-		@NotNull look: IntervalSet,
-		@NotNull lookBusy: Array2DHashSet<ATNConfig>,
-		@NotNull calledRuleStack: BitSet,
+		ctx: PredictionContext,
+		look: IntervalSet,
+		lookBusy: Array2DHashSet<ATNConfig>,
+		calledRuleStack: BitSet,
 		seeThruPreds: boolean,
 		addEOF: boolean,
 	): void {

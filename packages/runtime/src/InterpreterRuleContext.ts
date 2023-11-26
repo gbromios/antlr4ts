@@ -5,7 +5,6 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:51.5898546-07:00
 
-import { Override } from './Decorators';
 import { ParserRuleContext } from './ParserRuleContext';
 
 /**
@@ -55,7 +54,6 @@ export class InterpreterRuleContext extends ParserRuleContext {
 		this._ruleIndex = ruleIndex;
 	}
 
-	@Override
 	get ruleIndex(): number {
 		return this._ruleIndex;
 	}

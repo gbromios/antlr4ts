@@ -6,21 +6,18 @@
 // ConvertTo-TS run at 2016-10-04T11:26:37.9456839-07:00
 
 import { ATNState } from './ATNState';
-import { Override, NotNull } from '../Decorators';
 import { Transition } from './Transition';
 import { TransitionType } from './TransitionType';
 
 export class WildcardTransition extends Transition {
-	constructor(@NotNull target: ATNState) {
+	constructor(target: ATNState) {
 		super(target);
 	}
 
-	@Override
 	get serializationType(): TransitionType {
 		return TransitionType.WILDCARD;
 	}
 
-	@Override
 	public matches(
 		symbol: number,
 		minVocabSymbol: number,
@@ -29,8 +26,6 @@ export class WildcardTransition extends Transition {
 		return symbol >= minVocabSymbol && symbol <= maxVocabSymbol;
 	}
 
-	@Override
-	@NotNull
 	public toString(): string {
 		return '.';
 	}

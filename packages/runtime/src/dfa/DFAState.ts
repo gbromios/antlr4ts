@@ -11,7 +11,6 @@ import { ATNConfigSet } from '../atn/ATNConfigSet';
 import { BitSet } from '../misc/BitSet';
 import { LexerActionExecutor } from '../atn/LexerActionExecutor';
 import { MurmurHash } from '../misc/MurmurHash';
-import { NotNull, Override } from '../Decorators';
 import { PredictionContext } from '../atn/PredictionContext';
 import { SemanticContext } from '../atn/SemanticContext';
 
@@ -44,18 +43,15 @@ import { assert } from '../misc/Utils';
 export class DFAState {
 	public stateNumber: number = -1;
 
-	@NotNull
 	public configs: ATNConfigSet;
 
 	/** `edges.get(symbol)` points to target of symbol.
 	 */
-	@NotNull
 	private readonly edges: Map<number, DFAState>;
 
 	private _acceptStateInfo: AcceptStateInfo | undefined;
 
 	/** These keys for these edges are the top level element of the global context. */
-	@NotNull
 	private readonly contextEdges: Map<number, DFAState>;
 
 	/** Symbols in this set require a global context transition before matching an input symbol. */
@@ -182,7 +178,6 @@ export class DFAState {
 		return map;
 	}
 
-	@Override
 	public hashCode(): number {
 		let hash: number = MurmurHash.initialize(7);
 		hash = MurmurHash.update(hash, this.configs.hashCode());
@@ -203,7 +198,6 @@ export class DFAState {
 	 * exists that has this exact set of ATN configurations. The
 	 * {@link #stateNumber} is irrelevant.
 	 */
-	@Override
 	public equals(o: any): boolean {
 		// compare set of ATN configurations in this set with other
 		if (this === o) {
@@ -220,7 +214,6 @@ export class DFAState {
 		return sameSet;
 	}
 
-	@Override
 	public toString(): string {
 		let buf = '';
 		buf += this.stateNumber + ':' + this.configs;
@@ -239,15 +232,13 @@ export class DFAState {
 export namespace DFAState {
 	/** Map a predicate to a predicted alternative. */
 	export class PredPrediction {
-		@NotNull
 		public pred: SemanticContext; // never null; at least SemanticContext.NONE
 		public alt: number;
-		constructor(@NotNull pred: SemanticContext, alt: number) {
+		constructor(pred: SemanticContext, alt: number) {
 			this.alt = alt;
 			this.pred = pred;
 		}
 
-		@Override
 		public toString(): string {
 			return '(' + this.pred + ', ' + this.alt + ')';
 		}

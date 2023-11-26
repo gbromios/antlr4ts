@@ -6,7 +6,6 @@
 // ConvertTo-TS run at 2016-10-04T11:26:51.5187682-07:00
 
 import { RecognitionException } from './RecognitionException';
-import { NotNull } from './Decorators';
 import { Parser } from './Parser';
 import { ParserRuleContext } from './ParserRuleContext';
 
@@ -16,14 +15,14 @@ import { ParserRuleContext } from './ParserRuleContext';
 export class InputMismatchException extends RecognitionException {
 	//private static serialVersionUID: number =  1532568338707443067L;
 
-	constructor(/*@NotNull*/ recognizer: Parser);
+	constructor(recognizer: Parser);
 	constructor(
-		/*@NotNull*/ recognizer: Parser,
+		recognizer: Parser,
 		state: number,
 		context: ParserRuleContext,
 	);
 	constructor(
-		@NotNull recognizer: Parser,
+		recognizer: Parser,
 		state?: number,
 		context?: ParserRuleContext,
 	) {

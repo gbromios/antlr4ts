@@ -7,7 +7,6 @@
 
 import { ATNStateType } from './ATNStateType';
 import { BlockStartState } from './BlockStartState';
-import { Override } from '../Decorators';
 import { PlusLoopbackState } from './PlusLoopbackState';
 
 /** Start of `(A|B|...)+` loop. Technically a decision state, but
@@ -19,7 +18,6 @@ export class PlusBlockStartState extends BlockStartState {
 	// This is always set during ATN deserialization
 	public loopBackState!: PlusLoopbackState;
 
-	@Override
 	get stateType(): ATNStateType {
 		return ATNStateType.PLUS_BLOCK_START;
 	}

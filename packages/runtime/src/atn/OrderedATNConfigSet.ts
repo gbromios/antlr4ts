@@ -7,7 +7,6 @@
 
 import { ATNConfig } from './ATNConfig';
 import { ATNConfigSet } from './ATNConfigSet';
-import { Override } from '../Decorators';
 
 /**
  *
@@ -24,7 +23,6 @@ export class OrderedATNConfigSet extends ATNConfigSet {
 		}
 	}
 
-	@Override
 	public clone(readonly: boolean): ATNConfigSet {
 		let copy: OrderedATNConfigSet = new OrderedATNConfigSet(this, readonly);
 		if (!readonly && this.isReadOnly) {
@@ -34,13 +32,11 @@ export class OrderedATNConfigSet extends ATNConfigSet {
 		return copy;
 	}
 
-	@Override
 	protected getKey(e: ATNConfig): { state: number; alt: number } {
 		// This is a specially crafted key to ensure configurations are only merged if they are equal
 		return { state: 0, alt: e.hashCode() };
 	}
 
-	@Override
 	protected canMerge(
 		left: ATNConfig,
 		leftKey: { state: number; alt: number },

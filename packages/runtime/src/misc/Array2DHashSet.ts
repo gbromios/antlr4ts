@@ -8,7 +8,6 @@
 import { assert } from './Utils';
 import { DefaultEqualityComparator } from './DefaultEqualityComparator';
 import { EqualityComparator } from './EqualityComparator';
-import { NotNull, Nullable, Override, SuppressWarnings } from '../Decorators';
 import { JavaCollection, JavaSet } from './Stubs';
 import { ObjectEqualityComparator } from './ObjectEqualityComparator';
 import { MurmurHash } from './MurmurHash';
@@ -25,7 +24,6 @@ const LOAD_FACTOR: number = 0.75;
 export class Array2DHashSet<T extends { toString(): string }>
 	implements JavaSet<T>
 {
-	@NotNull
 	protected comparator: EqualityComparator<T>;
 
 	protected buckets: Array<T[] | undefined>;
@@ -123,7 +121,6 @@ export class Array2DHashSet<T extends { toString(): string }>
 		return b;
 	}
 
-	@Override
 	public hashCode(): number {
 		let hash: number = MurmurHash.initialize();
 		for (let bucket of this.buckets) {
@@ -142,7 +139,6 @@ export class Array2DHashSet<T extends { toString(): string }>
 		return hash;
 	}
 
-	@Override
 	public equals(o: any): boolean {
 		if (o === this) {
 			return true;
@@ -186,28 +182,24 @@ export class Array2DHashSet<T extends { toString(): string }>
 		assert(this.n === oldSize);
 	}
 
-	@Override
 	public add(t: T): boolean {
 		let existing: T = this.getOrAdd(t);
 		return existing === t;
 	}
 
-	@Override
 	get size(): number {
 		return this.n;
 	}
 
-	@Override
 	get isEmpty(): boolean {
 		return this.n === 0;
 	}
 
-	@Override
 	public contains(o: any): boolean {
 		return this.containsFast(this.asElementType(o));
 	}
 
-	public containsFast(@Nullable obj: T): boolean {
+	public containsFast(obj: T|null): boolean {
 		if (obj == null) {
 			return false;
 		}
@@ -215,12 +207,10 @@ export class Array2DHashSet<T extends { toString(): string }>
 		return this.get(obj) != null;
 	}
 
-	@Override
 	public *[Symbol.iterator](): IterableIterator<T> {
 		yield* this.toArray();
 	}
 
-	@Override
 	public toArray(): T[] {
 		const a = new Array<T>(this.size);
 
@@ -241,7 +231,6 @@ export class Array2DHashSet<T extends { toString(): string }>
 		return a;
 	}
 
-	@Override
 	public containsAll(collection: JavaCollection<T>): boolean {
 		if (collection instanceof Array2DHashSet) {
 			let s = collection as any as Array2DHashSet<T>;
@@ -268,7 +257,6 @@ export class Array2DHashSet<T extends { toString(): string }>
 		return true;
 	}
 
-	@Override
 	public addAll(c: Iterable<T>): boolean {
 		let changed: boolean = false;
 
@@ -281,14 +269,12 @@ export class Array2DHashSet<T extends { toString(): string }>
 		return changed;
 	}
 
-	@Override
 	public clear(): void {
 		this.buckets = this.createBuckets(INITAL_CAPACITY);
 		this.n = 0;
 		this.threshold = Math.floor(INITAL_CAPACITY * LOAD_FACTOR);
 	}
 
-	@Override
 	public toString(): string {
 		if (this.size === 0) {
 			return '{}';
@@ -355,7 +341,6 @@ export class Array2DHashSet<T extends { toString(): string }>
 	 * @returns `o` if it could be an instance of `T`, otherwise
 	 * `undefined`.
 	 */
-	@SuppressWarnings('unchecked')
 	protected asElementType(o: any): T {
 		return o as T;
 	}
@@ -366,7 +351,6 @@ export class Array2DHashSet<T extends { toString(): string }>
 	 * @param capacity the length of the array to return
 	 * @returns the newly constructed array
 	 */
-	@SuppressWarnings('unchecked')
 	protected createBuckets(capacity: number): Array<T[] | undefined> {
 		return new Array<T[]>(capacity);
 	}

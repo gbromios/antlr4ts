@@ -10,7 +10,6 @@ import { ATN } from '../atn/ATN';
 import { CommonToken } from '../CommonToken';
 import { ErrorNode } from './ErrorNode';
 import { Interval } from '../misc/Interval';
-import { NotNull } from '../Decorators';
 import { Parser } from '../Parser';
 import { ParserRuleContext } from '../ParserRuleContext';
 import { ParseTree } from './ParseTree';
@@ -27,14 +26,14 @@ export class Trees {
 	 *  node payloads to get the text for the nodes.  Detect
 	 *  parse trees and extract data appropriately.
 	 */
-	public static toStringTree(/*@NotNull*/ t: Tree): string;
+	public static toStringTree(t: Tree): string;
 
 	/** Print out a whole tree in LISP form. {@link #getNodeText} is used on the
 	 *  node payloads to get the text for the nodes.  Detect
 	 *  parse trees and extract data appropriately.
 	 */
 	public static toStringTree(
-		/*@NotNull*/ t: Tree,
+		t: Tree,
 		recog: Parser | undefined,
 	): string;
 
@@ -42,16 +41,16 @@ export class Trees {
 	 *  node payloads to get the text for the nodes.
 	 */
 	public static toStringTree(
-		/*@NotNull*/ t: Tree,
-		/*@Nullable*/ ruleNames: string[] | undefined,
+		t: Tree,
+		ruleNames: string[] | undefined,
 	): string;
 
 	public static toStringTree(
-		/*@NotNull*/ t: Tree,
+		t: Tree,
 		arg2?: Parser | string[],
 	): string;
 	public static toStringTree(
-		@NotNull t: Tree,
+		t: Tree,
 		arg2?: Parser | string[],
 	): string {
 		let ruleNames: string[] | undefined;
@@ -84,11 +83,11 @@ export class Trees {
 	}
 
 	public static getNodeText(
-		/*@NotNull*/ t: Tree,
+		t: Tree,
 		recog: Parser | undefined,
 	): string;
 	public static getNodeText(
-		/*@NotNull*/ t: Tree,
+		t: Tree,
 		ruleNames: string[] | undefined,
 	): string;
 	public static getNodeText(
@@ -145,8 +144,7 @@ export class Trees {
 	 */
 	public static getAncestors(t: ParseTree): ParseTree[];
 	public static getAncestors(t: Tree): Tree[];
-	@NotNull
-	public static getAncestors(@NotNull t: Tree): Tree[] {
+	public static getAncestors(t: Tree): Tree[] {
 		let ancestors: Tree[] = [];
 		let p = t.parent;
 		while (p) {
@@ -243,7 +241,7 @@ export class Trees {
 	 *  @since 4.5
 	 */
 	public static getRootOfSubtreeEnclosingRegion(
-		@NotNull t: ParseTree,
+		t: ParseTree,
 		startTokenIndex: number, // inclusive
 		stopTokenIndex: number, // inclusive
 	): ParserRuleContext | undefined {

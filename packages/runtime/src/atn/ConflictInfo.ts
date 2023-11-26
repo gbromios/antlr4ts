@@ -6,7 +6,6 @@
 // ConvertTo-TS run at 2016-10-04T11:26:28.0710131-07:00
 
 import { BitSet } from '../misc/BitSet';
-import { Override } from '../Decorators';
 import * as Utils from '../misc/Utils';
 
 /**
@@ -48,7 +47,6 @@ export class ConflictInfo {
 		return this.exact;
 	}
 
-	@Override
 	public equals(obj: any): boolean {
 		if (obj === this) {
 			return true;
@@ -62,7 +60,6 @@ export class ConflictInfo {
 		);
 	}
 
-	@Override
 	public hashCode(): number {
 		return this.conflictedAlts.hashCode();
 	}

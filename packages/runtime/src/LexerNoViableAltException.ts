@@ -7,7 +7,6 @@
 
 import { ATNConfigSet } from './atn/ATNConfigSet';
 import { RecognitionException } from './RecognitionException';
-import { NotNull, Override } from './Decorators';
 import { Lexer } from './Lexer';
 import { CharStream } from './CharStream';
 import { Interval } from './misc/Interval';
@@ -24,7 +23,7 @@ export class LexerNoViableAltException extends RecognitionException {
 
 	constructor(
 		lexer: Lexer | undefined,
-		@NotNull input: CharStream,
+		input: CharStream,
 		startIndex: number,
 		deadEndConfigs: ATNConfigSet | undefined,
 	) {
@@ -41,12 +40,10 @@ export class LexerNoViableAltException extends RecognitionException {
 		return this._deadEndConfigs;
 	}
 
-	@Override
 	get inputStream(): CharStream {
 		return super.inputStream as CharStream;
 	}
 
-	@Override
 	public toString(): string {
 		let symbol = '';
 		if (this._startIndex >= 0 && this._startIndex < this.inputStream.size) {

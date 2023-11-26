@@ -13,7 +13,6 @@ import { Interval } from './misc/Interval';
 import { IntStream } from './IntStream';
 import { LexerATNSimulator } from './atn/LexerATNSimulator';
 import { LexerNoViableAltException } from './LexerNoViableAltException';
-import { Override } from './Decorators';
 import { RecognitionException } from './RecognitionException';
 import { Recognizer } from './Recognizer';
 import { Token } from './Token';
@@ -127,7 +126,6 @@ export abstract class Lexer
 	/** Return a token from this source; i.e., match a token on the char
 	 *  stream.
 	 */
-	@Override
 	public nextToken(): Token {
 		if (this._input == null) {
 			throw new Error('nextToken requires a non-null input stream.');
@@ -225,17 +223,14 @@ export abstract class Lexer
 		return this._mode;
 	}
 
-	@Override
 	get tokenFactory(): TokenFactory {
 		return this._factory;
 	}
 
-	// @Override
 	set tokenFactory(factory: TokenFactory) {
 		this._factory = factory;
 	}
 
-	@Override
 	get inputStream(): CharStream {
 		return this._input;
 	}
@@ -247,7 +242,6 @@ export abstract class Lexer
 		this._tokenFactorySourcePair = { source: this, stream: this._input };
 	}
 
-	@Override
 	get sourceName(): string {
 		return this._input.sourceName;
 	}
@@ -301,7 +295,6 @@ export abstract class Lexer
 		return eof;
 	}
 
-	@Override
 	get line(): number {
 		return this.interpreter.line;
 	}
@@ -310,7 +303,6 @@ export abstract class Lexer
 		this.interpreter.line = line;
 	}
 
-	@Override
 	get charPositionInLine(): number {
 		return this.interpreter.charPositionInLine;
 	}

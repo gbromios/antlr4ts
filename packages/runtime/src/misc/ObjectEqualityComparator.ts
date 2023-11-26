@@ -5,7 +5,6 @@
 
 // ConvertTo-TS run at 2016-10-03T02:09:42.2127260-07:00
 import { EqualityComparator } from './EqualityComparator';
-import { Override } from '../Decorators';
 import { Equatable } from './Stubs';
 
 /**
@@ -26,7 +25,6 @@ export class ObjectEqualityComparator
 	 * This implementation returns
 	 * `obj.`{@link Object#hashCode hashCode()}.
 	 */
-	@Override
 	public hashCode(obj: Equatable | null | undefined): number {
 		if (obj == null) {
 			return 0;
@@ -44,7 +42,6 @@ export class ObjectEqualityComparator
 	 * this method returns the result of
 	 * `a.`{@link Object#equals equals}`(b)`.
 	 */
-	@Override
 	public equals(
 		a: Equatable | null | undefined,
 		b: Equatable | null | undefined,

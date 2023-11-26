@@ -9,7 +9,6 @@ import { Lexer } from '../Lexer';
 import { LexerAction } from './LexerAction';
 import { LexerActionType } from './LexerActionType';
 import { MurmurHash } from '../misc/MurmurHash';
-import { NotNull, Override } from '../Decorators';
 
 /**
  * Implements the `more` lexer action by calling {@link Lexer#more}.
@@ -32,7 +31,6 @@ export class LexerMoreAction implements LexerAction {
 	 * {@inheritDoc}
 	 * @returns This method returns {@link LexerActionType#MORE}.
 	 */
-	@Override
 	get actionType(): LexerActionType {
 		return LexerActionType.MORE;
 	}
@@ -41,7 +39,6 @@ export class LexerMoreAction implements LexerAction {
 	 * {@inheritDoc}
 	 * @returns This method returns `false`.
 	 */
-	@Override
 	get isPositionDependent(): boolean {
 		return false;
 	}
@@ -51,24 +48,20 @@ export class LexerMoreAction implements LexerAction {
 	 *
 	 * This action is implemented by calling {@link Lexer#more}.
 	 */
-	@Override
-	public execute(@NotNull lexer: Lexer): void {
+	public execute(lexer: Lexer): void {
 		lexer.more();
 	}
 
-	@Override
 	public hashCode(): number {
 		let hash: number = MurmurHash.initialize();
 		hash = MurmurHash.update(hash, this.actionType);
 		return MurmurHash.finish(hash, 1);
 	}
 
-	@Override
 	public equals(obj: any): boolean {
 		return obj === this;
 	}
 
-	@Override
 	public toString(): string {
 		return 'more';
 	}

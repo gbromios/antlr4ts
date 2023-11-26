@@ -15,7 +15,6 @@ import { DFASerializer } from './DFASerializer';
 import { DFAState } from './DFAState';
 import { LexerATNSimulator } from '../atn/LexerATNSimulator';
 import { LexerDFASerializer } from './LexerDFASerializer';
-import { NotNull } from '../Decorators';
 import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
 import { StarLoopEntryState } from '../atn/StarLoopEntryState';
 import { Token } from '../Token';
@@ -30,7 +29,6 @@ export class DFA {
 	 * Note that this collection of states holds the DFA states for both SLL and LL prediction. Only the start state
 	 * needs to be differentiated for these cases, which is tracked by the `s0` and `s0full` fields.
 	 */
-	@NotNull
 	public readonly states: Array2DHashSet<DFAState> =
 		new Array2DHashSet<DFAState>(ObjectEqualityComparator.INSTANCE);
 
@@ -41,13 +39,11 @@ export class DFA {
 	public readonly decision: number;
 
 	/** From which ATN state did we create this DFA? */
-	@NotNull
 	public atnStartState: ATNState;
 	/**
 	 * Note: this field is accessed as `atnStartState.atn` in other targets. The TypeScript target keeps a separate copy
 	 * to avoid a number of additional null/undefined checks each time the ATN is accessed.
 	 */
-	@NotNull
 	public atn: ATN;
 
 	private nextStateNumber: number = 0;
@@ -75,7 +71,7 @@ export class DFA {
 	 * @param decision The decision number.
 	 */
 	constructor(atnStartState: DecisionState, decision: number);
-	constructor(@NotNull atnStartState: ATNState, decision: number = 0) {
+	constructor(atnStartState: ATNState, decision: number = 0) {
 		if (!atnStartState.atn) {
 			throw new Error('The ATNState must be associated with an ATN');
 		}
@@ -204,9 +200,9 @@ export class DFA {
 	}
 
 	public toString(): string;
-	public toString(/*@NotNull*/ vocabulary: Vocabulary): string;
+	public toString(vocabulary: Vocabulary): string;
 	public toString(
-		/*@NotNull*/ vocabulary: Vocabulary,
+		vocabulary: Vocabulary,
 		ruleNames: string[] | undefined,
 	): string;
 	public toString(vocabulary?: Vocabulary, ruleNames?: string[]): string {

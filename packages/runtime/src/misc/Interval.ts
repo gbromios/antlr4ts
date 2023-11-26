@@ -5,7 +5,6 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:40.7402214-07:00
 
-import { Override } from '../Decorators';
 import { Equatable } from './Stubs';
 
 const INTERVAL_POOL_MAX_VALUE: number = 1000;
@@ -60,7 +59,6 @@ export class Interval implements Equatable {
 		return this.b - this.a + 1;
 	}
 
-	@Override
 	public equals(o: any): boolean {
 		if (o === this) {
 			return true;
@@ -71,7 +69,6 @@ export class Interval implements Equatable {
 		return this.a === o.a && this.b === o.b;
 	}
 
-	@Override
 	public hashCode(): number {
 		let hash: number = 23;
 		hash = hash * 31 + this.a;
@@ -156,7 +153,6 @@ export class Interval implements Equatable {
 		return diff;
 	}
 
-	@Override
 	public toString(): string {
 		return this.a + '..' + this.b;
 	}

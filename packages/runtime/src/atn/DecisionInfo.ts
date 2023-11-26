@@ -9,7 +9,6 @@ import { AmbiguityInfo } from './AmbiguityInfo';
 import { ContextSensitivityInfo } from './ContextSensitivityInfo';
 import { ErrorInfo } from './ErrorInfo';
 import { LookaheadEventInfo } from './LookaheadEventInfo';
-import { Override } from '../Decorators';
 import { PredicateEvalInfo } from './PredicateEvalInfo';
 
 /**
@@ -225,7 +224,6 @@ export class DecisionInfo {
 		this.decision = decision;
 	}
 
-	@Override
 	public toString(): string {
 		return (
 			'{' +

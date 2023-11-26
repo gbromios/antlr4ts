@@ -6,7 +6,6 @@
 // ConvertTo-TS run at 2016-10-04T11:26:35.6390614-07:00
 
 import { Array2DHashMap } from '../misc/Array2DHashMap';
-import { Override } from '../Decorators';
 import { JavaMap } from '../misc/Stubs';
 import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
 import { PredictionContext } from './PredictionContext';
@@ -117,7 +116,6 @@ export namespace PredictionContextCache {
 			this.value = value;
 		}
 
-		@Override
 		public equals(obj: any): boolean {
 			if (!(obj instanceof PredictionContextAndInt)) {
 				return false;
@@ -133,7 +131,6 @@ export namespace PredictionContextCache {
 			);
 		}
 
-		@Override
 		public hashCode(): number {
 			let hashCode: number = 5;
 			hashCode =
@@ -162,7 +159,6 @@ export namespace PredictionContextCache {
 			return this._y;
 		}
 
-		@Override
 		public equals(o: any): boolean {
 			if (!(o instanceof IdentityCommutativePredictionContextOperands)) {
 				return false;
@@ -177,7 +173,6 @@ export namespace PredictionContextCache {
 			);
 		}
 
-		@Override
 		public hashCode(): number {
 			return this._x.hashCode() ^ this._y.hashCode();
 		}

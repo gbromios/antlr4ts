@@ -9,7 +9,6 @@ import { Lexer } from '../Lexer';
 import { LexerAction } from './LexerAction';
 import { LexerActionType } from './LexerActionType';
 import { MurmurHash } from '../misc/MurmurHash';
-import { NotNull, Override } from '../Decorators';
 
 /**
  * Implements the `pushMode` lexer action by calling
@@ -42,7 +41,6 @@ export class LexerPushModeAction implements LexerAction {
 	 * {@inheritDoc}
 	 * @returns This method returns {@link LexerActionType#PUSH_MODE}.
 	 */
-	@Override
 	get actionType(): LexerActionType {
 		return LexerActionType.PUSH_MODE;
 	}
@@ -51,7 +49,6 @@ export class LexerPushModeAction implements LexerAction {
 	 * {@inheritDoc}
 	 * @returns This method returns `false`.
 	 */
-	@Override
 	get isPositionDependent(): boolean {
 		return false;
 	}
@@ -62,12 +59,10 @@ export class LexerPushModeAction implements LexerAction {
 	 * This action is implemented by calling {@link Lexer#pushMode} with the
 	 * value provided by {@link #getMode}.
 	 */
-	@Override
-	public execute(@NotNull lexer: Lexer): void {
+	public execute(lexer: Lexer): void {
 		lexer.pushMode(this._mode);
 	}
 
-	@Override
 	public hashCode(): number {
 		let hash: number = MurmurHash.initialize();
 		hash = MurmurHash.update(hash, this.actionType);
@@ -75,7 +70,6 @@ export class LexerPushModeAction implements LexerAction {
 		return MurmurHash.finish(hash, 2);
 	}
 
-	@Override
 	public equals(obj: any): boolean {
 		if (obj === this) {
 			return true;
@@ -86,7 +80,6 @@ export class LexerPushModeAction implements LexerAction {
 		return this._mode === obj._mode;
 	}
 
-	@Override
 	public toString(): string {
 		return `pushMode(${this._mode})`;
 	}

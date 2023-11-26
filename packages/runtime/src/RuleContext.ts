@@ -11,7 +11,6 @@ import { Recognizer } from './Recognizer';
 import { RuleNode } from './tree/RuleNode';
 import { ParseTree } from './tree/ParseTree';
 import { Interval } from './misc/Interval';
-import { Override } from './Decorators';
 import { Trees } from './tree/Trees';
 import { ParseTreeVisitor } from './tree/ParseTreeVisitor';
 import { ParserRuleContext } from './ParserRuleContext';
@@ -104,28 +103,23 @@ export class RuleContext extends RuleNode {
 
 	// satisfy the ParseTree / SyntaxTree interface
 
-	@Override
 	get sourceInterval(): Interval {
 		return Interval.INVALID;
 	}
 
-	@Override
 	get ruleContext(): RuleContext {
 		return this;
 	}
 
-	@Override
 	get parent(): RuleContext | undefined {
 		return this._parent;
 	}
 
 	/** @since 4.7. {@see ParseTree#setParent} comment */
-	@Override
 	public setParent(parent: RuleContext): void {
 		this._parent = parent;
 	}
 
-	@Override
 	get payload(): RuleContext {
 		return this;
 	}
@@ -137,7 +131,6 @@ export class RuleContext extends RuleNode {
 	 *  added to the parse trees, they will not appear in the output of this
 	 *  method.
 	 */
-	@Override
 	get text(): string {
 		if (this.childCount === 0) {
 			return '';
@@ -180,19 +173,16 @@ export class RuleContext extends RuleNode {
 		// intentionally ignored by the base implementation
 	}
 
-	@Override
 	public getChild(i: number): ParseTree {
 		throw new RangeError(
 			'i must be greater than or equal to 0 and less than childCount',
 		);
 	}
 
-	@Override
 	get childCount(): number {
 		return 0;
 	}
 
-	@Override
 	public accept<T>(visitor: ParseTreeVisitor<T>): T {
 		return visitor.visitChildren(this);
 	}
@@ -210,7 +200,6 @@ export class RuleContext extends RuleNode {
 
 	public toStringTree(): string;
 
-	@Override
 	public toStringTree(recog?: Parser | string[]): string {
 		return Trees.toStringTree(this, recog);
 	}

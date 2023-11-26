@@ -13,7 +13,6 @@ import { Recognizer } from './Recognizer';
 import { Token } from './Token';
 import { TokenStream } from './TokenStream';
 import { IntStream } from './IntStream';
-import { NotNull } from './Decorators';
 
 /** Indicates that the parser could not decide which of two or more paths
  *  to take based upon the remaining input. It tracks the starting token
@@ -31,21 +30,15 @@ export class NoViableAltException extends RecognitionException {
 	 *  time the error occurred, of course the stream needs to keep a
 	 *  buffer all of the tokens but later we might not have access to those.)
 	 */
-	@NotNull
 	private _startToken: Token;
 
-	constructor(/*@NotNull*/ recognizer: Parser);
+	constructor(recognizer: Parser);
 	constructor(
-		/*@NotNull*/
 		recognizer: Recognizer<Token, any>,
-		/*@NotNull*/
 		input: TokenStream,
-		/*@NotNull*/
 		startToken: Token,
-		/*@NotNull*/
 		offendingToken: Token,
 		deadEndConfigs: ATNConfigSet | undefined,
-		/*@NotNull*/
 		ctx: ParserRuleContext,
 	);
 

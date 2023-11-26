@@ -16,8 +16,6 @@ import { FailedPredicateException } from './FailedPredicateException';
 import { InputMismatchException } from './InputMismatchException';
 import { InterpreterRuleContext } from './InterpreterRuleContext';
 import { LoopEndState } from './atn/LoopEndState';
-import { NotNull } from './Decorators';
-import { Override } from './Decorators';
 import { Parser } from './Parser';
 import { ParserATNSimulator } from './atn/ParserATNSimulator';
 import { ParserRuleContext } from './ParserRuleContext';
@@ -55,7 +53,6 @@ export class ParserInterpreter extends Parser {
 	protected pushRecursionContextStates: BitSet;
 
 	protected _ruleNames: string[];
-	@NotNull
 	private _vocabulary: Vocabulary;
 
 	/** This stack corresponds to the _parentctx, _parentState pair of locals
@@ -97,17 +94,17 @@ export class ParserInterpreter extends Parser {
 	 *
 	 *  @since 4.5
 	 */
-	constructor(/*@NotNull*/ old: ParserInterpreter);
+	constructor(old: ParserInterpreter);
 	constructor(
 		grammarFileName: string,
-		/*@NotNull*/ vocabulary: Vocabulary,
+		vocabulary: Vocabulary,
 		ruleNames: string[],
 		atn: ATN,
 		input: TokenStream,
 	);
 	constructor(
 		grammarFileName: ParserInterpreter | string,
-		@NotNull vocabulary?: Vocabulary,
+		vocabulary?: Vocabulary,
 		ruleNames?: string[],
 		atn?: ATN,
 		input?: TokenStream,
@@ -153,7 +150,6 @@ export class ParserInterpreter extends Parser {
 		}
 	}
 
-	@Override
 	public reset(resetInput?: boolean): void {
 		if (resetInput === undefined) {
 			super.reset();
@@ -165,22 +161,18 @@ export class ParserInterpreter extends Parser {
 		this._overrideDecisionRoot = undefined;
 	}
 
-	@Override
 	get atn(): ATN {
 		return this._atn;
 	}
 
-	@Override
 	get vocabulary(): Vocabulary {
 		return this._vocabulary;
 	}
 
-	@Override
 	get ruleNames(): string[] {
 		return this._ruleNames;
 	}
 
-	@Override
 	get grammarFileName(): string {
 		return this._grammarFileName;
 	}
@@ -253,7 +245,6 @@ export class ParserInterpreter extends Parser {
 		}
 	}
 
-	@Override
 	public enterRecursionRule(
 		localctx: ParserRuleContext,
 		state: number,

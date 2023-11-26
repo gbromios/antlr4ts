@@ -7,13 +7,11 @@
 
 import { ATNStateType } from './ATNStateType';
 import { DecisionState } from './DecisionState';
-import { Override } from '../Decorators';
 
 /** Decision state for `A+` and `(A|B)+`.  It has two transitions:
  *  one to the loop back to start of the block and one to exit.
  */
 export class PlusLoopbackState extends DecisionState {
-	@Override
 	get stateType(): ATNStateType {
 		return ATNStateType.PLUS_LOOP_BACK;
 	}

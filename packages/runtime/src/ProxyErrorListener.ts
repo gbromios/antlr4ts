@@ -7,7 +7,6 @@
 import { ANTLRErrorListener } from './ANTLRErrorListener';
 import { RecognitionException } from './RecognitionException';
 import { Recognizer } from './Recognizer';
-import { Override, NotNull } from './Decorators';
 
 /**
  * This implementation of {@link ANTLRErrorListener} dispatches all calls to a
@@ -31,13 +30,12 @@ export class ProxyErrorListener<
 		return this.delegates;
 	}
 
-	@Override
 	public syntaxError<T extends TSymbol>(
-		@NotNull recognizer: Recognizer<T, any>,
+		recognizer: Recognizer<T, any>,
 		offendingSymbol: T | undefined,
 		line: number,
 		charPositionInLine: number,
-		@NotNull msg: string,
+		msg: string,
 		e: RecognitionException | undefined,
 	): void {
 		this.delegates.forEach((listener) => {

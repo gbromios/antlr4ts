@@ -6,7 +6,6 @@
 // ConvertTo-TS run at 2016-10-04T11:26:28.6283213-07:00
 
 import { ATNState } from './ATNState';
-import { Override, NotNull } from '../Decorators';
 import { Transition } from './Transition';
 import { TransitionType } from './TransitionType';
 
@@ -14,7 +13,7 @@ export class EpsilonTransition extends Transition {
 	private _outermostPrecedenceReturn: number;
 
 	constructor(
-		@NotNull target: ATNState,
+		target: ATNState,
 		outermostPrecedenceReturn: number = -1,
 	) {
 		super(target);
@@ -33,17 +32,14 @@ export class EpsilonTransition extends Transition {
 		return this._outermostPrecedenceReturn;
 	}
 
-	@Override
 	get serializationType(): TransitionType {
 		return TransitionType.EPSILON;
 	}
 
-	@Override
 	get isEpsilon(): boolean {
 		return true;
 	}
 
-	@Override
 	public matches(
 		symbol: number,
 		minVocabSymbol: number,
@@ -52,8 +48,6 @@ export class EpsilonTransition extends Transition {
 		return false;
 	}
 
-	@Override
-	@NotNull
 	public toString(): string {
 		return 'epsilon';
 	}

@@ -4,7 +4,6 @@
  */
 
 // CONVERSTION complete, Burt Harris 10/14/2016
-import { Override } from '../../Decorators';
 import { ParseTree } from '../ParseTree';
 import { TerminalNode } from '../TerminalNode';
 import { Trees } from '../Trees';
@@ -16,7 +15,6 @@ export class XPathWildcardElement extends XPathElement {
 		super(XPath.WILDCARD);
 	}
 
-	@Override
 	public evaluate(t: ParseTree): ParseTree[] {
 		let kids: ParseTree[] = [];
 		if (this.invert) {

@@ -8,7 +8,6 @@
 import { DefaultErrorStrategy } from './DefaultErrorStrategy';
 import { Parser } from './Parser';
 import { InputMismatchException } from './InputMismatchException';
-import { Override } from './Decorators';
 import { ParseCancellationException } from './misc/ParseCancellationException';
 import { ParserRuleContext } from './ParserRuleContext';
 import { RecognitionException } from './RecognitionException';
@@ -46,7 +45,6 @@ export class BailErrorStrategy extends DefaultErrorStrategy {
 	 *  rule function catches.  Use {@link Exception#getCause()} to get the
 	 *  original {@link RecognitionException}.
 	 */
-	@Override
 	public recover(recognizer: Parser, e: RecognitionException): void {
 		for (
 			let context: ParserRuleContext | undefined = recognizer.context;
@@ -62,7 +60,6 @@ export class BailErrorStrategy extends DefaultErrorStrategy {
 	/** Make sure we don't attempt to recover inline; if the parser
 	 *  successfully recovers, it won't throw an exception.
 	 */
-	@Override
 	public recoverInline(recognizer: Parser): Token {
 		let e = new InputMismatchException(recognizer);
 		for (
@@ -77,7 +74,6 @@ export class BailErrorStrategy extends DefaultErrorStrategy {
 	}
 
 	/** Make sure we don't attempt to recover from problems in subrules. */
-	@Override
 	public sync(recognizer: Parser): void {
 		// intentionally empty
 	}

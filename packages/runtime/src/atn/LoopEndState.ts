@@ -7,14 +7,12 @@
 
 import { ATNState } from './ATNState';
 import { ATNStateType } from './ATNStateType';
-import { Override } from '../Decorators';
 
 /** Mark the end of a * or + loop. */
 export class LoopEndState extends ATNState {
 	// This is always set during ATN deserialization
 	public loopBackState!: ATNState;
 
-	@Override
 	get stateType(): ATNStateType {
 		return ATNStateType.LOOP_END;
 	}

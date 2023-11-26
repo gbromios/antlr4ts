@@ -7,22 +7,19 @@
 
 import { ATNState } from './ATNState';
 import { IntervalSet } from '../misc/IntervalSet';
-import { Override, NotNull, Nullable } from '../Decorators';
 import { SetTransition } from './SetTransition';
 import { Transition } from './Transition';
 import { TransitionType } from './TransitionType';
 
 export class NotSetTransition extends SetTransition {
-	constructor(@NotNull target: ATNState, @Nullable set: IntervalSet) {
+	constructor(target: ATNState, set?: IntervalSet|null) {
 		super(target, set);
 	}
 
-	@Override
 	get serializationType(): TransitionType {
 		return TransitionType.NOT_SET;
 	}
 
-	@Override
 	public matches(
 		symbol: number,
 		minVocabSymbol: number,
@@ -35,7 +32,6 @@ export class NotSetTransition extends SetTransition {
 		);
 	}
 
-	@Override
 	public toString(): string {
 		return '~' + super.toString();
 	}

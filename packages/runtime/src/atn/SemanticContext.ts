@@ -10,7 +10,6 @@ import { ArrayEqualityComparator } from '../misc/ArrayEqualityComparator';
 import { Comparable } from '../misc/Stubs';
 import { Equatable } from '../misc/Stubs';
 import { MurmurHash } from '../misc/MurmurHash';
-import { NotNull, Override } from '../Decorators';
 import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
 import { Recognizer } from '../Recognizer';
 import { RuleContext } from '../RuleContext';
@@ -211,7 +210,6 @@ export namespace SemanticContext {
 			this.isCtxDependent = isCtxDependent;
 		}
 
-		@Override
 		public eval<T>(
 			parser: Recognizer<T, any>,
 			parserCallStack: RuleContext,
@@ -221,7 +219,6 @@ export namespace SemanticContext {
 			return parser.sempred(localctx, this.ruleIndex, this.predIndex);
 		}
 
-		@Override
 		public hashCode(): number {
 			let hashCode: number = MurmurHash.initialize();
 			hashCode = MurmurHash.update(hashCode, this.ruleIndex);
@@ -231,7 +228,6 @@ export namespace SemanticContext {
 			return hashCode;
 		}
 
-		@Override
 		public equals(obj: any): boolean {
 			if (!(obj instanceof Predicate)) {
 				return false;
@@ -246,7 +242,6 @@ export namespace SemanticContext {
 			);
 		}
 
-		@Override
 		public toString(): string {
 			return '{' + this.ruleIndex + ':' + this.predIndex + '}?';
 		}
@@ -263,7 +258,6 @@ export namespace SemanticContext {
 			this.precedence = precedence;
 		}
 
-		@Override
 		public eval<T>(
 			parser: Recognizer<T, any>,
 			parserCallStack: RuleContext,
@@ -271,7 +265,6 @@ export namespace SemanticContext {
 			return parser.precpred(parserCallStack, this.precedence);
 		}
 
-		@Override
 		public evalPrecedence(
 			parser: Recognizer<any, any>,
 			parserCallStack: RuleContext,
@@ -283,19 +276,16 @@ export namespace SemanticContext {
 			}
 		}
 
-		@Override
 		public compareTo(o: PrecedencePredicate): number {
 			return this.precedence - o.precedence;
 		}
 
-		@Override
 		public hashCode(): number {
 			let hashCode: number = 1;
 			hashCode = 31 * hashCode + this.precedence;
 			return hashCode;
 		}
 
-		@Override
 		public equals(obj: any): boolean {
 			if (!(obj instanceof PrecedencePredicate)) {
 				return false;
@@ -308,7 +298,6 @@ export namespace SemanticContext {
 			return this.precedence === obj.precedence;
 		}
 
-		@Override
 		// precedence >= _precedenceStack.peek()
 		public toString(): string {
 			return '{' + this.precedence + '>=prec}?';
@@ -330,7 +319,6 @@ export namespace SemanticContext {
 		 *
 		 * @since 4.3
 		 */
-		// @NotNull
 		public abstract readonly operands: Iterable<SemanticContext>;
 	}
 
@@ -341,7 +329,7 @@ export namespace SemanticContext {
 	export class AND extends Operator {
 		public opnds: SemanticContext[];
 
-		constructor(@NotNull a: SemanticContext, @NotNull b: SemanticContext) {
+		constructor(a: SemanticContext, b: SemanticContext) {
 			super();
 
 			let operands: Array2DHashSet<SemanticContext> =
@@ -371,12 +359,10 @@ export namespace SemanticContext {
 			}
 		}
 
-		@Override
 		get operands(): Iterable<SemanticContext> {
 			return this.opnds;
 		}
 
-		@Override
 		public equals(obj: any): boolean {
 			if (this === obj) {
 				return true;
@@ -390,7 +376,6 @@ export namespace SemanticContext {
 			);
 		}
 
-		@Override
 		public hashCode(): number {
 			return MurmurHash.hashCode(this.opnds, AND_HASHCODE);
 		}
@@ -401,7 +386,6 @@ export namespace SemanticContext {
 		 * The evaluation of predicates by this context is short-circuiting, but
 		 * unordered.
 		 */
-		@Override
 		public eval<T>(
 			parser: Recognizer<T, any>,
 			parserCallStack: RuleContext,
@@ -415,7 +399,6 @@ export namespace SemanticContext {
 			return true;
 		}
 
-		@Override
 		public evalPrecedence(
 			parser: Recognizer<any, any>,
 			parserCallStack: RuleContext,
@@ -452,7 +435,6 @@ export namespace SemanticContext {
 			return result;
 		}
 
-		@Override
 		public toString(): string {
 			return Utils.join(this.opnds, '&&');
 		}
@@ -465,7 +447,7 @@ export namespace SemanticContext {
 	export class OR extends Operator {
 		public opnds: SemanticContext[];
 
-		constructor(@NotNull a: SemanticContext, @NotNull b: SemanticContext) {
+		constructor(a: SemanticContext, b: SemanticContext) {
 			super();
 
 			let operands: Array2DHashSet<SemanticContext> =
@@ -495,12 +477,10 @@ export namespace SemanticContext {
 			}
 		}
 
-		@Override
 		get operands(): Iterable<SemanticContext> {
 			return this.opnds;
 		}
 
-		@Override
 		public equals(obj: any): boolean {
 			if (this === obj) {
 				return true;
@@ -514,7 +494,6 @@ export namespace SemanticContext {
 			);
 		}
 
-		@Override
 		public hashCode(): number {
 			return MurmurHash.hashCode(this.opnds, OR_HASHCODE);
 		}
@@ -525,7 +504,6 @@ export namespace SemanticContext {
 		 * The evaluation of predicates by this context is short-circuiting, but
 		 * unordered.
 		 */
-		@Override
 		public eval<T>(
 			parser: Recognizer<T, any>,
 			parserCallStack: RuleContext,
@@ -539,7 +517,6 @@ export namespace SemanticContext {
 			return false;
 		}
 
-		@Override
 		public evalPrecedence(
 			parser: Recognizer<any, any>,
 			parserCallStack: RuleContext,
@@ -576,7 +553,6 @@ export namespace SemanticContext {
 			return result;
 		}
 
-		@Override
 		public toString(): string {
 			return Utils.join(this.opnds, '||');
 		}

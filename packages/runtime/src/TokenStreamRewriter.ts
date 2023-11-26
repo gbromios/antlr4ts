@@ -6,7 +6,6 @@
 // ConvertTo-TS run at 2016-10-04T11:26:58.1768850-07:00
 
 import { Interval } from './misc/Interval';
-import { Override } from './Decorators';
 import { Token } from './Token';
 import { TokenStream } from './TokenStream';
 
@@ -657,7 +656,6 @@ export class RewriteOperation {
 		return this.index;
 	}
 
-	@Override
 	public toString(): string {
 		let opName: string = this.constructor.name;
 		let $index = opName.indexOf('$');
@@ -684,7 +682,6 @@ class InsertBeforeOp extends RewriteOperation {
 		super(tokens, index, instructionIndex, text);
 	}
 
-	@Override
 	public execute(buf: string[]): number {
 		buf.push(this.text.toString());
 		if (this.tokens.get(this.index).type !== Token.EOF) {
@@ -725,7 +722,6 @@ class ReplaceOp extends RewriteOperation {
 		this.lastIndex = to;
 	}
 
-	@Override
 	public execute(buf: string[]): number {
 		if (this.text != null) {
 			buf.push(this.text.toString());
@@ -733,7 +729,6 @@ class ReplaceOp extends RewriteOperation {
 		return this.lastIndex + 1;
 	}
 
-	@Override
 	public toString(): string {
 		if (this.text == null) {
 			return (

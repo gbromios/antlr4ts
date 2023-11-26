@@ -9,7 +9,6 @@ import { assert } from './misc/Utils';
 import { CommonToken } from './CommonToken';
 import { Interval } from './misc/Interval';
 import { Lexer } from './Lexer';
-import { NotNull, Override } from './Decorators';
 import { RuleContext } from './RuleContext';
 import { Token } from './Token';
 import { TokenSource } from './TokenSource';
@@ -31,7 +30,6 @@ export class BufferedTokenStream implements TokenStream {
 	/**
 	 * The {@link TokenSource} from which tokens for this stream are fetched.
 	 */
-	@NotNull
 	private _tokenSource: TokenSource;
 
 	/**
@@ -67,7 +65,7 @@ export class BufferedTokenStream implements TokenStream {
 	 */
 	protected fetchedEOF: boolean = false;
 
-	constructor(@NotNull tokenSource: TokenSource) {
+	constructor(tokenSource: TokenSource) {
 		if (tokenSource == null) {
 			throw new Error('tokenSource cannot be null');
 		}
@@ -75,7 +73,6 @@ export class BufferedTokenStream implements TokenStream {
 		this._tokenSource = tokenSource;
 	}
 
-	@Override
 	get tokenSource(): TokenSource {
 		return this._tokenSource;
 	}
@@ -88,33 +85,27 @@ export class BufferedTokenStream implements TokenStream {
 		this.fetchedEOF = false;
 	}
 
-	@Override
 	get index(): number {
 		return this.p;
 	}
 
-	@Override
 	public mark(): number {
 		return 0;
 	}
 
-	@Override
 	public release(marker: number): void {
 		// no resources to release
 	}
 
-	@Override
 	public seek(index: number): void {
 		this.lazyInit();
 		this.p = this.adjustSeekIndex(index);
 	}
 
-	@Override
 	get size(): number {
 		return this.tokens.length;
 	}
 
-	@Override
 	public consume(): void {
 		let skipEofCheck: boolean;
 		if (this.p >= 0) {
@@ -183,7 +174,6 @@ export class BufferedTokenStream implements TokenStream {
 		return n;
 	}
 
-	@Override
 	public get(i: number): Token {
 		if (i < 0 || i >= this.tokens.length) {
 			throw new RangeError(
@@ -221,7 +211,6 @@ export class BufferedTokenStream implements TokenStream {
 		return subset;
 	}
 
-	@Override
 	public LA(i: number): number {
 		let token = this.LT(i);
 		if (!token) {
@@ -239,8 +228,6 @@ export class BufferedTokenStream implements TokenStream {
 		return this.tokens[this.p - k];
 	}
 
-	@NotNull
-	@Override
 	public LT(k: number): Token {
 		let result = this.tryLT(k);
 		if (result === undefined) {
@@ -505,7 +492,6 @@ export class BufferedTokenStream implements TokenStream {
 		return hidden;
 	}
 
-	@Override
 	get sourceName(): string {
 		return this.tokenSource.sourceName;
 	}
@@ -514,8 +500,6 @@ export class BufferedTokenStream implements TokenStream {
 	public getText(): string;
 	public getText(interval: Interval): string;
 	public getText(context: RuleContext): string;
-	@NotNull
-	@Override
 	public getText(interval?: Interval | RuleContext): string {
 		if (interval === undefined) {
 			interval = Interval.of(0, this.size - 1);
@@ -548,8 +532,6 @@ export class BufferedTokenStream implements TokenStream {
 		return buf.toString();
 	}
 
-	@NotNull
-	@Override
 	public getTextFromRange(start: any, stop: any): string {
 		if (this.isToken(start) && this.isToken(stop)) {
 			return this.getText(Interval.of(start.tokenIndex, stop.tokenIndex));

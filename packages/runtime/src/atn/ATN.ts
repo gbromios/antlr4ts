@@ -1,4 +1,3 @@
-/*!
  * Copyright 2016 The ANTLR Project. All rights reserved.
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
@@ -14,7 +13,6 @@ import { IntervalSet } from '../misc/IntervalSet';
 import { InvalidState } from './InvalidState';
 import { LexerAction } from './LexerAction';
 import { LL1Analyzer } from './LL1Analyzer';
-import { NotNull } from '../Decorators';
 import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
 import { PredictionContext } from './PredictionContext';
 import { RuleContext } from '../RuleContext';
@@ -28,14 +26,12 @@ import { assert } from '../misc/Utils';
 
 /** */
 export class ATN {
-	@NotNull
 	public readonly states: ATNState[] = [];
 
 	/** Each subrule/rule is a decision point and we must track them so we
 	 *  can go back later and build DFA predictors for them.  This includes
 	 *  all the rules, subrules, optional blocks, ()+, ()* etc...
 	 */
-	@NotNull
 	public decisionToState: DecisionState[] = [];
 
 	/**
@@ -48,7 +44,6 @@ export class ATN {
 	 */
 	public ruleToStopState!: RuleStopState[];
 
-	@NotNull
 	public modeNameToStartState: Map<string, TokensStartState> = new Map<
 		string,
 		TokensStartState
@@ -79,7 +74,6 @@ export class ATN {
 	 */
 	public lexerActions!: LexerAction[];
 
-	@NotNull
 	public modeToStartState: TokensStartState[] = [];
 
 	private contextCache: Array2DHashMap<PredictionContext, PredictionContext> =
@@ -87,15 +81,13 @@ export class ATN {
 			ObjectEqualityComparator.INSTANCE,
 		);
 
-	@NotNull
 	public decisionToDFA: DFA[] = [];
-	@NotNull
 	public modeToDFA: DFA[] = [];
 
 	public LL1Table: Map<number, number> = new Map<number, number>();
 
 	/** Used for runtime deserialization of ATNs from strings */
-	constructor(@NotNull grammarType: ATNType, maxTokenType: number) {
+	constructor(grammarType: ATNType, maxTokenType: number) {
 		this.grammarType = grammarType;
 		this.maxTokenType = maxTokenType;
 	}
@@ -140,10 +132,9 @@ export class ATN {
 	 *  the rule surrounding `s`. In other words, the set will be
 	 *  restricted to tokens reachable staying within `s`'s rule.
 	 */
-	// @NotNull
 	public nextTokens(
 		s: ATNState,
-		/*@NotNull*/ ctx: PredictionContext,
+		ctx: PredictionContext,
 	): IntervalSet;
 
 	/**
@@ -151,10 +142,8 @@ export class ATN {
 	 * staying in same rule. {@link Token#EPSILON} is in set if we reach end of
 	 * rule.
 	 */
-	// @NotNull
-	public nextTokens(/*@NotNull*/ s: ATNState): IntervalSet;
+	public nextTokens(s: ATNState): IntervalSet;
 
-	@NotNull
 	public nextTokens(s: ATNState, ctx?: PredictionContext): IntervalSet {
 		if (ctx) {
 			let anal: LL1Analyzer = new LL1Analyzer(this);
@@ -180,7 +169,7 @@ export class ATN {
 		this.states.push(state);
 	}
 
-	public removeState(@NotNull state: ATNState): void {
+	public removeState(state: ATNState): void {
 		// just replace the state, don't shift states in list
 		let invalidState = new InvalidState();
 		invalidState.atn = this;
@@ -189,8 +178,8 @@ export class ATN {
 	}
 
 	public defineMode(
-		@NotNull name: string,
-		@NotNull s: TokensStartState,
+		name: string,
+		s: TokensStartState,
 	): void {
 		this.modeNameToStartState.set(name, s);
 		this.modeToStartState.push(s);
@@ -198,7 +187,7 @@ export class ATN {
 		this.defineDecisionState(s);
 	}
 
-	public defineDecisionState(@NotNull s: DecisionState): number {
+	public defineDecisionState(s: DecisionState): number {
 		this.decisionToState.push(s);
 		s.decision = this.decisionToState.length - 1;
 		this.decisionToDFA.push(new DFA(s, s.decision));
@@ -252,7 +241,6 @@ export class ATN {
 	 * @ if the ATN does not contain a state with
 	 * number `stateNumber`
 	 */
-	@NotNull
 	public getExpectedTokens(
 		stateNumber: number,
 		context: RuleContext | undefined,

@@ -10,7 +10,6 @@ import { ATNSimulator } from '../atn/ATNSimulator';
 import { ATNState } from '../atn/ATNState';
 import { DFA } from './DFA';
 import { DFAState } from './DFAState';
-import { NotNull, Override } from '../Decorators';
 import { PredictionContext } from '../atn/PredictionContext';
 import { Recognizer } from '../Recognizer';
 import { Vocabulary } from '../Vocabulary';
@@ -18,25 +17,23 @@ import { VocabularyImpl } from '../VocabularyImpl';
 
 /** A DFA walker that knows how to dump them to serialized strings. */
 export class DFASerializer {
-	@NotNull
 	private dfa: DFA;
-	@NotNull
 	private vocabulary: Vocabulary;
 
 	public ruleNames?: string[];
 
 	public atn?: ATN;
 
-	constructor(/*@NotNull*/ dfa: DFA, /*@NotNull*/ vocabulary: Vocabulary);
+	constructor(dfa: DFA, vocabulary: Vocabulary);
 	constructor(
-		/*@NotNull*/ dfa: DFA,
-		/*@Nullable*/ parser: Recognizer<any, any> | undefined,
+		dfa: DFA,
+		parser: Recognizer<any, any> | undefined,
 	);
 	constructor(
-		/*@NotNull*/ dfa: DFA,
-		/*@NotNull*/ vocabulary: Vocabulary,
-		/*@Nullable*/ ruleNames: string[] | undefined,
-		/*@Nullable*/ atn: ATN | undefined,
+		dfa: DFA,
+		vocabulary: Vocabulary,
+		ruleNames: string[] | undefined,
+		atn: ATN | undefined,
 	);
 	constructor(
 		dfa: DFA,
@@ -58,7 +55,6 @@ export class DFASerializer {
 		this.atn = atn;
 	}
 
-	@Override
 	public toString(): string {
 		if (!this.dfa.s0) {
 			return '';

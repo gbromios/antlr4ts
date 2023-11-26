@@ -5,7 +5,6 @@
 
 // CONVERSTION complete, Burt Harris 10/14/2016
 import { MultiMap } from '../../misc/MultiMap';
-import { NotNull, Override } from '../../Decorators';
 import { ParseTree } from '../ParseTree';
 import { ParseTreePattern } from './ParseTreePattern';
 
@@ -49,9 +48,9 @@ export class ParseTreeMatch {
 	 * @throws {@link Error} if `labels` is not defined
 	 */
 	constructor(
-		@NotNull tree: ParseTree,
-		@NotNull pattern: ParseTreePattern,
-		@NotNull labels: MultiMap<string, ParseTree>,
+		tree: ParseTree,
+		pattern: ParseTreePattern,
+		labels: MultiMap<string, ParseTree>,
 		mismatchedNode: ParseTree | undefined,
 	) {
 		if (!tree) {
@@ -118,8 +117,7 @@ export class ParseTreeMatch {
 	 * the specified `label`. If no nodes matched the label, an empty list
 	 * is returned.
 	 */
-	@NotNull
-	public getAll(@NotNull label: string): ParseTree[] {
+	public getAll(label: string): ParseTree[] {
 		const nodes = this._labels.get(label);
 		if (!nodes) {
 			return [];
@@ -137,7 +135,6 @@ export class ParseTreeMatch {
 	 * @returns A mapping from labels to parse tree nodes. If the parse tree
 	 * pattern did not contain any rule or token tags, this map will be empty.
 	 */
-	@NotNull
 	get labels(): MultiMap<string, ParseTree> {
 		return this._labels;
 	}
@@ -167,7 +164,6 @@ export class ParseTreeMatch {
 	 *
 	 * @returns The tree pattern we are matching against.
 	 */
-	@NotNull
 	get pattern(): ParseTreePattern {
 		return this._pattern;
 	}
@@ -177,7 +173,6 @@ export class ParseTreeMatch {
 	 *
 	 * @returns The {@link ParseTree} we are trying to match to a pattern.
 	 */
-	@NotNull
 	get tree(): ParseTree {
 		return this._tree;
 	}
@@ -185,7 +180,6 @@ export class ParseTreeMatch {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public toString(): string {
 		return `Match ${this.succeeded ? 'succeeded' : 'failed'}; found ${
 			this.labels.size

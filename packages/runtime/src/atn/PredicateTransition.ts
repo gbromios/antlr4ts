@@ -7,7 +7,6 @@
 
 import { AbstractPredicateTransition } from './AbstractPredicateTransition';
 import { ATNState } from './ATNState';
-import { NotNull, Override } from '../Decorators';
 import { SemanticContext } from './SemanticContext';
 import { TransitionType } from './TransitionType';
 
@@ -23,7 +22,7 @@ export class PredicateTransition extends AbstractPredicateTransition {
 	public isCtxDependent: boolean; // e.g., $i ref in pred
 
 	constructor(
-		@NotNull target: ATNState,
+		target: ATNState,
 		ruleIndex: number,
 		predIndex: number,
 		isCtxDependent: boolean,
@@ -34,17 +33,14 @@ export class PredicateTransition extends AbstractPredicateTransition {
 		this.isCtxDependent = isCtxDependent;
 	}
 
-	@Override
 	get serializationType(): TransitionType {
 		return TransitionType.PREDICATE;
 	}
 
-	@Override
 	get isEpsilon(): boolean {
 		return true;
 	}
 
-	@Override
 	public matches(
 		symbol: number,
 		minVocabSymbol: number,
@@ -61,8 +57,6 @@ export class PredicateTransition extends AbstractPredicateTransition {
 		);
 	}
 
-	@Override
-	@NotNull
 	public toString(): string {
 		return 'pred_' + this.ruleIndex + ':' + this.predIndex;
 	}

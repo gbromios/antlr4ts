@@ -7,7 +7,6 @@
 
 import { ATNState } from './ATNState';
 import { IntervalSet } from '../misc/IntervalSet';
-import { NotNull } from '../Decorators';
 import { TransitionType } from './TransitionType';
 
 /** An ATN transition between any two ATN states.  Subclasses define
@@ -37,7 +36,6 @@ export abstract class Transition {
 		'PRECEDENCE',
 	];
 
-	// @SuppressWarnings("serial")
 	// static serializationTypes: Map<Class<? extends Transition>, number> =
 	// 	Collections.unmodifiableMap(new HashMap<Class<? extends Transition>, Integer>() {{
 	// 		put(EpsilonTransition.class, EPSILON);
@@ -53,10 +51,9 @@ export abstract class Transition {
 	// 	}});
 
 	/** The target of this transition. */
-	@NotNull
 	public target: ATNState;
 
-	constructor(@NotNull target: ATNState) {
+	constructor(target: ATNState) {
 		if (target == null) {
 			throw new Error('target cannot be null.');
 		}

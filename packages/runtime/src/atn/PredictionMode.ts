@@ -14,7 +14,6 @@ import { BitSet } from '../misc/BitSet';
 import { EqualityComparator } from '../misc/EqualityComparator';
 import { MurmurHash } from '../misc/MurmurHash';
 import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
-import { Override } from '../Decorators';
 import { RuleStopState } from './RuleStopState';
 import { SemanticContext } from './SemanticContext';
 
@@ -95,7 +94,6 @@ export namespace PredictionMode {
 		 * The hash code is only a function of the {@link ATNState#stateNumber}
 		 * and {@link ATNConfig#context}.
 		 */
-		@Override
 		public hashCode(o: ATNConfig): number {
 			let hashCode: number = MurmurHash.initialize(7);
 			hashCode = MurmurHash.update(hashCode, o.state.stateNumber);
@@ -104,7 +102,6 @@ export namespace PredictionMode {
 			return hashCode;
 		}
 
-		@Override
 		public equals(a: ATNConfig, b: ATNConfig): boolean {
 			if (a === b) {
 				return true;
@@ -158,7 +155,7 @@ export namespace PredictionMode {
 	 * {@link RuleStopState}, otherwise `false`
 	 */
 	export function allConfigsInRuleStopStates(
-		/*@NotNull*/ configs: ATNConfigSet,
+		configs: ATNConfigSet,
 	): boolean {
 		for (let config of configs) {
 			if (!(config.state instanceof RuleStopState)) {

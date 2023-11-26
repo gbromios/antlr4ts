@@ -7,7 +7,6 @@
 
 import { CharStream } from './CharStream';
 import { CommonTokenFactory } from './CommonTokenFactory';
-import { NotNull, Override } from './Decorators';
 import { Token } from './Token';
 import { TokenFactory } from './TokenFactory';
 import { TokenSource } from './TokenSource';
@@ -65,7 +64,7 @@ export class ListTokenSource implements TokenSource {
 	 *
 	 * @exception NullPointerException if `tokens` is `undefined`
 	 */
-	constructor(@NotNull tokens: Token[], sourceName?: string) {
+	constructor(tokens: Token[], sourceName?: string) {
 		if (tokens == null) {
 			throw new Error('tokens cannot be null');
 		}
@@ -77,7 +76,6 @@ export class ListTokenSource implements TokenSource {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	get charPositionInLine(): number {
 		if (this.i < this.tokens.length) {
 			return this.tokens[this.i].charPositionInLine;
@@ -111,7 +109,6 @@ export class ListTokenSource implements TokenSource {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public nextToken(): Token {
 		if (this.i >= this.tokens.length) {
 			if (this.eofToken == null) {
@@ -152,7 +149,6 @@ export class ListTokenSource implements TokenSource {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	get line(): number {
 		if (this.i < this.tokens.length) {
 			return this.tokens[this.i].line;
@@ -185,7 +181,6 @@ export class ListTokenSource implements TokenSource {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	get inputStream(): CharStream | undefined {
 		if (this.i < this.tokens.length) {
 			return this.tokens[this.i].inputStream;
@@ -202,7 +197,6 @@ export class ListTokenSource implements TokenSource {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	get sourceName(): string {
 		if (this._sourceName) {
 			return this._sourceName;
@@ -219,16 +213,13 @@ export class ListTokenSource implements TokenSource {
 	/**
 	 * {@inheritDoc}
 	 */
-	// @Override
-	set tokenFactory(@NotNull factory: TokenFactory) {
+	set tokenFactory(factory: TokenFactory) {
 		this._factory = factory;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
-	@NotNull
 	get tokenFactory(): TokenFactory {
 		return this._factory;
 	}
