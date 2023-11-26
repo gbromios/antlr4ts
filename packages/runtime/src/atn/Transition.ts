@@ -5,10 +5,10 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:37.8530496-07:00
 
-import { ATNState } from "./ATNState";
-import { IntervalSet } from "../misc/IntervalSet";
-import { NotNull } from "../Decorators";
-import { TransitionType } from "./TransitionType";
+import { ATNState } from './ATNState';
+import { IntervalSet } from '../misc/IntervalSet';
+import { NotNull } from '../Decorators';
+import { TransitionType } from './TransitionType';
 
 /** An ATN transition between any two ATN states.  Subclasses define
  *  atom, set, epsilon, action, predicate, rule transitions.
@@ -24,17 +24,17 @@ import { TransitionType } from "./TransitionType";
  */
 export abstract class Transition {
 	public static readonly serializationNames: string[] = [
-		"INVALID",
-		"EPSILON",
-		"RANGE",
-		"RULE",
-		"PREDICATE",
-		"ATOM",
-		"ACTION",
-		"SET",
-		"NOT_SET",
-		"WILDCARD",
-		"PRECEDENCE",
+		'INVALID',
+		'EPSILON',
+		'RANGE',
+		'RULE',
+		'PREDICATE',
+		'ATOM',
+		'ACTION',
+		'SET',
+		'NOT_SET',
+		'WILDCARD',
+		'PRECEDENCE',
 	];
 
 	// @SuppressWarnings("serial")
@@ -58,7 +58,7 @@ export abstract class Transition {
 
 	constructor(@NotNull target: ATNState) {
 		if (target == null) {
-			throw new Error("target cannot be null.");
+			throw new Error('target cannot be null.');
 		}
 
 		this.target = target;
@@ -83,5 +83,9 @@ export abstract class Transition {
 		return undefined;
 	}
 
-	public abstract matches(symbol: number, minVocabSymbol: number, maxVocabSymbol: number): boolean;
+	public abstract matches(
+		symbol: number,
+		minVocabSymbol: number,
+		maxVocabSymbol: number,
+	): boolean;
 }

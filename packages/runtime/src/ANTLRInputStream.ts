@@ -4,12 +4,12 @@
  */
 // ConvertTo-TS run at 2016-10-04T11:26:49.0828748-07:00
 
-import { assert } from "./misc/Utils";
-import { CharStream } from "./CharStream";
-import { Arrays } from "./misc/Arrays";
-import { Override } from "./Decorators";
-import { IntStream } from "./IntStream";
-import { Interval } from "./misc/Interval";
+import { assert } from './misc/Utils';
+import { CharStream } from './CharStream';
+import { Arrays } from './misc/Arrays';
+import { Override } from './Decorators';
+import { IntStream } from './IntStream';
+import { Interval } from './misc/Interval';
 
 const READ_BUFFER_SIZE: number = 1024;
 const INITIAL_BUFFER_SIZE: number = 1024;
@@ -54,7 +54,7 @@ export class ANTLRInputStream implements CharStream {
 	public consume(): void {
 		if (this.p >= this.n) {
 			assert(this.LA(1) === IntStream.EOF);
-			throw new Error("cannot consume EOF");
+			throw new Error('cannot consume EOF');
 		}
 
 		//System.out.println("prev p="+p+", c="+(char)data[p]);
@@ -71,12 +71,12 @@ export class ANTLRInputStream implements CharStream {
 		}
 		if (i < 0) {
 			i++; // e.g., translate LA(-1) to use offset i=0; then data[p+0-1]
-			if ((this.p + i - 1) < 0) {
+			if (this.p + i - 1 < 0) {
 				return IntStream.EOF; // invalid; no char before first char
 			}
 		}
 
-		if ((this.p + i - 1) >= this.n) {
+		if (this.p + i - 1 >= this.n) {
 			//System.out.println("char LA("+i+")=EOF; p="+p);
 			return IntStream.EOF;
 		}
@@ -139,7 +139,7 @@ export class ANTLRInputStream implements CharStream {
 		}
 		let count: number = stop - start + 1;
 		if (start >= this.n) {
-			return "";
+			return '';
 		}
 		// System.err.println("data: "+Arrays.toString(data)+", n="+n+
 		// 				   ", start="+start+
@@ -156,5 +156,7 @@ export class ANTLRInputStream implements CharStream {
 	}
 
 	@Override
-	public toString() { return this.data; }
+	public toString() {
+		return this.data;
+	}
 }

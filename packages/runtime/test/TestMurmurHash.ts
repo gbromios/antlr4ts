@@ -3,15 +3,14 @@
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
 
-import { MurmurHash } from "../src/misc/MurmurHash";
+import { MurmurHash } from '../src/misc/MurmurHash';
 
-import { suite, test } from "@testdeck/mocha";
+import { suite, test } from '@testdeck/mocha';
 
-import * as assert from "assert";
+import * as assert from 'assert';
 
 @suite
 export class TestMurmurHash {
-
 	@test
 	public testMurmurHash_Empty(): void {
 		assert.strictEqual(0, MurmurHash.hashCode([], 0));
@@ -36,5 +35,4 @@ export class TestMurmurHash {
 	public testMurmurHash_Multiple(): void {
 		assert.strictEqual(987256456, MurmurHash.hashCode([0, 1], 0));
 	}
-
 }

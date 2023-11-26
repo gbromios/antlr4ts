@@ -5,11 +5,11 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:24.8229279-07:00
 
-import { BitSet } from "../misc/BitSet";
-import { DecisionEventInfo } from "./DecisionEventInfo";
-import { NotNull } from "../Decorators";
-import { SimulatorState } from "./SimulatorState";
-import { TokenStream } from "../TokenStream";
+import { BitSet } from '../misc/BitSet';
+import { DecisionEventInfo } from './DecisionEventInfo';
+import { NotNull } from '../Decorators';
+import { SimulatorState } from './SimulatorState';
+import { TokenStream } from '../TokenStream';
 
 /**
  * This class represents profiling event information for an ambiguity.
@@ -63,7 +63,8 @@ export class AmbiguityInfo extends DecisionEventInfo {
 		@NotNull ambigAlts: BitSet,
 		@NotNull input: TokenStream,
 		startIndex: number,
-		stopIndex: number) {
+		stopIndex: number,
+	) {
 		super(decision, state, input, startIndex, stopIndex, state.useContext);
 		this.ambigAlts = ambigAlts;
 	}

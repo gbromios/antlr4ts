@@ -5,8 +5,8 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:46.1670669-07:00
 
-import { Chunk } from "./Chunk";
-import { NotNull, Override } from "../../Decorators";
+import { Chunk } from './Chunk';
+import { NotNull, Override } from '../../Decorators';
 
 /**
  * Represents a placeholder tag in a tree pattern. A tag can have any of the
@@ -46,7 +46,7 @@ export class TagChunk extends Chunk {
 		super();
 
 		if (tag == null || tag.length === 0) {
-			throw new Error("tag cannot be null or empty");
+			throw new Error('tag cannot be null or empty');
 		}
 
 		this._tag = tag;
@@ -81,7 +81,7 @@ export class TagChunk extends Chunk {
 	@Override
 	public toString(): string {
 		if (this._label != null) {
-			return this._label + ":" + this._tag;
+			return this._label + ':' + this._tag;
 		}
 
 		return this._tag;

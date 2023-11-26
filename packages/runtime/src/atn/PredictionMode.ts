@@ -5,18 +5,18 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:36.2673893-07:00
 
-import { Array2DHashMap } from "../misc/Array2DHashMap";
-import { ATN } from "./ATN";
-import { ATNConfig } from "./ATNConfig";
-import { ATNConfigSet } from "./ATNConfigSet";
-import { ATNState } from "./ATNState";
-import { BitSet } from "../misc/BitSet";
-import { EqualityComparator } from "../misc/EqualityComparator";
-import { MurmurHash } from "../misc/MurmurHash";
-import { ObjectEqualityComparator } from "../misc/ObjectEqualityComparator";
-import { Override } from "../Decorators";
-import { RuleStopState } from "./RuleStopState";
-import { SemanticContext } from "./SemanticContext";
+import { Array2DHashMap } from '../misc/Array2DHashMap';
+import { ATN } from './ATN';
+import { ATNConfig } from './ATNConfig';
+import { ATNConfigSet } from './ATNConfigSet';
+import { ATNState } from './ATNState';
+import { BitSet } from '../misc/BitSet';
+import { EqualityComparator } from '../misc/EqualityComparator';
+import { MurmurHash } from '../misc/MurmurHash';
+import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
+import { Override } from '../Decorators';
+import { RuleStopState } from './RuleStopState';
+import { SemanticContext } from './SemanticContext';
 
 /**
  * This enumeration defines the prediction modes available in ANTLR 4 along with
@@ -88,8 +88,9 @@ export namespace PredictionMode {
 		}
 	}
 
-
-	class AltAndContextConfigEqualityComparator implements EqualityComparator<ATNConfig> {
+	class AltAndContextConfigEqualityComparator
+		implements EqualityComparator<ATNConfig>
+	{
 		/**
 		 * The hash code is only a function of the {@link ATNState#stateNumber}
 		 * and {@link ATNConfig#context}.
@@ -111,20 +112,20 @@ export namespace PredictionMode {
 			if (a == null || b == null) {
 				return false;
 			}
-			return a.state.stateNumber === b.state.stateNumber
-				&& a.context.equals(b.context);
+			return (
+				a.state.stateNumber === b.state.stateNumber &&
+				a.context.equals(b.context)
+			);
 		}
 
 		static readonly INSTANCE: AltAndContextConfigEqualityComparator;
 
-		private constructor () {}
+		private constructor() {}
 	}
 
-	Object.defineProperty(
-		AltAndContextConfigEqualityComparator,
-		'INSTANCE',
-		{ value: new (AltAndContextConfigEqualityComparator as any)() }
-	);
+	Object.defineProperty(AltAndContextConfigEqualityComparator, 'INSTANCE', {
+		value: new (AltAndContextConfigEqualityComparator as any)(),
+	});
 
 	/**
 	 * Checks if any configuration in `configs` is in a
@@ -156,7 +157,9 @@ export namespace PredictionMode {
 	 * @returns `true` if all configurations in `configs` are in a
 	 * {@link RuleStopState}, otherwise `false`
 	 */
-	export function allConfigsInRuleStopStates(/*@NotNull*/ configs: ATNConfigSet): boolean {
+	export function allConfigsInRuleStopStates(
+		/*@NotNull*/ configs: ATNConfigSet,
+	): boolean {
 		for (let config of configs) {
 			if (!(config.state instanceof RuleStopState)) {
 				return false;

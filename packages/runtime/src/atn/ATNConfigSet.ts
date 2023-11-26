@@ -5,27 +5,30 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:25.5488013-07:00
 
-import { Array2DHashMap } from "../misc/Array2DHashMap";
-import { Array2DHashSet } from "../misc/Array2DHashSet";
-import { ArrayEqualityComparator } from "../misc/ArrayEqualityComparator";
-import { ATN } from "./ATN";
-import { ATNConfig } from "./ATNConfig";
-import { ATNSimulator } from "./ATNSimulator";
-import { ATNState } from "./ATNState";
-import { BitSet } from "../misc/BitSet";
-import { ConflictInfo } from "./ConflictInfo";
-import { EqualityComparator } from "../misc/EqualityComparator";
-import { JavaSet } from "../misc/Stubs";
-import { NotNull, Override } from "../Decorators";
-import { ObjectEqualityComparator } from "../misc/ObjectEqualityComparator";
-import { PredictionContext } from "./PredictionContext";
-import { PredictionContextCache } from "./PredictionContextCache";
-import { SemanticContext } from "./SemanticContext";
+import { Array2DHashMap } from '../misc/Array2DHashMap';
+import { Array2DHashSet } from '../misc/Array2DHashSet';
+import { ArrayEqualityComparator } from '../misc/ArrayEqualityComparator';
+import { ATN } from './ATN';
+import { ATNConfig } from './ATNConfig';
+import { ATNSimulator } from './ATNSimulator';
+import { ATNState } from './ATNState';
+import { BitSet } from '../misc/BitSet';
+import { ConflictInfo } from './ConflictInfo';
+import { EqualityComparator } from '../misc/EqualityComparator';
+import { JavaSet } from '../misc/Stubs';
+import { NotNull, Override } from '../Decorators';
+import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
+import { PredictionContext } from './PredictionContext';
+import { PredictionContextCache } from './PredictionContextCache';
+import { SemanticContext } from './SemanticContext';
 
-import { assert } from "../misc/Utils";
-import * as Utils from "../misc/Utils";
+import { assert } from '../misc/Utils';
+import * as Utils from '../misc/Utils';
 
-interface KeyType { state: number; alt: number; }
+interface KeyType {
+	state: number;
+	alt: number;
+}
 
 class KeyTypeEqualityComparer implements EqualityComparator<KeyType> {
 	public hashCode(key: KeyType) {
@@ -43,7 +46,9 @@ function NewKeyedConfigMap(map?: Array2DHashMap<KeyType, ATNConfig>) {
 	if (map) {
 		return new Array2DHashMap<KeyType, ATNConfig>(map);
 	} else {
-		return new Array2DHashMap<KeyType, ATNConfig>(KeyTypeEqualityComparer.INSTANCE);
+		return new Array2DHashMap<KeyType, ATNConfig>(
+			KeyTypeEqualityComparer.INSTANCE,
+		);
 	}
 }
 
@@ -116,7 +121,6 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 
 			this._uniqueAlt = ATN.INVALID_ALT_NUMBER;
 		} else {
-
 			if (readonly) {
 				this.mergedConfigs = undefined;
 				this.unmerged = undefined;
@@ -171,7 +175,7 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 
 	set isOutermostConfigSet(outermostConfigSet: boolean) {
 		if (this.outermostConfigSet && !outermostConfigSet) {
-			throw new Error("IllegalStateException");
+			throw new Error('IllegalStateException');
 		}
 
 		assert(!outermostConfigSet || !this._dipsIntoOuterContext);
@@ -179,7 +183,9 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 	}
 
 	public getStates(): Array2DHashSet<ATNState> {
-		let states = new Array2DHashSet<ATNState>(ObjectEqualityComparator.INSTANCE);
+		let states = new Array2DHashSet<ATNState>(
+			ObjectEqualityComparator.INSTANCE,
+		);
 		for (let c of this.configs) {
 			states.add(c.state);
 		}
@@ -226,7 +232,10 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 			let config: ATNConfig = o;
 			let configKey = this.getKey(config);
 			let mergedConfig = this.mergedConfigs.get(configKey);
-			if (mergedConfig != null && this.canMerge(config, configKey, mergedConfig)) {
+			if (
+				mergedConfig != null &&
+				this.canMerge(config, configKey, mergedConfig)
+			) {
 				return mergedConfig.contains(config);
 			}
 
@@ -257,11 +266,16 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 	}
 
 	public add(e: ATNConfig): boolean;
-	public add(e: ATNConfig, contextCache: PredictionContextCache | undefined): boolean;
+	public add(
+		e: ATNConfig,
+		contextCache: PredictionContextCache | undefined,
+	): boolean;
 	public add(e: ATNConfig, contextCache?: PredictionContextCache): boolean {
 		this.ensureWritable();
 		if (!this.mergedConfigs || !this.unmerged) {
-			throw new Error("Covered by ensureWritable but duplicated here for strict null check limitation");
+			throw new Error(
+				'Covered by ensureWritable but duplicated here for strict null check limitation',
+			);
 		}
 
 		assert(!this.outermostConfigSet || !e.reachesIntoOuterContext);
@@ -273,14 +287,21 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		let addKey: boolean;
 		let key = this.getKey(e);
 		let mergedConfig = this.mergedConfigs.get(key);
-		addKey = (mergedConfig == null);
+		addKey = mergedConfig == null;
 		if (mergedConfig != null && this.canMerge(e, key, mergedConfig)) {
-			mergedConfig.outerContextDepth = Math.max(mergedConfig.outerContextDepth, e.outerContextDepth);
+			mergedConfig.outerContextDepth = Math.max(
+				mergedConfig.outerContextDepth,
+				e.outerContextDepth,
+			);
 			if (e.isPrecedenceFilterSuppressed) {
 				mergedConfig.isPrecedenceFilterSuppressed = true;
 			}
 
-			let joined: PredictionContext = PredictionContext.join(mergedConfig.context, e.context, contextCache);
+			let joined: PredictionContext = PredictionContext.join(
+				mergedConfig.context,
+				e.context,
+				contextCache,
+			);
 			this.updatePropertiesForMergedConfig(e);
 			if (mergedConfig.context === joined) {
 				return false;
@@ -293,12 +314,19 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		for (let i = 0; i < this.unmerged.length; i++) {
 			let unmergedConfig: ATNConfig = this.unmerged[i];
 			if (this.canMerge(e, key, unmergedConfig)) {
-				unmergedConfig.outerContextDepth = Math.max(unmergedConfig.outerContextDepth, e.outerContextDepth);
+				unmergedConfig.outerContextDepth = Math.max(
+					unmergedConfig.outerContextDepth,
+					e.outerContextDepth,
+				);
 				if (e.isPrecedenceFilterSuppressed) {
 					unmergedConfig.isPrecedenceFilterSuppressed = true;
 				}
 
-				let joined: PredictionContext = PredictionContext.join(unmergedConfig.context, e.context, contextCache);
+				let joined: PredictionContext = PredictionContext.join(
+					unmergedConfig.context,
+					e.context,
+					contextCache,
+				);
 				this.updatePropertiesForMergedConfig(e);
 				if (unmergedConfig.context === joined) {
 					return false;
@@ -328,7 +356,8 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 
 	private updatePropertiesForMergedConfig(config: ATNConfig): void {
 		// merged configs can't change the alt or semantic context
-		this._dipsIntoOuterContext = this._dipsIntoOuterContext || config.reachesIntoOuterContext;
+		this._dipsIntoOuterContext =
+			this._dipsIntoOuterContext || config.reachesIntoOuterContext;
 		assert(!this.outermostConfigSet || !this._dipsIntoOuterContext);
 	}
 
@@ -339,12 +368,19 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 			this._uniqueAlt = ATN.INVALID_ALT_NUMBER;
 		}
 
-		this._hasSemanticContext = this._hasSemanticContext || !SemanticContext.NONE.equals(config.semanticContext);
-		this._dipsIntoOuterContext = this._dipsIntoOuterContext || config.reachesIntoOuterContext;
+		this._hasSemanticContext =
+			this._hasSemanticContext ||
+			!SemanticContext.NONE.equals(config.semanticContext);
+		this._dipsIntoOuterContext =
+			this._dipsIntoOuterContext || config.reachesIntoOuterContext;
 		assert(!this.outermostConfigSet || !this._dipsIntoOuterContext);
 	}
 
-	protected canMerge(left: ATNConfig, leftKey: { state: number, alt: number }, right: ATNConfig): boolean {
+	protected canMerge(
+		left: ATNConfig,
+		leftKey: { state: number; alt: number },
+		right: ATNConfig,
+	): boolean {
 		if (left.state.stateNumber !== right.state.stateNumber) {
 			return false;
 		}
@@ -356,7 +392,7 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		return left.semanticContext.equals(right.semanticContext);
 	}
 
-	protected getKey(e: ATNConfig): { state: number, alt: number } {
+	protected getKey(e: ATNConfig): { state: number; alt: number } {
 		return { state: e.state.stateNumber, alt: e.alt };
 	}
 
@@ -376,8 +412,14 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 	}
 
 	public addAll(c: Iterable<ATNConfig>): boolean;
-	public addAll(c: Iterable<ATNConfig>, contextCache: PredictionContextCache): boolean;
-	public addAll(c: Iterable<ATNConfig>, contextCache?: PredictionContextCache): boolean {
+	public addAll(
+		c: Iterable<ATNConfig>,
+		contextCache: PredictionContextCache,
+	): boolean;
+	public addAll(
+		c: Iterable<ATNConfig>,
+		contextCache?: PredictionContextCache,
+	): boolean {
 		this.ensureWritable();
 
 		let changed: boolean = false;
@@ -394,7 +436,9 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 	public clear(): void {
 		this.ensureWritable();
 		if (!this.mergedConfigs || !this.unmerged) {
-			throw new Error("Covered by ensureWritable but duplicated here for strict null check limitation");
+			throw new Error(
+				'Covered by ensureWritable but duplicated here for strict null check limitation',
+			);
 		}
 
 		this.mergedConfigs.clear();
@@ -417,9 +461,11 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 			return false;
 		}
 
-		return this.outermostConfigSet === obj.outermostConfigSet
-			&& Utils.equals(this._conflictInfo, obj._conflictInfo)
-			&& ArrayEqualityComparator.INSTANCE.equals(this.configs, obj.configs);
+		return (
+			this.outermostConfigSet === obj.outermostConfigSet &&
+			Utils.equals(this._conflictInfo, obj._conflictInfo) &&
+			ArrayEqualityComparator.INSTANCE.equals(this.configs, obj.configs)
+		);
 	}
 
 	@Override
@@ -429,8 +475,10 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 		}
 
 		let hashCode: number = 1;
-		hashCode = 5 * hashCode ^ (this.outermostConfigSet ? 1 : 0);
-		hashCode = 5 * hashCode ^ ArrayEqualityComparator.INSTANCE.hashCode(this.configs);
+		hashCode = (5 * hashCode) ^ (this.outermostConfigSet ? 1 : 0);
+		hashCode =
+			(5 * hashCode) ^
+			ArrayEqualityComparator.INSTANCE.hashCode(this.configs);
 
 		if (this.isReadOnly) {
 			this.cachedHashCode = hashCode;
@@ -446,43 +494,43 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 			showContext = false;
 		}
 
-		let buf = "";
+		let buf = '';
 		let sortedConfigs = this.configs.slice(0);
 		sortedConfigs.sort((o1, o2) => {
 			if (o1.alt !== o2.alt) {
 				return o1.alt - o2.alt;
-			}
-			else if (o1.state.stateNumber !== o2.state.stateNumber) {
+			} else if (o1.state.stateNumber !== o2.state.stateNumber) {
 				return o1.state.stateNumber - o2.state.stateNumber;
-			}
-			else {
-				return o1.semanticContext.toString().localeCompare(o2.semanticContext.toString());
+			} else {
+				return o1.semanticContext
+					.toString()
+					.localeCompare(o2.semanticContext.toString());
 			}
 		});
 
-		buf += ("[");
+		buf += '[';
 		for (let i = 0; i < sortedConfigs.length; i++) {
 			if (i > 0) {
-				buf += (", ");
+				buf += ', ';
 			}
-			buf += (sortedConfigs[i].toString(undefined, true, showContext));
+			buf += sortedConfigs[i].toString(undefined, true, showContext);
 		}
-		buf += ("]");
+		buf += ']';
 
 		if (this._hasSemanticContext) {
-			buf += (",hasSemanticContext=") + (this._hasSemanticContext);
+			buf += ',hasSemanticContext=' + this._hasSemanticContext;
 		}
 		if (this._uniqueAlt !== ATN.INVALID_ALT_NUMBER) {
-			buf += (",uniqueAlt=") + (this._uniqueAlt);
+			buf += ',uniqueAlt=' + this._uniqueAlt;
 		}
 		if (this._conflictInfo != null) {
-			buf += (",conflictingAlts=") + (this._conflictInfo.conflictedAlts);
+			buf += ',conflictingAlts=' + this._conflictInfo.conflictedAlts;
 			if (!this._conflictInfo.isExact) {
-				buf += ("*");
+				buf += '*';
 			}
 		}
 		if (this._dipsIntoOuterContext) {
-			buf += (",dipsIntoOuterContext");
+			buf += ',dipsIntoOuterContext';
 		}
 		return buf.toString();
 	}
@@ -535,7 +583,7 @@ export class ATNConfigSet implements JavaSet<ATNConfig> {
 
 	protected ensureWritable(): void {
 		if (this.isReadOnly) {
-			throw new Error("This ATNConfigSet is read only.");
+			throw new Error('This ATNConfigSet is read only.');
 		}
 	}
 }

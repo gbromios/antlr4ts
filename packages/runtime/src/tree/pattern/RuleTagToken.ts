@@ -5,10 +5,10 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:46.0343500-07:00
 
-import { CharStream } from "../../CharStream";
-import { NotNull, Override } from "../../Decorators";
-import { Token } from "../../Token";
-import { TokenSource } from "../../TokenSource";
+import { CharStream } from '../../CharStream';
+import { NotNull, Override } from '../../Decorators';
+import { Token } from '../../Token';
+import { TokenSource } from '../../TokenSource';
 
 /**
  * A {@link Token} object representing an entire subtree matched by a parser
@@ -42,9 +42,13 @@ export class RuleTagToken implements Token {
 	 * @exception IllegalArgumentException if `ruleName` is not defined
 	 * or empty.
 	 */
-	constructor(@NotNull ruleName: string, bypassTokenType: number, label?: string) {
+	constructor(
+		@NotNull ruleName: string,
+		bypassTokenType: number,
+		label?: string,
+	) {
 		if (ruleName == null || ruleName.length === 0) {
-			throw new Error("ruleName cannot be null or empty.");
+			throw new Error('ruleName cannot be null or empty.');
 		}
 
 		this._ruleName = ruleName;
@@ -91,10 +95,10 @@ export class RuleTagToken implements Token {
 	@Override
 	get text(): string {
 		if (this._label != null) {
-			return "<" + this._label + ":" + this._ruleName + ">";
+			return '<' + this._label + ':' + this._ruleName + '>';
 		}
 
-		return "<" + this._ruleName + ">";
+		return '<' + this._ruleName + '>';
 	}
 
 	/**
@@ -186,6 +190,6 @@ export class RuleTagToken implements Token {
 	 */
 	@Override
 	public toString(): string {
-		return this._ruleName + ":" + this.bypassTokenType;
+		return this._ruleName + ':' + this.bypassTokenType;
 	}
 }

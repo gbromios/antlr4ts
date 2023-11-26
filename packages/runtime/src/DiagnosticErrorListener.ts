@@ -5,18 +5,18 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:51.2133685-07:00
 
-import { ATNConfig } from "./atn/ATNConfig";
-import { ATNConfigSet } from "./atn/ATNConfigSet";
-import { BitSet } from "./misc/BitSet";
-import { DFA } from "./dfa/DFA";
-import { Parser } from "./Parser";
-import { ParserErrorListener } from "./ParserErrorListener";
-import { RecognitionException } from "./RecognitionException";
-import { Recognizer } from "./Recognizer";
-import { SimulatorState } from "./atn/SimulatorState";
-import { Token } from "./Token";
-import { Override, NotNull } from "./Decorators";
-import { Interval } from "./misc/Interval";
+import { ATNConfig } from './atn/ATNConfig';
+import { ATNConfigSet } from './atn/ATNConfigSet';
+import { BitSet } from './misc/BitSet';
+import { DFA } from './dfa/DFA';
+import { Parser } from './Parser';
+import { ParserErrorListener } from './ParserErrorListener';
+import { RecognitionException } from './RecognitionException';
+import { Recognizer } from './Recognizer';
+import { SimulatorState } from './atn/SimulatorState';
+import { Token } from './Token';
+import { Override, NotNull } from './Decorators';
+import { Interval } from './misc/Interval';
 
 /**
  * This implementation of {@link ANTLRErrorListener} can be used to identify
@@ -38,7 +38,6 @@ import { Interval } from "./misc/Interval";
  * @author Sam Harwell
  */
 export class DiagnosticErrorListener implements ParserErrorListener {
-
 	/**
 	 * Initializes a new instance of {@link DiagnosticErrorListener}, specifying
 	 * whether all ambiguities or only exact ambiguities are reported.
@@ -59,8 +58,8 @@ export class DiagnosticErrorListener implements ParserErrorListener {
 		charPositionInLine: number,
 		/*@NotNull*/
 		msg: string,
-		e: RecognitionException | undefined): void
-	{
+		e: RecognitionException | undefined,
+	): void {
 		// intentionally empty
 	}
 
@@ -72,14 +71,20 @@ export class DiagnosticErrorListener implements ParserErrorListener {
 		stopIndex: number,
 		exact: boolean,
 		ambigAlts: BitSet | undefined,
-		@NotNull configs: ATNConfigSet): void {
+		@NotNull configs: ATNConfigSet,
+	): void {
 		if (this.exactOnly && !exact) {
 			return;
 		}
 
 		let decision: string = this.getDecisionDescription(recognizer, dfa);
-		let conflictingAlts: BitSet = this.getConflictingAlts(ambigAlts, configs);
-		let text: string = recognizer.inputStream.getText(Interval.of(startIndex, stopIndex));
+		let conflictingAlts: BitSet = this.getConflictingAlts(
+			ambigAlts,
+			configs,
+		);
+		let text: string = recognizer.inputStream.getText(
+			Interval.of(startIndex, stopIndex),
+		);
 		let message: string = `reportAmbiguity d=${decision}: ambigAlts=${conflictingAlts}, input='${text}'`;
 		recognizer.notifyErrorListeners(message);
 	}
@@ -91,10 +96,13 @@ export class DiagnosticErrorListener implements ParserErrorListener {
 		startIndex: number,
 		stopIndex: number,
 		conflictingAlts: BitSet | undefined,
-		@NotNull conflictState: SimulatorState): void {
+		@NotNull conflictState: SimulatorState,
+	): void {
 		let format: string = "reportAttemptingFullContext d=%s, input='%s'";
 		let decision: string = this.getDecisionDescription(recognizer, dfa);
-		let text: string = recognizer.inputStream.getText(Interval.of(startIndex, stopIndex));
+		let text: string = recognizer.inputStream.getText(
+			Interval.of(startIndex, stopIndex),
+		);
 		let message: string = `reportAttemptingFullContext d=${decision}, input='${text}'`;
 		recognizer.notifyErrorListeners(message);
 	}
@@ -106,17 +114,21 @@ export class DiagnosticErrorListener implements ParserErrorListener {
 		startIndex: number,
 		stopIndex: number,
 		prediction: number,
-		@NotNull acceptState: SimulatorState): void {
+		@NotNull acceptState: SimulatorState,
+	): void {
 		let format: string = "reportContextSensitivity d=%s, input='%s'";
 		let decision: string = this.getDecisionDescription(recognizer, dfa);
-		let text: string = recognizer.inputStream.getText(Interval.of(startIndex, stopIndex));
+		let text: string = recognizer.inputStream.getText(
+			Interval.of(startIndex, stopIndex),
+		);
 		let message: string = `reportContextSensitivity d=${decision}, input='${text}'`;
 		recognizer.notifyErrorListeners(message);
 	}
 
 	protected getDecisionDescription(
 		@NotNull recognizer: Parser,
-		@NotNull dfa: DFA): string {
+		@NotNull dfa: DFA,
+	): string {
 		let decision: number = dfa.decision;
 		let ruleIndex: number = dfa.atnStartState.ruleIndex;
 
@@ -145,7 +157,10 @@ export class DiagnosticErrorListener implements ParserErrorListener {
 	 * returns the set of alternatives represented in `configs`.
 	 */
 	@NotNull
-	protected getConflictingAlts(reportedAlts: BitSet | undefined, @NotNull configs: ATNConfigSet): BitSet {
+	protected getConflictingAlts(
+		reportedAlts: BitSet | undefined,
+		@NotNull configs: ATNConfigSet,
+	): BitSet {
 		if (reportedAlts != null) {
 			return reportedAlts;
 		}

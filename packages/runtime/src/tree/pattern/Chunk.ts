@@ -16,5 +16,4 @@
  * chunks are converted to {@link RuleTagToken}, {@link TokenTagToken}, or the
  * regular tokens of the text surrounding the tags.
  */
-export abstract class Chunk {
-}
+export abstract class Chunk {}

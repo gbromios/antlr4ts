@@ -4,8 +4,8 @@
  */
 
 // CONVERSTION complete, Burt Harris 10/14/2016
-import { Override } from "../../Decorators";
-import { ParseTree } from "../ParseTree";
+import { Override } from '../../Decorators';
+import { ParseTree } from '../ParseTree';
 
 export abstract class XPathElement {
 	protected nodeName: string;
@@ -27,8 +27,8 @@ export abstract class XPathElement {
 
 	@Override
 	public toString(): string {
-		let inv: string = this.invert ? "!" : "";
+		let inv: string = this.invert ? '!' : '';
 		let className: string = Object.constructor.name;
-		return className + "[" + inv + this.nodeName + "]";
+		return className + '[' + inv + this.nodeName + ']';
 	}
 }

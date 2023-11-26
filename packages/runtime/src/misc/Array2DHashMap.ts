@@ -3,16 +3,21 @@
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
 
-import { Array2DHashSet } from "./Array2DHashSet";
-import { DefaultEqualityComparator } from "./DefaultEqualityComparator";
-import { EqualityComparator } from "./EqualityComparator";
-import { Equatable, JavaCollection, JavaMap, JavaSet } from "./Stubs";
+import { Array2DHashSet } from './Array2DHashSet';
+import { DefaultEqualityComparator } from './DefaultEqualityComparator';
+import { EqualityComparator } from './EqualityComparator';
+import { Equatable, JavaCollection, JavaMap, JavaSet } from './Stubs';
 
 // Since `Array2DHashMap` is implemented on top of `Array2DHashSet`, we defined a bucket type which can store a
 // key-value pair. The value is optional since looking up values in the map by a key only needs to include the key.
-interface Bucket<K, V> { key: K; value?: V; }
+interface Bucket<K, V> {
+	key: K;
+	value?: V;
+}
 
-class MapKeyEqualityComparator<K, V> implements EqualityComparator<Bucket<K, V>> {
+class MapKeyEqualityComparator<K, V>
+	implements EqualityComparator<Bucket<K, V>>
+{
 	private readonly keyComparator: EqualityComparator<K>;
 
 	constructor(keyComparator: EqualityComparator<K>) {
@@ -35,9 +40,13 @@ export class Array2DHashMap<K, V> implements JavaMap<K, V> {
 	constructor(map: Array2DHashMap<K, V>);
 	constructor(keyComparer: EqualityComparator<K> | Array2DHashMap<K, V>) {
 		if (keyComparer instanceof Array2DHashMap) {
-			this.backingStore = new Array2DHashSet<Bucket<K, V>>(keyComparer.backingStore);
+			this.backingStore = new Array2DHashSet<Bucket<K, V>>(
+				keyComparer.backingStore,
+			);
 		} else {
-			this.backingStore = new Array2DHashSet<Bucket<K, V>>(new MapKeyEqualityComparator<K, V>(keyComparer));
+			this.backingStore = new Array2DHashSet<Bucket<K, V>>(
+				new MapKeyEqualityComparator<K, V>(keyComparer),
+			);
 		}
 	}
 

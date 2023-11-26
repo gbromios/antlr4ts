@@ -3,27 +3,27 @@
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
 
-import * as assert from "assert";
-import { test, suite } from "@testdeck/mocha";
-import { CharStream } from "../../src/CharStream";
-import { CharStreams } from "../../src/CharStreams";
+import * as assert from 'assert';
+import { test, suite } from '@testdeck/mocha';
+import { CharStream } from '../../src/CharStream';
+import { CharStreams } from '../../src/CharStreams';
 
 @suite
 export class TestCharStreams {
 	@test
 	public fromBMPStringHasExpectedSize(): void {
-		let s: CharStream = CharStreams.fromString("hello");
+		let s: CharStream = CharStreams.fromString('hello');
 		assert.strictEqual(5, s.size);
 		assert.strictEqual(0, s.index);
-		assert.strictEqual("hello", s.toString());
+		assert.strictEqual('hello', s.toString());
 	}
 
 	@test
 	public fromSMPStringHasExpectedSize(): void {
-		let s: CharStream = CharStreams.fromString("hello 🌎");
+		let s: CharStream = CharStreams.fromString('hello 🌎');
 		assert.strictEqual(7, s.size);
 		assert.strictEqual(0, s.index);
-		assert.strictEqual("hello 🌎", s.toString());
+		assert.strictEqual('hello 🌎', s.toString());
 	}
 
 	// @test

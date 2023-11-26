@@ -14,11 +14,26 @@ export namespace Arrays {
 	 * element greater than the key, or array.length if all elements in the array are less than the specified key. Note
 	 * that this guarantees that the return value will be >= 0 if and only if the key is found.
 	 */
-	export function binarySearch(array: ArrayLike<number>, key: number, fromIndex?: number, toIndex?: number): number {
-		return binarySearch0(array, fromIndex !== undefined ? fromIndex : 0, toIndex !== undefined ? toIndex : array.length, key);
+	export function binarySearch(
+		array: ArrayLike<number>,
+		key: number,
+		fromIndex?: number,
+		toIndex?: number,
+	): number {
+		return binarySearch0(
+			array,
+			fromIndex !== undefined ? fromIndex : 0,
+			toIndex !== undefined ? toIndex : array.length,
+			key,
+		);
 	}
 
-	function binarySearch0(array: ArrayLike<number>, fromIndex: number, toIndex: number, key: number): number {
+	function binarySearch0(
+		array: ArrayLike<number>,
+		fromIndex: number,
+		toIndex: number,
+		key: number,
+	): number {
 		let low: number = fromIndex;
 		let high: number = toIndex - 1;
 
@@ -41,26 +56,26 @@ export namespace Arrays {
 	}
 
 	export function toString<T>(array: Iterable<T>) {
-		let result = "[";
+		let result = '[';
 
 		let first = true;
 		for (let element of array) {
 			if (first) {
 				first = false;
 			} else {
-				result += ", ";
+				result += ', ';
 			}
 
 			if (element === null) {
-				result += "null";
+				result += 'null';
 			} else if (element === undefined) {
-				result += "undefined";
+				result += 'undefined';
 			} else {
 				result += element;
 			}
 		}
 
-		result += "]";
+		result += ']';
 		return result;
 	}
 }

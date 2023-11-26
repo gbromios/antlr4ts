@@ -1,23 +1,17 @@
 {
-  "compilerOptions": {
-    "outDir": "dist",
-    "sourceMap": true,
-    "inlineSources": true,
-    "module": "nodenext",
-    "moduleResolution": "bundler",
-    "target": "esnext",
-    "lib": ["ESNext"],
-    "noImplicitAny": true,
-    "strict": true,
-    "declaration": true,
-    "preserveConstEnums": true,
-    "types": [
-      "node",
-      "mocha"
-    ]
-  },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+	"compilerOptions": {
+		"outDir": "dist",
+		"sourceMap": true,
+		"inlineSources": true,
+		"module": "nodenext",
+		"moduleResolution": "bundler",
+		"target": "esnext",
+		"lib": ["ESNext"],
+		"noImplicitAny": true,
+		"strict": true,
+		"declaration": true,
+		"preserveConstEnums": true,
+		"types": ["node", "mocha"]
+	},
+	"exclude": ["node_modules", "dist"]
 }

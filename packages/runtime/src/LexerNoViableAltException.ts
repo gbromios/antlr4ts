@@ -5,13 +5,13 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:52.0961136-07:00
 
-import { ATNConfigSet } from "./atn/ATNConfigSet";
-import { RecognitionException } from "./RecognitionException";
-import { NotNull, Override } from "./Decorators";
-import { Lexer } from "./Lexer";
-import { CharStream } from "./CharStream";
-import { Interval } from "./misc/Interval";
-import * as Utils from "./misc/Utils";
+import { ATNConfigSet } from './atn/ATNConfigSet';
+import { RecognitionException } from './RecognitionException';
+import { NotNull, Override } from './Decorators';
+import { Lexer } from './Lexer';
+import { CharStream } from './CharStream';
+import { Interval } from './misc/Interval';
+import * as Utils from './misc/Utils';
 
 export class LexerNoViableAltException extends RecognitionException {
 	//private static serialVersionUID: number =  -730999203913001726L;
@@ -26,7 +26,8 @@ export class LexerNoViableAltException extends RecognitionException {
 		lexer: Lexer | undefined,
 		@NotNull input: CharStream,
 		startIndex: number,
-		deadEndConfigs: ATNConfigSet | undefined) {
+		deadEndConfigs: ATNConfigSet | undefined,
+	) {
 		super(lexer, input);
 		this._startIndex = startIndex;
 		this._deadEndConfigs = deadEndConfigs;
@@ -47,9 +48,11 @@ export class LexerNoViableAltException extends RecognitionException {
 
 	@Override
 	public toString(): string {
-		let symbol = "";
+		let symbol = '';
 		if (this._startIndex >= 0 && this._startIndex < this.inputStream.size) {
-			symbol = this.inputStream.getText(Interval.of(this._startIndex, this._startIndex));
+			symbol = this.inputStream.getText(
+				Interval.of(this._startIndex, this._startIndex),
+			);
 			symbol = Utils.escapeWhitespace(symbol, false);
 		}
 

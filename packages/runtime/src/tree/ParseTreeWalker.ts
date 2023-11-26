@@ -4,12 +4,12 @@
  */
 
 // ConvertTo-TS run at 2016-10-04T11:26:47.8252451-07:00
-import { ParseTree } from "./ParseTree";
-import { ParseTreeListener } from "./ParseTreeListener";
-import { ErrorNode } from "./ErrorNode";
-import { TerminalNode } from "./TerminalNode";
-import { RuleNode } from "./RuleNode";
-import { ParserRuleContext } from "../ParserRuleContext";
+import { ParseTree } from './ParseTree';
+import { ParseTreeListener } from './ParseTreeListener';
+import { ErrorNode } from './ErrorNode';
+import { TerminalNode } from './TerminalNode';
+import { RuleNode } from './RuleNode';
+import { ParserRuleContext } from '../ParserRuleContext';
 
 export class ParseTreeWalker {
 	/**
@@ -67,7 +67,10 @@ export class ParseTreeWalker {
 				// Move to next sibling if possible
 				let last = nodeStack[nodeStack.length - 1];
 				currentIndex++;
-				currentNode = currentIndex < last.childCount ? last.getChild(currentIndex) : undefined;
+				currentNode =
+					currentIndex < last.childCount ?
+						last.getChild(currentIndex)
+					:	undefined;
 				if (currentNode) {
 					break;
 				}

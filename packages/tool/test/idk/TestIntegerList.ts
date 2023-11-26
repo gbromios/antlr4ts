@@ -3,14 +3,13 @@
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
 
-import { IntegerList } from "../../src/misc/IntegerList";
+import { IntegerList } from '../../src/misc/IntegerList';
 
-import { suite, test } from "@testdeck/mocha";
-import * as assert from "assert";
+import { suite, test } from '@testdeck/mocha';
+import * as assert from 'assert';
 
 @suite
 export class TestIntegerList {
-
 	@test
 	public emptyListToEmptyCharArray(): void {
 		let l: IntegerList = new IntegerList();
@@ -29,8 +28,8 @@ export class TestIntegerList {
 		let l: IntegerList = new IntegerList();
 		// Java allows dangling surrogates, so (currently) we do
 		// as well. We could change this if desired.
-		l.add(0xDC00);
-		let expected = new Uint16Array([0xDC00]);
+		l.add(0xdc00);
+		let expected = new Uint16Array([0xdc00]);
 		assert.deepStrictEqual(expected, l.toCharArray());
 	}
 
@@ -45,19 +44,21 @@ export class TestIntegerList {
 	public unicodeBMPIntegerListToCharArray(): void {
 		let l: IntegerList = new IntegerList();
 		l.add(0x35);
-		l.add(0x4E94);
-		l.add(0xFF15);
-		let expected = new Uint16Array([0x35, 0x4E94, 0xFF15]);
+		l.add(0x4e94);
+		l.add(0xff15);
+		let expected = new Uint16Array([0x35, 0x4e94, 0xff15]);
 		assert.deepStrictEqual(expected, l.toCharArray());
 	}
 
 	@test
 	public unicodeSMPIntegerListToCharArray(): void {
 		let l: IntegerList = new IntegerList();
-		l.add(0x104A5);
-		l.add(0x116C5);
-		l.add(0x1D7FB);
-		let expected = new Uint16Array([0xD801, 0xDCA5, 0xD805, 0xDEC5, 0xD835, 0xDFFB]);
+		l.add(0x104a5);
+		l.add(0x116c5);
+		l.add(0x1d7fb);
+		let expected = new Uint16Array([
+			0xd801, 0xdca5, 0xd805, 0xdec5, 0xd835, 0xdffb,
+		]);
 		assert.deepStrictEqual(expected, l.toCharArray());
 	}
 }

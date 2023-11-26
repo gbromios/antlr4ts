@@ -5,22 +5,22 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:46.4373888-07:00
 
-import { CharStreams } from "../../CharStreams";
-import { CommonTokenStream } from "../../CommonTokenStream";
-import { LexerNoViableAltException } from "../../LexerNoViableAltException";
-import { Parser } from "../../Parser";
-import { ParserRuleContext } from "../../ParserRuleContext";
-import { ParseTree } from "../ParseTree";
-import { Token } from "../../Token";
-import { XPathElement } from "./XPathElement";
-import { XPathLexer, TOKEN } from "./XPathLexer";
-import { XPathLexerErrorListener } from "./XPathLexerErrorListener";
-import { XPathRuleAnywhereElement } from "./XPathRuleAnywhereElement";
-import { XPathRuleElement } from "./XPathRuleElement";
-import { XPathTokenAnywhereElement } from "./XPathTokenAnywhereElement";
-import { XPathTokenElement } from "./XPathTokenElement";
-import { XPathWildcardAnywhereElement } from "./XPathWildcardAnywhereElement";
-import { XPathWildcardElement } from "./XPathWildcardElement";
+import { CharStreams } from '../../CharStreams';
+import { CommonTokenStream } from '../../CommonTokenStream';
+import { LexerNoViableAltException } from '../../LexerNoViableAltException';
+import { Parser } from '../../Parser';
+import { ParserRuleContext } from '../../ParserRuleContext';
+import { ParseTree } from '../ParseTree';
+import { Token } from '../../Token';
+import { XPathElement } from './XPathElement';
+import { XPathLexer, TOKEN } from './XPathLexer';
+import { XPathLexerErrorListener } from './XPathLexerErrorListener';
+import { XPathRuleAnywhereElement } from './XPathRuleAnywhereElement';
+import { XPathRuleElement } from './XPathRuleElement';
+import { XPathTokenAnywhereElement } from './XPathTokenAnywhereElement';
+import { XPathTokenElement } from './XPathTokenElement';
+import { XPathWildcardAnywhereElement } from './XPathWildcardAnywhereElement';
+import { XPathWildcardElement } from './XPathWildcardElement';
 
 /**
  * Represent a subset of XPath XML path syntax for use in identifying nodes in
@@ -60,8 +60,8 @@ import { XPathWildcardElement } from "./XPathWildcardElement";
  * Whitespace is not allowed.
  */
 export class XPath {
-	public static readonly WILDCARD: string = "*"; // word not operator/separator
-	public static readonly NOT: string = "!"; 	   // word for invert operator
+	public static readonly WILDCARD: string = '*'; // word not operator/separator
+	public static readonly NOT: string = '!'; // word for invert operator
 
 	protected path: string;
 	protected elements: XPathElement[];
@@ -78,18 +78,25 @@ export class XPath {
 
 	public split(path: string): XPathElement[] {
 		let lexer = new XPathLexer(CharStreams.fromString(path));
-		lexer.recover = (e: LexerNoViableAltException) => { throw e; };
+		lexer.recover = (e: LexerNoViableAltException) => {
+			throw e;
+		};
 
 		lexer.removeErrorListeners();
 		lexer.addErrorListener(new XPathLexerErrorListener());
 		let tokenStream = new CommonTokenStream(lexer);
 		try {
 			tokenStream.fill();
-		}
-		catch (e) {
+		} catch (e) {
 			if (e instanceof LexerNoViableAltException) {
 				let pos: number = lexer.charPositionInLine;
-				let msg: string = "Invalid tokens or characters at index " + pos + " in path '" + path + "' -- " + e.message;
+				let msg: string =
+					'Invalid tokens or characters at index ' +
+					pos +
+					" in path '" +
+					path +
+					"' -- " +
+					e.message;
 				throw new RangeError(msg);
 			}
 			throw e;
@@ -100,8 +107,7 @@ export class XPath {
 		let elements: XPathElement[] = [];
 		let n: number = tokens.length;
 		let i: number = 0;
-		loop:
-		while (i < n) {
+		loop: while (i < n) {
 			let el: Token = tokens[i];
 			let next: Token | undefined;
 			switch (el.type) {
@@ -115,7 +121,10 @@ export class XPath {
 						i++;
 						next = tokens[i];
 					}
-					let pathElement: XPathElement = this.getXPathElement(next, anywhere);
+					let pathElement: XPathElement = this.getXPathElement(
+						next,
+						anywhere,
+					);
 					pathElement.invert = invert;
 					elements.push(pathElement);
 					i++;
@@ -132,7 +141,7 @@ export class XPath {
 					break loop;
 
 				default:
-					throw new Error("Unknowth path element " + el);
+					throw new Error('Unknowth path element ' + el);
 			}
 		}
 		return elements;
@@ -143,14 +152,17 @@ export class XPath {
 	 * element. `anywhere` is `true` if `//` precedes the
 	 * word.
 	 */
-	protected getXPathElement(wordToken: Token, anywhere: boolean): XPathElement {
+	protected getXPathElement(
+		wordToken: Token,
+		anywhere: boolean,
+	): XPathElement {
 		if (wordToken.type === Token.EOF) {
-			throw new Error("Missing path element at end of path");
+			throw new Error('Missing path element at end of path');
 		}
 
 		let word = wordToken.text;
 		if (word == null) {
-			throw new Error("Expected wordToken to have text content.");
+			throw new Error('Expected wordToken to have text content.');
 		}
 
 		let ttype: number = this.parser.getTokenType(word);
@@ -158,31 +170,41 @@ export class XPath {
 		switch (wordToken.type) {
 			case TOKEN.WILDCARD:
 				return anywhere ?
-					new XPathWildcardAnywhereElement() :
-					new XPathWildcardElement();
+						new XPathWildcardAnywhereElement()
+					:	new XPathWildcardElement();
 			case TOKEN.TOKEN_REF:
 			case TOKEN.STRING:
 				if (ttype === Token.INVALID_TYPE) {
-					throw new Error(word + " at index " +
-						wordToken.startIndex +
-						" isn't a valid token name");
+					throw new Error(
+						word +
+							' at index ' +
+							wordToken.startIndex +
+							" isn't a valid token name",
+					);
 				}
 				return anywhere ?
-					new XPathTokenAnywhereElement(word, ttype) :
-					new XPathTokenElement(word, ttype);
+						new XPathTokenAnywhereElement(word, ttype)
+					:	new XPathTokenElement(word, ttype);
 			default:
 				if (ruleIndex === -1) {
-					throw new Error(word + " at index " +
-						wordToken.startIndex +
-						" isn't a valid rule name");
+					throw new Error(
+						word +
+							' at index ' +
+							wordToken.startIndex +
+							" isn't a valid rule name",
+					);
 				}
 				return anywhere ?
-					new XPathRuleAnywhereElement(word, ruleIndex) :
-					new XPathRuleElement(word, ruleIndex);
+						new XPathRuleAnywhereElement(word, ruleIndex)
+					:	new XPathRuleElement(word, ruleIndex);
 		}
 	}
 
-	public static findAll(tree: ParseTree, xpath: string, parser: Parser): Set<ParseTree> {
+	public static findAll(
+		tree: ParseTree,
+		xpath: string,
+		parser: Parser,
+	): Set<ParseTree> {
 		let p: XPath = new XPath(parser, xpath);
 		return p.evaluate(tree);
 	}

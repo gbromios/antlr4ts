@@ -5,23 +5,23 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:38.3567094-07:00
 
-import { Array2DHashSet } from "../misc/Array2DHashSet";
-import { ATN } from "../atn/ATN";
-import { ATNConfigSet } from "../atn/ATNConfigSet";
-import { ATNState } from "../atn/ATNState";
-import { ATNType } from "../atn/ATNType";
-import { DecisionState } from "../atn/DecisionState";
-import { DFASerializer } from "./DFASerializer";
-import { DFAState } from "./DFAState";
-import { LexerATNSimulator } from "../atn/LexerATNSimulator";
-import { LexerDFASerializer } from "./LexerDFASerializer";
-import { NotNull } from "../Decorators";
-import { ObjectEqualityComparator } from "../misc/ObjectEqualityComparator";
-import { StarLoopEntryState } from "../atn/StarLoopEntryState";
-import { Token } from "../Token";
-import { TokensStartState } from "../atn/TokensStartState";
-import { Vocabulary } from "../Vocabulary";
-import { VocabularyImpl } from "../VocabularyImpl";
+import { Array2DHashSet } from '../misc/Array2DHashSet';
+import { ATN } from '../atn/ATN';
+import { ATNConfigSet } from '../atn/ATNConfigSet';
+import { ATNState } from '../atn/ATNState';
+import { ATNType } from '../atn/ATNType';
+import { DecisionState } from '../atn/DecisionState';
+import { DFASerializer } from './DFASerializer';
+import { DFAState } from './DFAState';
+import { LexerATNSimulator } from '../atn/LexerATNSimulator';
+import { LexerDFASerializer } from './LexerDFASerializer';
+import { NotNull } from '../Decorators';
+import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
+import { StarLoopEntryState } from '../atn/StarLoopEntryState';
+import { Token } from '../Token';
+import { TokensStartState } from '../atn/TokensStartState';
+import { Vocabulary } from '../Vocabulary';
+import { VocabularyImpl } from '../VocabularyImpl';
 
 export class DFA {
 	/**
@@ -31,7 +31,8 @@ export class DFA {
 	 * needs to be differentiated for these cases, which is tracked by the `s0` and `s0full` fields.
 	 */
 	@NotNull
-	public readonly states: Array2DHashSet<DFAState> = new Array2DHashSet<DFAState>(ObjectEqualityComparator.INSTANCE);
+	public readonly states: Array2DHashSet<DFAState> =
+		new Array2DHashSet<DFAState>(ObjectEqualityComparator.INSTANCE);
 
 	public s0: DFAState | undefined;
 
@@ -76,7 +77,7 @@ export class DFA {
 	constructor(atnStartState: DecisionState, decision: number);
 	constructor(@NotNull atnStartState: ATNState, decision: number = 0) {
 		if (!atnStartState.atn) {
-			throw new Error("The ATNState must be associated with an ATN");
+			throw new Error('The ATNState must be associated with an ATN');
 		}
 
 		this.atnStartState = atnStartState;
@@ -124,16 +125,20 @@ export class DFA {
 	 * @ if this is not a precedence DFA.
 	 * @see `isPrecedenceDfa`
 	 */
-	public getPrecedenceStartState(precedence: number, fullContext: boolean): DFAState | undefined {
+	public getPrecedenceStartState(
+		precedence: number,
+		fullContext: boolean,
+	): DFAState | undefined {
 		if (!this.isPrecedenceDfa) {
-			throw new Error("Only precedence DFAs may contain a precedence start state.");
+			throw new Error(
+				'Only precedence DFAs may contain a precedence start state.',
+			);
 		}
 
 		// s0 and s0full are never null for a precedence DFA
 		if (fullContext) {
 			return (this.s0full as DFAState).getTarget(precedence);
-		}
-		else {
+		} else {
 			return (this.s0 as DFAState).getTarget(precedence);
 		}
 	}
@@ -148,9 +153,15 @@ export class DFA {
 	 * @ if this is not a precedence DFA.
 	 * @see `isPrecedenceDfa`
 	 */
-	public setPrecedenceStartState(precedence: number, fullContext: boolean, startState: DFAState): void {
+	public setPrecedenceStartState(
+		precedence: number,
+		fullContext: boolean,
+		startState: DFAState,
+	): void {
 		if (!this.isPrecedenceDfa) {
-			throw new Error("Only precedence DFAs may contain a precedence start state.");
+			throw new Error(
+				'Only precedence DFAs may contain a precedence start state.',
+			);
 		}
 
 		if (precedence < 0) {
@@ -160,8 +171,7 @@ export class DFA {
 		if (fullContext) {
 			// s0full is never null for a precedence DFA
 			(this.s0full as DFAState).setTarget(precedence, startState);
-		}
-		else {
+		} else {
 			// s0 is never null for a precedence DFA
 			(this.s0 as DFAState).setTarget(precedence, startState);
 		}
@@ -170,7 +180,10 @@ export class DFA {
 	get isEmpty(): boolean {
 		if (this.isPrecedenceDfa) {
 			// s0 and s0full are never null for a precedence DFA
-			return this.s0!.getEdgeMap().size === 0 && this.s0full!.getEdgeMap().size === 0;
+			return (
+				this.s0!.getEdgeMap().size === 0 &&
+				this.s0full!.getEdgeMap().size === 0
+			);
 		}
 
 		return this.s0 == null && this.s0full == null;
@@ -192,19 +205,27 @@ export class DFA {
 
 	public toString(): string;
 	public toString(/*@NotNull*/ vocabulary: Vocabulary): string;
-	public toString(/*@NotNull*/ vocabulary: Vocabulary, ruleNames: string[] | undefined): string;
+	public toString(
+		/*@NotNull*/ vocabulary: Vocabulary,
+		ruleNames: string[] | undefined,
+	): string;
 	public toString(vocabulary?: Vocabulary, ruleNames?: string[]): string {
 		if (!vocabulary) {
 			vocabulary = VocabularyImpl.EMPTY_VOCABULARY;
 		}
 
 		if (!this.s0) {
-			return "";
+			return '';
 		}
 
 		let serializer: DFASerializer;
 		if (ruleNames) {
-			serializer = new DFASerializer(this, vocabulary, ruleNames, this.atnStartState.atn);
+			serializer = new DFASerializer(
+				this,
+				vocabulary,
+				ruleNames,
+				this.atnStartState.atn,
+			);
 		} else {
 			serializer = new DFASerializer(this, vocabulary);
 		}
@@ -214,7 +235,7 @@ export class DFA {
 
 	public toLexerString(): string {
 		if (!this.s0) {
-			return "";
+			return '';
 		}
 
 		let serializer: DFASerializer = new LexerDFASerializer(this);

@@ -11,7 +11,6 @@
  * @author Sam Harwell
  */
 export const enum ATNType {
-
 	/**
 	 * A lexer grammar.
 	 */
@@ -21,5 +20,4 @@ export const enum ATNType {
 	 * A parser grammar.
 	 */
 	PARSER,
-
 }

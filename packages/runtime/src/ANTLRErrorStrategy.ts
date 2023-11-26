@@ -5,9 +5,9 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:48.9102174-07:00
 
-import { Parser } from "./Parser";
-import { Token } from "./Token";
-import { RecognitionException } from "./RecognitionException";
+import { Parser } from './Parser';
+import { Token } from './Token';
+import { RecognitionException } from './RecognitionException';
 
 /**
  * The interface for defining strategies to deal with syntax errors encountered
@@ -63,7 +63,10 @@ export interface ANTLRErrorStrategy {
 	 * @ if the error strategy could not recover from
 	 * the recognition exception
 	 */
-	recover(/*@NotNull*/ recognizer: Parser, /*@NotNull*/ e: RecognitionException): void;
+	recover(
+		/*@NotNull*/ recognizer: Parser,
+		/*@NotNull*/ e: RecognitionException,
+	): void;
 
 	/**
 	 * This method provides the error handler with an opportunity to handle
@@ -117,5 +120,6 @@ export interface ANTLRErrorStrategy {
 	 */
 	reportError(
 		/*@NotNull*/ recognizer: Parser,
-		/*@NotNull*/ e: RecognitionException): void;
+		/*@NotNull*/ e: RecognitionException,
+	): void;
 }

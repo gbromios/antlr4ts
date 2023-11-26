@@ -4,16 +4,16 @@
  */
 
 // ConvertTo-TS run at 2016-10-04T11:26:56.6285494-07:00
-import { ErrorNode } from "./tree/ErrorNode";
-import { Interval } from "./misc/Interval";
-import { Override } from "./Decorators";
-import { Parser } from "./Parser";
-import { ParseTree } from "./tree/ParseTree";
-import { ParseTreeListener } from "./tree/ParseTreeListener";
-import { RecognitionException } from "./RecognitionException";
-import { RuleContext } from "./RuleContext";
-import { TerminalNode } from "./tree/TerminalNode";
-import { Token } from "./Token";
+import { ErrorNode } from './tree/ErrorNode';
+import { Interval } from './misc/Interval';
+import { Override } from './Decorators';
+import { Parser } from './Parser';
+import { ParseTree } from './tree/ParseTree';
+import { ParseTreeListener } from './tree/ParseTreeListener';
+import { RecognitionException } from './RecognitionException';
+import { RuleContext } from './RuleContext';
+import { TerminalNode } from './tree/TerminalNode';
+import { Token } from './Token';
 
 /** A rule invocation record for parsing.
  *
@@ -66,7 +66,7 @@ export class ParserRuleContext extends RuleContext {
 	 *
 	 *  This does not trace states visited during prediction.
 	 */
-//	public Array<number> states;
+	//	public Array<number> states;
 
 	public _start!: Token;
 	public _stop: Token | undefined;
@@ -78,7 +78,10 @@ export class ParserRuleContext extends RuleContext {
 	public exception?: RecognitionException;
 
 	constructor();
-	constructor(parent: ParserRuleContext | undefined, invokingStateNumber: number);
+	constructor(
+		parent: ParserRuleContext | undefined,
+		invokingStateNumber: number,
+	);
 	constructor(parent?: ParserRuleContext, invokingStateNumber?: number) {
 		if (invokingStateNumber == null) {
 			super();
@@ -165,7 +168,9 @@ export class ParserRuleContext extends RuleContext {
 	 * @deprecated Use another overload instead.
 	 */
 	public addChild(matchedToken: Token): TerminalNode;
-	public addChild(t: TerminalNode | RuleContext | Token): TerminalNode | void {
+	public addChild(
+		t: TerminalNode | RuleContext | Token,
+	): TerminalNode | void {
 		let result: TerminalNode | void;
 		if (t instanceof TerminalNode) {
 			t.setParent(this);
@@ -214,10 +219,10 @@ export class ParserRuleContext extends RuleContext {
 		}
 	}
 
-//	public void trace(int s) {
-//		if ( states==null ) states = new ArrayList<Integer>();
-//		states.add(s);
-//	}
+	//	public void trace(int s) {
+	//		if ( states==null ) states = new ArrayList<Integer>();
+	//		states.add(s);
+	//	}
 
 	/** Used by enterOuterAlt to toss out a RuleContext previously added as
 	 *  we entered a rule. If we have # label, we will need to remove
@@ -237,15 +242,23 @@ export class ParserRuleContext extends RuleContext {
 			return parent;
 		}
 
-		throw new TypeError("Invalid parent type for ParserRuleContext");
+		throw new TypeError('Invalid parent type for ParserRuleContext');
 	}
 
 	public getChild(i: number): ParseTree;
-	public getChild<T extends ParseTree>(i: number, ctxType: { new (...args: any[]): T; }): T;
+	public getChild<T extends ParseTree>(
+		i: number,
+		ctxType: { new (...args: any[]): T },
+	): T;
 	// Note: in TypeScript, order or arguments reversed
-	public getChild<T extends ParseTree>(i: number, ctxType?: { new (...args: any[]): T; }): ParseTree {
+	public getChild<T extends ParseTree>(
+		i: number,
+		ctxType?: { new (...args: any[]): T },
+	): ParseTree {
 		if (!this.children || i < 0 || i >= this.children.length) {
-			throw new RangeError("index parameter must be between >= 0 and <= number of children.");
+			throw new RangeError(
+				'index parameter must be between >= 0 and <= number of children.',
+			);
 		}
 
 		if (ctxType == null) {
@@ -254,13 +267,16 @@ export class ParserRuleContext extends RuleContext {
 
 		let result = this.tryGetChild(i, ctxType);
 		if (result === undefined) {
-			throw new Error("The specified node does not exist");
+			throw new Error('The specified node does not exist');
 		}
 
 		return result;
 	}
 
-	public tryGetChild<T extends ParseTree>(i: number, ctxType: { new (...args: any[]): T; }): T | undefined {
+	public tryGetChild<T extends ParseTree>(
+		i: number,
+		ctxType: { new (...args: any[]): T },
+	): T | undefined {
 		if (!this.children || i < 0 || i >= this.children.length) {
 			return undefined;
 		}
@@ -281,7 +297,7 @@ export class ParserRuleContext extends RuleContext {
 	public getToken(ttype: number, i: number): TerminalNode {
 		let result = this.tryGetToken(ttype, i);
 		if (result === undefined) {
-			throw new Error("The specified token does not exist");
+			throw new Error('The specified token does not exist');
 		}
 
 		return result;
@@ -332,15 +348,23 @@ export class ParserRuleContext extends RuleContext {
 	}
 
 	// NOTE: argument order change from Java version
-	public getRuleContext<T extends ParserRuleContext>(i: number, ctxType: { new (...args: any[]): T; }): T {
+	public getRuleContext<T extends ParserRuleContext>(
+		i: number,
+		ctxType: { new (...args: any[]): T },
+	): T {
 		return this.getChild(i, ctxType);
 	}
 
-	public tryGetRuleContext<T extends ParserRuleContext>(i: number, ctxType: { new (...args: any[]): T; }): T | undefined {
+	public tryGetRuleContext<T extends ParserRuleContext>(
+		i: number,
+		ctxType: { new (...args: any[]): T },
+	): T | undefined {
 		return this.tryGetChild(i, ctxType);
 	}
 
-	public getRuleContexts<T extends ParserRuleContext>(ctxType: { new (...args: any[]): T; }): T[] {
+	public getRuleContexts<T extends ParserRuleContext>(ctxType: {
+		new (...args: any[]): T;
+	}): T[] {
 		let contexts: T[] = [];
 		if (!this.children) {
 			return contexts;
@@ -366,7 +390,10 @@ export class ParserRuleContext extends RuleContext {
 			return Interval.INVALID;
 		}
 		if (!this._stop || this._stop.tokenIndex < this._start.tokenIndex) {
-			return Interval.of(this._start.tokenIndex, this._start.tokenIndex - 1); // empty
+			return Interval.of(
+				this._start.tokenIndex,
+				this._start.tokenIndex - 1,
+			); // empty
 		}
 		return Interval.of(this._start.tokenIndex, this._stop.tokenIndex);
 	}
@@ -376,21 +403,30 @@ export class ParserRuleContext extends RuleContext {
 	 * Note that the range from start to stop is inclusive, so for rules that do not consume anything
 	 * (for example, zero length or error productions) this token may exceed stop.
 	 */
-	get start(): Token { return this._start; }
+	get start(): Token {
+		return this._start;
+	}
 	/**
 	 * Get the final token in this context.
 	 * Note that the range from start to stop is inclusive, so for rules that do not consume anything
 	 * (for example, zero length or error productions) this token may precede start.
 	 */
-	get stop(): Token | undefined { return this._stop; }
+	get stop(): Token | undefined {
+		return this._stop;
+	}
 
 	/** Used for rule context info debugging during parse-time, not so much for ATN debugging */
 	public toInfoString(recognizer: Parser): string {
-		let rules: string[] =
-			recognizer.getRuleInvocationStack(this).reverse();
-		return "ParserRuleContext" + rules + "{" +
-			"start=" + this._start +
-			", stop=" + this._stop +
-			"}";
+		let rules: string[] = recognizer.getRuleInvocationStack(this).reverse();
+		return (
+			'ParserRuleContext' +
+			rules +
+			'{' +
+			'start=' +
+			this._start +
+			', stop=' +
+			this._stop +
+			'}'
+		);
 	}
 }

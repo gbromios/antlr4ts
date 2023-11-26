@@ -5,14 +5,14 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:40.5099429-07:00
 
-import { Arrays } from "./Arrays";
-import { NotNull, Override } from "../Decorators";
-import { JavaCollection } from "./Stubs";
+import { Arrays } from './Arrays';
+import { NotNull, Override } from '../Decorators';
+import { JavaCollection } from './Stubs';
 
 const EMPTY_DATA: Int32Array = new Int32Array(0);
 
 const INITIAL_SIZE: number = 4;
-const MAX_ARRAY_SIZE: number = (((1 << 31) >>> 0) - 1) - 8;
+const MAX_ARRAY_SIZE: number = ((1 << 31) >>> 0) - 1 - 8;
 
 /**
  *
@@ -31,7 +31,7 @@ export class IntegerList {
 		} else if (arg instanceof IntegerList) {
 			this._data = arg._data.slice(0);
 			this._size = arg._size;
-		} else if (typeof arg === "number") {
+		} else if (typeof arg === 'number') {
 			if (arg === 0) {
 				this._data = EMPTY_DATA;
 				this._size = 0;
@@ -65,7 +65,9 @@ export class IntegerList {
 			this._size += list.length;
 		} else if (list instanceof IntegerList) {
 			this.ensureCapacity(this._size + list._size);
-			this._data.subarray(this._size, this._size + list.size).set(list._data);
+			this._data
+				.subarray(this._size, this._size + list.size)
+				.set(list._data);
 			this._size += list._size;
 		} else {
 			// list is JavaCollection<number>
@@ -117,7 +119,12 @@ export class IntegerList {
 	}
 
 	public removeRange(fromIndex: number, toIndex: number): void {
-		if (fromIndex < 0 || toIndex < 0 || fromIndex > this._size || toIndex > this._size) {
+		if (
+			fromIndex < 0 ||
+			toIndex < 0 ||
+			fromIndex > this._size ||
+			toIndex > this._size
+		) {
 			throw RangeError();
 		}
 
@@ -127,7 +134,7 @@ export class IntegerList {
 
 		this._data.copyWithin(toIndex, fromIndex, this._size);
 		this._data.fill(0, this._size - (toIndex - fromIndex), this._size);
-		this._size -= (toIndex - fromIndex);
+		this._size -= toIndex - fromIndex;
 	}
 
 	get isEmpty(): boolean {
@@ -231,7 +238,11 @@ export class IntegerList {
 		return this._data.toString();
 	}
 
-	public binarySearch(key: number, fromIndex?: number, toIndex?: number): number {
+	public binarySearch(
+		key: number,
+		fromIndex?: number,
+		toIndex?: number,
+	): number {
 		if (fromIndex === undefined) {
 			fromIndex = 0;
 		}
@@ -240,7 +251,12 @@ export class IntegerList {
 			toIndex = this._size;
 		}
 
-		if (fromIndex < 0 || toIndex < 0 || fromIndex > this._size || toIndex > this._size) {
+		if (
+			fromIndex < 0 ||
+			toIndex < 0 ||
+			fromIndex > this._size ||
+			toIndex > this._size
+		) {
 			throw new RangeError();
 		}
 

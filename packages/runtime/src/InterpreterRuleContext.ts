@@ -5,8 +5,8 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:51.5898546-07:00
 
-import { Override } from "./Decorators";
-import { ParserRuleContext } from "./ParserRuleContext";
+import { Override } from './Decorators';
+import { ParserRuleContext } from './ParserRuleContext';
 
 /**
  * This class extends {@link ParserRuleContext} by allowing the value of
@@ -35,9 +35,17 @@ export class InterpreterRuleContext extends ParserRuleContext {
 	 * @param parent The parent context.
 	 * @param invokingStateNumber The invoking state number.
 	 */
-	constructor(ruleIndex: number, parent: ParserRuleContext | undefined, invokingStateNumber: number);
+	constructor(
+		ruleIndex: number,
+		parent: ParserRuleContext | undefined,
+		invokingStateNumber: number,
+	);
 
-	constructor(ruleIndex: number, parent?: ParserRuleContext, invokingStateNumber?: number) {
+	constructor(
+		ruleIndex: number,
+		parent?: ParserRuleContext,
+		invokingStateNumber?: number,
+	) {
 		if (invokingStateNumber !== undefined) {
 			super(parent, invokingStateNumber);
 		} else {

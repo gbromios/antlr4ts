@@ -10,7 +10,6 @@
  * @author Sam Harwell
  */
 export enum Dependents {
-
 	/**
 	 * The element is dependent upon the specified rule.
 	 */

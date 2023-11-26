@@ -8,9 +8,14 @@ var path = require('path');
 var process = require('process');
 
 var cmd = 'java';
-var value = ['-jar', path.join(__dirname, 'target/antlr4-typescript-4.9.0-SNAPSHOT-complete.jar')]
-    .concat(process.argv.slice(2));
-var opt = {stdio: "inherit"};
+var value = [
+	'-jar',
+	path.join(
+		__dirname,
+		'target/antlr4-typescript-4.9.0-SNAPSHOT-complete.jar',
+	),
+].concat(process.argv.slice(2));
+var opt = { stdio: 'inherit' };
 
 var child = child_process.spawn(cmd, value, opt);
 
@@ -23,6 +28,6 @@ var child = child_process.spawn(cmd, value, opt);
 // });
 
 child.on('close', function (code) {
-	process.exitCode = code;	// Sets expected exit code without forcing exit prior to buffers flushing.
-    code && console.log("child process exited with code ", code);
+	process.exitCode = code; // Sets expected exit code without forcing exit prior to buffers flushing.
+	code && console.log('child process exited with code ', code);
 });

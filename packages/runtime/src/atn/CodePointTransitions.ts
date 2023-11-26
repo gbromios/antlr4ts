@@ -3,13 +3,13 @@
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
 
-import * as Character from "../misc/Character";
-import { ATNState } from "./ATNState";
-import { AtomTransition } from "./AtomTransition";
-import { IntervalSet } from "../misc/IntervalSet";
-import { RangeTransition } from "./RangeTransition";
-import { SetTransition } from "./SetTransition";
-import { Transition } from "./Transition";
+import * as Character from '../misc/Character';
+import { ATNState } from './ATNState';
+import { AtomTransition } from './AtomTransition';
+import { IntervalSet } from '../misc/IntervalSet';
+import { RangeTransition } from './RangeTransition';
+import { SetTransition } from './SetTransition';
+import { Transition } from './Transition';
 
 /**
  * Utility functions to create {@link AtomTransition}, {@link RangeTransition},
@@ -26,11 +26,13 @@ import { Transition } from "./Transition";
  * If {@code codePoint} is <= U+FFFF, returns a new {@link AtomTransition}.
  * Otherwise, returns a new {@link SetTransition}.
  */
-export function createWithCodePoint(target: ATNState, codePoint: number): Transition {
+export function createWithCodePoint(
+	target: ATNState,
+	codePoint: number,
+): Transition {
 	if (Character.isSupplementaryCodePoint(codePoint)) {
 		return new SetTransition(target, IntervalSet.of(codePoint));
-	}
-	else {
+	} else {
 		return new AtomTransition(target, codePoint);
 	}
 }
@@ -40,11 +42,20 @@ export function createWithCodePoint(target: ATNState, codePoint: number): Transi
  * <= U+FFFF, returns a new {@link RangeTransition}.
  * Otherwise, returns a new {@link SetTransition}.
  */
-export function createWithCodePointRange(target: ATNState, codePointFrom: number, codePointTo: number): Transition {
-	if (Character.isSupplementaryCodePoint(codePointFrom) || Character.isSupplementaryCodePoint(codePointTo)) {
-		return new SetTransition(target, IntervalSet.of(codePointFrom, codePointTo));
-	}
-	else {
+export function createWithCodePointRange(
+	target: ATNState,
+	codePointFrom: number,
+	codePointTo: number,
+): Transition {
+	if (
+		Character.isSupplementaryCodePoint(codePointFrom) ||
+		Character.isSupplementaryCodePoint(codePointTo)
+	) {
+		return new SetTransition(
+			target,
+			IntervalSet.of(codePointFrom, codePointTo),
+		);
+	} else {
 		return new RangeTransition(target, codePointFrom, codePointTo);
 	}
 }

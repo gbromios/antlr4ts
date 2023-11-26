@@ -5,16 +5,16 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:57.3490837-07:00
 
-import { ATN } from "./atn/ATN";
-import { Parser } from "./Parser";
-import { Recognizer } from "./Recognizer";
-import { RuleNode } from "./tree/RuleNode";
-import { ParseTree } from "./tree/ParseTree";
-import { Interval } from "./misc/Interval";
-import { Override } from "./Decorators";
-import { Trees } from "./tree/Trees";
-import { ParseTreeVisitor } from "./tree/ParseTreeVisitor";
-import { ParserRuleContext } from "./ParserRuleContext";
+import { ATN } from './atn/ATN';
+import { Parser } from './Parser';
+import { Recognizer } from './Recognizer';
+import { RuleNode } from './tree/RuleNode';
+import { ParseTree } from './tree/ParseTree';
+import { Interval } from './misc/Interval';
+import { Override } from './Decorators';
+import { Trees } from './tree/Trees';
+import { ParseTreeVisitor } from './tree/ParseTreeVisitor';
+import { ParserRuleContext } from './ParserRuleContext';
 
 /** A rule context is a record of a single rule invocation.
  *
@@ -78,7 +78,10 @@ export class RuleContext extends RuleNode {
 		this.invokingState = invokingState != null ? invokingState : -1;
 	}
 
-	public static getChildContext(parent: RuleContext, invokingState: number): RuleContext {
+	public static getChildContext(
+		parent: RuleContext,
+		invokingState: number,
+	): RuleContext {
 		return new RuleContext(parent, invokingState);
 	}
 
@@ -107,10 +110,14 @@ export class RuleContext extends RuleNode {
 	}
 
 	@Override
-	get ruleContext(): RuleContext { return this; }
+	get ruleContext(): RuleContext {
+		return this;
+	}
 
 	@Override
-	get parent(): RuleContext | undefined { return this._parent; }
+	get parent(): RuleContext | undefined {
+		return this._parent;
+	}
 
 	/** @since 4.7. {@see ParseTree#setParent} comment */
 	@Override
@@ -119,7 +126,9 @@ export class RuleContext extends RuleNode {
 	}
 
 	@Override
-	get payload(): RuleContext { return this; }
+	get payload(): RuleContext {
+		return this;
+	}
 
 	/** Return the combined text of all child nodes. This method only considers
 	 *  tokens which have been added to the parse tree.
@@ -131,10 +140,10 @@ export class RuleContext extends RuleNode {
 	@Override
 	get text(): string {
 		if (this.childCount === 0) {
-			return "";
+			return '';
 		}
 
-		let builder = "";
+		let builder = '';
 		for (let i = 0; i < this.childCount; i++) {
 			builder += this.getChild(i).text;
 		}
@@ -142,7 +151,9 @@ export class RuleContext extends RuleNode {
 		return builder.toString();
 	}
 
-	get ruleIndex(): number { return -1; }
+	get ruleIndex(): number {
+		return -1;
+	}
 
 	/** For rule associated with this parse tree internal node, return
 	 *  the outer alternative number used to match the input. Default
@@ -153,7 +164,9 @@ export class RuleContext extends RuleNode {
 	 *
 	 *  @since 4.5.3
 	 */
-	get altNumber(): number { return ATN.INVALID_ALT_NUMBER; }
+	get altNumber(): number {
+		return ATN.INVALID_ALT_NUMBER;
+	}
 
 	/** Set the outer alternative number for this context node. Default
 	 *  implementation does nothing to avoid backing field overhead for
@@ -169,7 +182,9 @@ export class RuleContext extends RuleNode {
 
 	@Override
 	public getChild(i: number): ParseTree {
-		throw new RangeError("i must be greater than or equal to 0 and less than childCount");
+		throw new RangeError(
+			'i must be greater than or equal to 0 and less than childCount',
+		);
 	}
 
 	@Override
@@ -205,40 +220,48 @@ export class RuleContext extends RuleNode {
 	public toString(ruleNames: string[] | undefined): string;
 
 	// // recog undefined unless ParserRuleContext, in which case we use subclass toString(...)
-	public toString(recog: Recognizer<any, any> | undefined, stop: RuleContext | undefined): string;
+	public toString(
+		recog: Recognizer<any, any> | undefined,
+		stop: RuleContext | undefined,
+	): string;
 
-	public toString(ruleNames: string[] | undefined, stop: RuleContext | undefined): string;
+	public toString(
+		ruleNames: string[] | undefined,
+		stop: RuleContext | undefined,
+	): string;
 
 	public toString(
 		arg1?: Recognizer<any, any> | string[],
-		stop?: RuleContext)
-		: string {
-		const ruleNames = (arg1 instanceof Recognizer) ? arg1.ruleNames : arg1;
+		stop?: RuleContext,
+	): string {
+		const ruleNames = arg1 instanceof Recognizer ? arg1.ruleNames : arg1;
 		stop = stop || ParserRuleContext.emptyContext();
 
-		let buf = "";
+		let buf = '';
 		let p: RuleContext | undefined = this;
-		buf += ("[");
+		buf += '[';
 		while (p && p !== stop) {
 			if (!ruleNames) {
 				if (!p.isEmpty) {
-					buf += (p.invokingState);
+					buf += p.invokingState;
 				}
 			} else {
 				let ruleIndex: number = p.ruleIndex;
-				let ruleName: string = (ruleIndex >= 0 && ruleIndex < ruleNames.length)
-					? ruleNames[ruleIndex] : ruleIndex.toString();
-				buf += (ruleName);
+				let ruleName: string =
+					ruleIndex >= 0 && ruleIndex < ruleNames.length ?
+						ruleNames[ruleIndex]
+					:	ruleIndex.toString();
+				buf += ruleName;
 			}
 
 			if (p._parent && (ruleNames || !p._parent.isEmpty)) {
-				buf += (" ");
+				buf += ' ';
 			}
 
 			p = p._parent;
 		}
 
-		buf += ("]");
+		buf += ']';
 		return buf.toString();
 	}
 }

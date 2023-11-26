@@ -4,11 +4,11 @@
  */
 
 // CONVERSTION complete, Burt Harris 10/14/2016
-import { NotNull } from "../../Decorators";
-import { ParseTree } from "../ParseTree";
-import { ParseTreeMatch } from "./ParseTreeMatch";
-import { ParseTreePatternMatcher } from "./ParseTreePatternMatcher";
-import { XPath } from "../xpath/XPath";
+import { NotNull } from '../../Decorators';
+import { ParseTree } from '../ParseTree';
+import { ParseTreeMatch } from './ParseTreeMatch';
+import { ParseTreePatternMatcher } from './ParseTreePatternMatcher';
+import { XPath } from '../xpath/XPath';
 
 /**
  * A pattern like `<ID> = <expr>;` converted to a {@link ParseTree} by
@@ -52,7 +52,8 @@ export class ParseTreePattern {
 		@NotNull matcher: ParseTreePatternMatcher,
 		@NotNull pattern: string,
 		patternRuleIndex: number,
-		@NotNull patternTree: ParseTree) {
+		@NotNull patternTree: ParseTree,
+	) {
 		this._matcher = matcher;
 		this._patternRuleIndex = patternRuleIndex;
 		this._pattern = pattern;
@@ -95,8 +96,15 @@ export class ParseTreePattern {
 	 * regardless of the reason for the failure.
 	 */
 	@NotNull
-	public findAll(@NotNull tree: ParseTree, @NotNull xpath: string): ParseTreeMatch[] {
-		let subtrees: Set<ParseTree> = XPath.findAll(tree, xpath, this._matcher.parser);
+	public findAll(
+		@NotNull tree: ParseTree,
+		@NotNull xpath: string,
+	): ParseTreeMatch[] {
+		let subtrees: Set<ParseTree> = XPath.findAll(
+			tree,
+			xpath,
+			this._matcher.parser,
+		);
 		let matches: ParseTreeMatch[] = [];
 		for (let t of subtrees) {
 			let match: ParseTreeMatch = this.match(t);

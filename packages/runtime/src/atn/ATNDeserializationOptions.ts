@@ -5,7 +5,7 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:25.8187912-07:00
 
-import { NotNull } from "../Decorators";
+import { NotNull } from '../Decorators';
 
 /**
  *
@@ -22,7 +22,8 @@ export class ATNDeserializationOptions {
 	constructor(options?: ATNDeserializationOptions) {
 		if (options) {
 			this.verifyATN = options.verifyATN;
-			this.generateRuleBypassTransitions = options.generateRuleBypassTransitions;
+			this.generateRuleBypassTransitions =
+				options.generateRuleBypassTransitions;
 			this.optimize = options.optimize;
 		} else {
 			this.verifyATN = true;
@@ -34,7 +35,8 @@ export class ATNDeserializationOptions {
 	@NotNull
 	static get defaultOptions(): ATNDeserializationOptions {
 		if (ATNDeserializationOptions._defaultOptions == null) {
-			ATNDeserializationOptions._defaultOptions = new ATNDeserializationOptions();
+			ATNDeserializationOptions._defaultOptions =
+				new ATNDeserializationOptions();
 			ATNDeserializationOptions._defaultOptions.makeReadOnly();
 		}
 
@@ -62,7 +64,9 @@ export class ATNDeserializationOptions {
 		return this.generateRuleBypassTransitions;
 	}
 
-	set isGenerateRuleBypassTransitions(generateRuleBypassTransitions: boolean) {
+	set isGenerateRuleBypassTransitions(
+		generateRuleBypassTransitions: boolean,
+	) {
 		this.throwIfReadOnly();
 		this.generateRuleBypassTransitions = generateRuleBypassTransitions;
 	}
@@ -78,7 +82,7 @@ export class ATNDeserializationOptions {
 
 	protected throwIfReadOnly(): void {
 		if (this.isReadOnly) {
-			throw new Error("The object is read only.");
+			throw new Error('The object is read only.');
 		}
 	}
 }

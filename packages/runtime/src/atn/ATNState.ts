@@ -5,11 +5,11 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:27.4734328-07:00
 
-import { ATN } from "./ATN";
-import { ATNStateType } from "./ATNStateType";
-import { IntervalSet } from "../misc/IntervalSet";
-import { Override } from "../Decorators";
-import { Transition } from "./Transition";
+import { ATN } from './ATN';
+import { ATNStateType } from './ATNStateType';
+import { IntervalSet } from '../misc/IntervalSet';
+import { Override } from '../Decorators';
+import { Transition } from './Transition';
 
 const INITIAL_NUM_TRANSITIONS: number = 4;
 
@@ -70,13 +70,12 @@ const INITIAL_NUM_TRANSITIONS: number = 4;
  * <embed src="images/OptionalNonGreedy.svg" type="image/svg+xml"/>
  */
 export abstract class ATNState {
-
 	/** Which ATN are we in? */
 	public atn?: ATN;
 
 	public stateNumber: number = ATNState.INVALID_STATE_NUMBER;
 
-	public ruleIndex: number = 0;  // at runtime, we don't have Rule objects
+	public ruleIndex: number = 0; // at runtime, we don't have Rule objects
 
 	public epsilonOnlyTransitions: boolean = false;
 
@@ -142,13 +141,20 @@ export abstract class ATNState {
 	public addTransition(e: Transition, index?: number): void {
 		if (this.transitions.length === 0) {
 			this.epsilonOnlyTransitions = e.isEpsilon;
-		}
-		else if (this.epsilonOnlyTransitions !== e.isEpsilon) {
+		} else if (this.epsilonOnlyTransitions !== e.isEpsilon) {
 			this.epsilonOnlyTransitions = false;
-			throw new Error("ATN state " + this.stateNumber + " has both epsilon and non-epsilon transitions.");
+			throw new Error(
+				'ATN state ' +
+					this.stateNumber +
+					' has both epsilon and non-epsilon transitions.',
+			);
 		}
 
-		this.transitions.splice(index !== undefined ? index : this.transitions.length, 0, e);
+		this.transitions.splice(
+			index !== undefined ? index : this.transitions.length,
+			0,
+			e,
+		);
 	}
 
 	public transition(i: number): Transition {
@@ -195,7 +201,7 @@ export abstract class ATNState {
 
 	public setOptimizedTransition(i: number, e: Transition): void {
 		if (!this.isOptimized) {
-			throw new Error("This ATNState is not optimized.");
+			throw new Error('This ATNState is not optimized.');
 		}
 
 		this.optimizedTransitions[i] = e;
@@ -203,7 +209,7 @@ export abstract class ATNState {
 
 	public removeOptimizedTransition(i: number): void {
 		if (!this.isOptimized) {
-			throw new Error("This ATNState is not optimized.");
+			throw new Error('This ATNState is not optimized.');
 		}
 
 		this.optimizedTransitions.splice(i, 1);

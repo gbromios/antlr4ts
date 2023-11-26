@@ -5,11 +5,11 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:27.3184311-07:00
 
-import { ATN } from "./ATN";
-import { ATNConfigSet } from "./ATNConfigSet";
-import { DFAState } from "../dfa/DFAState";
-import { NotNull } from "../Decorators";
-import { PredictionContext } from "./PredictionContext";
+import { ATN } from './ATN';
+import { ATNConfigSet } from './ATNConfigSet';
+import { DFAState } from '../dfa/DFAState';
+import { NotNull } from '../Decorators';
+import { PredictionContext } from './PredictionContext';
 
 export abstract class ATNSimulator {
 	/** Must distinguish between missing edge and edge we know leads nowhere */
@@ -18,7 +18,8 @@ export abstract class ATNSimulator {
 	static get ERROR(): DFAState {
 		if (!ATNSimulator._ERROR) {
 			ATNSimulator._ERROR = new DFAState(new ATNConfigSet());
-			ATNSimulator._ERROR.stateNumber = PredictionContext.EMPTY_FULL_STATE_KEY;
+			ATNSimulator._ERROR.stateNumber =
+				PredictionContext.EMPTY_FULL_STATE_KEY;
 		}
 
 		return ATNSimulator._ERROR;
@@ -50,7 +51,7 @@ export abstract class ATNSimulator {
 }
 
 export namespace ATNSimulator {
-	const RULE_VARIANT_DELIMITER: string = "$";
-	const RULE_LF_VARIANT_MARKER: string = "$lf$";
-	const RULE_NOLF_VARIANT_MARKER: string = "$nolf$";
+	const RULE_VARIANT_DELIMITER: string = '$';
+	const RULE_LF_VARIANT_MARKER: string = '$lf$';
+	const RULE_NOLF_VARIANT_MARKER: string = '$nolf$';
 }

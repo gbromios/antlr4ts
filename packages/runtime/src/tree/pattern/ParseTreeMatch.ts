@@ -4,10 +4,10 @@
  */
 
 // CONVERSTION complete, Burt Harris 10/14/2016
-import { MultiMap } from "../../misc/MultiMap";
-import { NotNull, Override } from "../../Decorators";
-import { ParseTree } from "../ParseTree";
-import { ParseTreePattern } from "./ParseTreePattern";
+import { MultiMap } from '../../misc/MultiMap';
+import { NotNull, Override } from '../../Decorators';
+import { ParseTree } from '../ParseTree';
+import { ParseTreePattern } from './ParseTreePattern';
 
 /**
  * Represents the result of matching a {@link ParseTree} against a tree pattern.
@@ -52,17 +52,18 @@ export class ParseTreeMatch {
 		@NotNull tree: ParseTree,
 		@NotNull pattern: ParseTreePattern,
 		@NotNull labels: MultiMap<string, ParseTree>,
-		mismatchedNode: ParseTree | undefined) {
+		mismatchedNode: ParseTree | undefined,
+	) {
 		if (!tree) {
-			throw new Error("tree cannot be null");
+			throw new Error('tree cannot be null');
 		}
 
 		if (!pattern) {
-			throw new Error("pattern cannot be null");
+			throw new Error('pattern cannot be null');
 		}
 
 		if (!labels) {
-			throw new Error("labels cannot be null");
+			throw new Error('labels cannot be null');
 		}
 
 		this._tree = tree;
@@ -186,8 +187,8 @@ export class ParseTreeMatch {
 	 */
 	@Override
 	public toString(): string {
-		return `Match ${
-			this.succeeded ? "succeeded" : "failed"}; found ${
-			this.labels.size} labels`;
+		return `Match ${this.succeeded ? 'succeeded' : 'failed'}; found ${
+			this.labels.size
+		} labels`;
 	}
 }

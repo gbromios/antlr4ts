@@ -5,12 +5,12 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:52.1916955-07:00
 
-import { CharStream } from "./CharStream";
-import { CommonTokenFactory } from "./CommonTokenFactory";
-import { NotNull, Override } from "./Decorators";
-import { Token } from "./Token";
-import { TokenFactory } from "./TokenFactory";
-import { TokenSource } from "./TokenSource";
+import { CharStream } from './CharStream';
+import { CommonTokenFactory } from './CommonTokenFactory';
+import { NotNull, Override } from './Decorators';
+import { Token } from './Token';
+import { TokenFactory } from './TokenFactory';
+import { TokenSource } from './TokenSource';
 
 /**
  * Provides an implementation of {@link TokenSource} as a wrapper around a list
@@ -67,7 +67,7 @@ export class ListTokenSource implements TokenSource {
 	 */
 	constructor(@NotNull tokens: Token[], sourceName?: string) {
 		if (tokens == null) {
-			throw new Error("tokens cannot be null");
+			throw new Error('tokens cannot be null');
 		}
 
 		this.tokens = tokens;
@@ -89,13 +89,18 @@ export class ListTokenSource implements TokenSource {
 			let lastToken: Token = this.tokens[this.tokens.length - 1];
 			let tokenText: string | undefined = lastToken.text;
 			if (tokenText != null) {
-				let lastNewLine: number = tokenText.lastIndexOf("\n");
+				let lastNewLine: number = tokenText.lastIndexOf('\n');
 				if (lastNewLine >= 0) {
 					return tokenText.length - lastNewLine - 1;
 				}
 			}
 
-			return lastToken.charPositionInLine + lastToken.stopIndex - lastToken.startIndex + 1;
+			return (
+				lastToken.charPositionInLine +
+				lastToken.stopIndex -
+				lastToken.startIndex +
+				1
+			);
 		}
 
 		// only reach this if tokens is empty, meaning EOF occurs at the first
@@ -112,14 +117,24 @@ export class ListTokenSource implements TokenSource {
 			if (this.eofToken == null) {
 				let start: number = -1;
 				if (this.tokens.length > 0) {
-					let previousStop: number = this.tokens[this.tokens.length - 1].stopIndex;
+					let previousStop: number =
+						this.tokens[this.tokens.length - 1].stopIndex;
 					if (previousStop !== -1) {
 						start = previousStop + 1;
 					}
 				}
 
 				let stop: number = Math.max(-1, start - 1);
-				this.eofToken = this._factory.create({ source: this, stream: this.inputStream }, Token.EOF, "EOF", Token.DEFAULT_CHANNEL, start, stop, this.line, this.charPositionInLine);
+				this.eofToken = this._factory.create(
+					{ source: this, stream: this.inputStream },
+					Token.EOF,
+					'EOF',
+					Token.DEFAULT_CHANNEL,
+					start,
+					stop,
+					this.line,
+					this.charPositionInLine,
+				);
 			}
 
 			return this.eofToken;
@@ -152,7 +167,7 @@ export class ListTokenSource implements TokenSource {
 			let tokenText: string | undefined = lastToken.text;
 			if (tokenText != null) {
 				for (let i = 0; i < tokenText.length; i++) {
-					if (tokenText.charAt(i) === "\n") {
+					if (tokenText.charAt(i) === '\n') {
 						line++;
 					}
 				}
@@ -198,7 +213,7 @@ export class ListTokenSource implements TokenSource {
 			return inputStream.sourceName;
 		}
 
-		return "List";
+		return 'List';
 	}
 
 	/**

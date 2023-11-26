@@ -5,16 +5,16 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:36.9521478-07:00
 
-import { Array2DHashSet } from "../misc/Array2DHashSet";
-import { ArrayEqualityComparator } from "../misc/ArrayEqualityComparator";
-import { Comparable } from "../misc/Stubs";
-import { Equatable } from "../misc/Stubs";
-import { MurmurHash } from "../misc/MurmurHash";
-import { NotNull, Override } from "../Decorators";
-import { ObjectEqualityComparator } from "../misc/ObjectEqualityComparator";
-import { Recognizer } from "../Recognizer";
-import { RuleContext } from "../RuleContext";
-import * as Utils from "../misc/Utils";
+import { Array2DHashSet } from '../misc/Array2DHashSet';
+import { ArrayEqualityComparator } from '../misc/ArrayEqualityComparator';
+import { Comparable } from '../misc/Stubs';
+import { Equatable } from '../misc/Stubs';
+import { MurmurHash } from '../misc/MurmurHash';
+import { NotNull, Override } from '../Decorators';
+import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
+import { Recognizer } from '../Recognizer';
+import { RuleContext } from '../RuleContext';
+import * as Utils from '../misc/Utils';
 
 function max<T extends Comparable<T>>(items: Iterable<T>): T | undefined {
 	let result: T | undefined;
@@ -85,7 +85,10 @@ export abstract class SemanticContext implements Equatable {
 	 * prediction, so we passed in the outer context here in case of context
 	 * dependent predicate evaluation.
 	 */
-	public abstract eval<T>(parser: Recognizer<T, any>, parserCallStack: RuleContext): boolean;
+	public abstract eval<T>(
+		parser: Recognizer<T, any>,
+		parserCallStack: RuleContext,
+	): boolean;
 
 	/**
 	 * Evaluate the precedence predicates for the context and reduce the result.
@@ -104,7 +107,10 @@ export abstract class SemanticContext implements Equatable {
 	 * * A non-`undefined` {@link SemanticContext}: the new simplified
 	 *   semantic context after precedence predicates are evaluated.
 	 */
-	public evalPrecedence(parser: Recognizer<any, any>, parserCallStack: RuleContext): SemanticContext | undefined {
+	public evalPrecedence(
+		parser: Recognizer<any, any>,
+		parserCallStack: RuleContext,
+	): SemanticContext | undefined {
 		return this;
 	}
 
@@ -112,7 +118,10 @@ export abstract class SemanticContext implements Equatable {
 
 	public abstract equals(obj: any): boolean;
 
-	public static and(a: SemanticContext | undefined, b: SemanticContext): SemanticContext {
+	public static and(
+		a: SemanticContext | undefined,
+		b: SemanticContext,
+	): SemanticContext {
 		if (!a || a === SemanticContext.NONE) {
 			return b;
 		}
@@ -131,7 +140,10 @@ export abstract class SemanticContext implements Equatable {
 	 *
 	 *  @see ParserATNSimulator#getPredsForAmbigAlts
 	 */
-	public static or(a: SemanticContext | undefined, b: SemanticContext): SemanticContext {
+	public static or(
+		a: SemanticContext | undefined,
+		b: SemanticContext,
+	): SemanticContext {
 		if (!a) {
 			return b;
 		}
@@ -158,7 +170,9 @@ export namespace SemanticContext {
 	 */
 	const OR_HASHCODE = 486279973;
 
-	function filterPrecedencePredicates(collection: SemanticContext[]): SemanticContext.PrecedencePredicate[] {
+	function filterPrecedencePredicates(
+		collection: SemanticContext[],
+	): SemanticContext.PrecedencePredicate[] {
 		let result: SemanticContext.PrecedencePredicate[] = [];
 		for (let i = 0; i < collection.length; i++) {
 			let context: SemanticContext = collection[i];
@@ -177,12 +191,20 @@ export namespace SemanticContext {
 	export class Predicate extends SemanticContext {
 		public ruleIndex: number;
 		public predIndex: number;
-		public isCtxDependent: boolean;   // e.g., $i ref in pred
+		public isCtxDependent: boolean; // e.g., $i ref in pred
 
 		constructor();
-		constructor(ruleIndex: number, predIndex: number, isCtxDependent: boolean);
+		constructor(
+			ruleIndex: number,
+			predIndex: number,
+			isCtxDependent: boolean,
+		);
 
-		constructor(ruleIndex: number = -1, predIndex: number = -1, isCtxDependent: boolean = false) {
+		constructor(
+			ruleIndex: number = -1,
+			predIndex: number = -1,
+			isCtxDependent: boolean = false,
+		) {
 			super();
 			this.ruleIndex = ruleIndex;
 			this.predIndex = predIndex;
@@ -190,8 +212,12 @@ export namespace SemanticContext {
 		}
 
 		@Override
-		public eval<T>(parser: Recognizer<T, any>, parserCallStack: RuleContext): boolean {
-			let localctx: RuleContext | undefined = this.isCtxDependent ? parserCallStack : undefined;
+		public eval<T>(
+			parser: Recognizer<T, any>,
+			parserCallStack: RuleContext,
+		): boolean {
+			let localctx: RuleContext | undefined =
+				this.isCtxDependent ? parserCallStack : undefined;
 			return parser.sempred(localctx, this.ruleIndex, this.predIndex);
 		}
 
@@ -213,18 +239,23 @@ export namespace SemanticContext {
 			if (this === obj) {
 				return true;
 			}
-			return this.ruleIndex === obj.ruleIndex &&
+			return (
+				this.ruleIndex === obj.ruleIndex &&
 				this.predIndex === obj.predIndex &&
-				this.isCtxDependent === obj.isCtxDependent;
+				this.isCtxDependent === obj.isCtxDependent
+			);
 		}
 
 		@Override
 		public toString(): string {
-			return "{" + this.ruleIndex + ":" + this.predIndex + "}?";
+			return '{' + this.ruleIndex + ':' + this.predIndex + '}?';
 		}
 	}
 
-	export class PrecedencePredicate extends SemanticContext implements Comparable<PrecedencePredicate> {
+	export class PrecedencePredicate
+		extends SemanticContext
+		implements Comparable<PrecedencePredicate>
+	{
 		public precedence: number;
 
 		constructor(precedence: number) {
@@ -233,16 +264,21 @@ export namespace SemanticContext {
 		}
 
 		@Override
-		public eval<T>(parser: Recognizer<T, any>, parserCallStack: RuleContext): boolean {
+		public eval<T>(
+			parser: Recognizer<T, any>,
+			parserCallStack: RuleContext,
+		): boolean {
 			return parser.precpred(parserCallStack, this.precedence);
 		}
 
 		@Override
-		public evalPrecedence(parser: Recognizer<any, any>, parserCallStack: RuleContext): SemanticContext | undefined {
+		public evalPrecedence(
+			parser: Recognizer<any, any>,
+			parserCallStack: RuleContext,
+		): SemanticContext | undefined {
 			if (parser.precpred(parserCallStack, this.precedence)) {
 				return SemanticContext.NONE;
-			}
-			else {
+			} else {
 				return undefined;
 			}
 		}
@@ -275,7 +311,7 @@ export namespace SemanticContext {
 		@Override
 		// precedence >= _precedenceStack.peek()
 		public toString(): string {
-			return "{" + this.precedence + ">=prec}?";
+			return '{' + this.precedence + '>=prec}?';
 		}
 	}
 
@@ -308,7 +344,10 @@ export namespace SemanticContext {
 		constructor(@NotNull a: SemanticContext, @NotNull b: SemanticContext) {
 			super();
 
-			let operands: Array2DHashSet<SemanticContext> = new Array2DHashSet<SemanticContext>(ObjectEqualityComparator.INSTANCE);
+			let operands: Array2DHashSet<SemanticContext> =
+				new Array2DHashSet<SemanticContext>(
+					ObjectEqualityComparator.INSTANCE,
+				);
 			if (a instanceof AND) {
 				operands.addAll(a.opnds);
 			} else {
@@ -322,7 +361,8 @@ export namespace SemanticContext {
 			}
 
 			this.opnds = operands.toArray();
-			let precedencePredicates: PrecedencePredicate[] = filterPrecedencePredicates(this.opnds);
+			let precedencePredicates: PrecedencePredicate[] =
+				filterPrecedencePredicates(this.opnds);
 
 			// interested in the transition with the lowest precedence
 			let reduced = min(precedencePredicates);
@@ -344,7 +384,10 @@ export namespace SemanticContext {
 			if (!(obj instanceof AND)) {
 				return false;
 			}
-			return ArrayEqualityComparator.INSTANCE.equals(this.opnds, obj.opnds);
+			return ArrayEqualityComparator.INSTANCE.equals(
+				this.opnds,
+				obj.opnds,
+			);
 		}
 
 		@Override
@@ -359,7 +402,10 @@ export namespace SemanticContext {
 		 * unordered.
 		 */
 		@Override
-		public eval<T>(parser: Recognizer<T, any>, parserCallStack: RuleContext): boolean {
+		public eval<T>(
+			parser: Recognizer<T, any>,
+			parserCallStack: RuleContext,
+		): boolean {
 			for (let opnd of this.opnds) {
 				if (!opnd.eval(parser, parserCallStack)) {
 					return false;
@@ -370,17 +416,20 @@ export namespace SemanticContext {
 		}
 
 		@Override
-		public evalPrecedence(parser: Recognizer<any, any>, parserCallStack: RuleContext): SemanticContext | undefined {
+		public evalPrecedence(
+			parser: Recognizer<any, any>,
+			parserCallStack: RuleContext,
+		): SemanticContext | undefined {
 			let differs: boolean = false;
 			let operands: SemanticContext[] = [];
 			for (let context of this.opnds) {
-				let evaluated: SemanticContext | undefined = context.evalPrecedence(parser, parserCallStack);
-				differs = differs || (evaluated !== context);
+				let evaluated: SemanticContext | undefined =
+					context.evalPrecedence(parser, parserCallStack);
+				differs = differs || evaluated !== context;
 				if (evaluated == null) {
 					// The AND context is false if any element is false
 					return undefined;
-				}
-				else if (evaluated !== SemanticContext.NONE) {
+				} else if (evaluated !== SemanticContext.NONE) {
 					// Reduce the result by skipping true elements
 					operands.push(evaluated);
 				}
@@ -405,7 +454,7 @@ export namespace SemanticContext {
 
 		@Override
 		public toString(): string {
-			return Utils.join(this.opnds, "&&");
+			return Utils.join(this.opnds, '&&');
 		}
 	}
 
@@ -419,7 +468,10 @@ export namespace SemanticContext {
 		constructor(@NotNull a: SemanticContext, @NotNull b: SemanticContext) {
 			super();
 
-			let operands: Array2DHashSet<SemanticContext> = new Array2DHashSet<SemanticContext>(ObjectEqualityComparator.INSTANCE);
+			let operands: Array2DHashSet<SemanticContext> =
+				new Array2DHashSet<SemanticContext>(
+					ObjectEqualityComparator.INSTANCE,
+				);
 			if (a instanceof OR) {
 				operands.addAll(a.opnds);
 			} else {
@@ -433,7 +485,8 @@ export namespace SemanticContext {
 			}
 
 			this.opnds = operands.toArray();
-			let precedencePredicates: PrecedencePredicate[] = filterPrecedencePredicates(this.opnds);
+			let precedencePredicates: PrecedencePredicate[] =
+				filterPrecedencePredicates(this.opnds);
 
 			// interested in the transition with the highest precedence
 			let reduced = max(precedencePredicates);
@@ -455,7 +508,10 @@ export namespace SemanticContext {
 			if (!(obj instanceof OR)) {
 				return false;
 			}
-			return ArrayEqualityComparator.INSTANCE.equals(this.opnds, obj.opnds);
+			return ArrayEqualityComparator.INSTANCE.equals(
+				this.opnds,
+				obj.opnds,
+			);
 		}
 
 		@Override
@@ -470,7 +526,10 @@ export namespace SemanticContext {
 		 * unordered.
 		 */
 		@Override
-		public eval<T>(parser: Recognizer<T, any>, parserCallStack: RuleContext): boolean {
+		public eval<T>(
+			parser: Recognizer<T, any>,
+			parserCallStack: RuleContext,
+		): boolean {
 			for (let opnd of this.opnds) {
 				if (opnd.eval(parser, parserCallStack)) {
 					return true;
@@ -481,12 +540,16 @@ export namespace SemanticContext {
 		}
 
 		@Override
-		public evalPrecedence(parser: Recognizer<any, any>, parserCallStack: RuleContext): SemanticContext | undefined {
+		public evalPrecedence(
+			parser: Recognizer<any, any>,
+			parserCallStack: RuleContext,
+		): SemanticContext | undefined {
 			let differs: boolean = false;
 			let operands: SemanticContext[] = [];
 			for (let context of this.opnds) {
-				let evaluated: SemanticContext | undefined = context.evalPrecedence(parser, parserCallStack);
-				differs = differs || (evaluated !== context);
+				let evaluated: SemanticContext | undefined =
+					context.evalPrecedence(parser, parserCallStack);
+				differs = differs || evaluated !== context;
 				if (evaluated === SemanticContext.NONE) {
 					// The OR context is true if any element is true
 					return SemanticContext.NONE;
@@ -515,7 +578,7 @@ export namespace SemanticContext {
 
 		@Override
 		public toString(): string {
-			return Utils.join(this.opnds, "||");
+			return Utils.join(this.opnds, '||');
 		}
 	}
 }

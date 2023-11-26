@@ -14,16 +14,24 @@ export class TimeSpan {
 
 	public static fromMilliseconds(millis: number): TimeSpan {
 		let seconds = Math.trunc(millis / TimeSpan.MILLIS_PER_SECOND);
-		let nanos = (millis - (seconds * TimeSpan.MILLIS_PER_SECOND)) * TimeSpan.NANOS_PER_MILLISECOND;
+		let nanos =
+			(millis - seconds * TimeSpan.MILLIS_PER_SECOND) *
+			TimeSpan.NANOS_PER_MILLISECOND;
 		return new TimeSpan(seconds, nanos);
 	}
 
 	public get totalMilliseconds(): number {
-		return (this.seconds * TimeSpan.MILLIS_PER_SECOND) + (this.nanos / TimeSpan.NANOS_PER_MILLISECOND);
+		return (
+			this.seconds * TimeSpan.MILLIS_PER_SECOND +
+			this.nanos / TimeSpan.NANOS_PER_MILLISECOND
+		);
 	}
 
 	public get totalMicroseconds(): number {
-		return (this.seconds * TimeSpan.MICROS_PER_SECOND) + (this.nanos / TimeSpan.NANOS_PER_MICROSECOND);
+		return (
+			this.seconds * TimeSpan.MICROS_PER_SECOND +
+			this.nanos / TimeSpan.NANOS_PER_MICROSECOND
+		);
 	}
 }
 

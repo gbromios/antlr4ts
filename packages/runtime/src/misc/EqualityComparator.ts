@@ -14,7 +14,6 @@
  * @author Sam Harwell
  */
 export interface EqualityComparator<T> {
-
 	/**
 	 * This method returns a hash code for the specified object.
 	 *
@@ -31,5 +30,4 @@ export interface EqualityComparator<T> {
 	 * @returns `true` if `a` equals `b`, otherwise `false`.
 	 */
 	equals(a: T, b: T): boolean;
-
 }

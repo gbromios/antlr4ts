@@ -4,11 +4,11 @@
  */
 
 // ConvertTo-TS run at 2016-10-03T02:09:42.2127260-07:00
-import { EqualityComparator } from "./EqualityComparator";
-import { Override } from "../Decorators";
-import { Equatable } from "./Stubs";
-import { MurmurHash } from "./MurmurHash";
-import { ObjectEqualityComparator } from "./ObjectEqualityComparator";
+import { EqualityComparator } from './EqualityComparator';
+import { Override } from '../Decorators';
+import { Equatable } from './Stubs';
+import { MurmurHash } from './MurmurHash';
+import { ObjectEqualityComparator } from './ObjectEqualityComparator';
 
 /**
  * This default implementation of {@link EqualityComparator} uses object equality
@@ -16,8 +16,11 @@ import { ObjectEqualityComparator } from "./ObjectEqualityComparator";
  *
  * @author Sam Harwell
  */
-export class ArrayEqualityComparator implements EqualityComparator<Equatable[]> {
-	public static readonly INSTANCE: ArrayEqualityComparator = new ArrayEqualityComparator();
+export class ArrayEqualityComparator
+	implements EqualityComparator<Equatable[]>
+{
+	public static readonly INSTANCE: ArrayEqualityComparator =
+		new ArrayEqualityComparator();
 
 	/**
 	 * {@inheritDoc}
@@ -63,5 +66,4 @@ export class ArrayEqualityComparator implements EqualityComparator<Equatable[]> 
 
 		return true;
 	}
-
 }

@@ -5,10 +5,10 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:28.7213647-07:00
 
-import { DecisionEventInfo } from "./DecisionEventInfo";
-import { NotNull } from "../Decorators";
-import { SimulatorState } from "./SimulatorState";
-import { TokenStream } from "../TokenStream";
+import { DecisionEventInfo } from './DecisionEventInfo';
+import { NotNull } from '../Decorators';
+import { SimulatorState } from './SimulatorState';
+import { TokenStream } from '../TokenStream';
 
 /**
  * This class represents profiling event information for a syntax error
@@ -38,8 +38,8 @@ export class ErrorInfo extends DecisionEventInfo {
 		@NotNull state: SimulatorState,
 		@NotNull input: TokenStream,
 		startIndex: number,
-		stopIndex: number) {
-
+		stopIndex: number,
+	) {
 		super(decision, state, input, startIndex, stopIndex, state.useContext);
 	}
 }

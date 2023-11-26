@@ -13,7 +13,6 @@
  * @author Sam Harwell
  */
 export interface Vocabulary {
-
 	/**
 	 * Returns the highest token type value. It can be used to iterate from
 	 * zero to that number, inclusively, thus querying all stored entries.
@@ -122,5 +121,4 @@ export interface Vocabulary {
 	 */
 	//@NotNull
 	getDisplayName(tokenType: number): string;
-
 }

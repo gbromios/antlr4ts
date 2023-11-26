@@ -5,19 +5,17 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:27.8389930-07:00
 
-import { ATNState } from "./ATNState";
-import { ATNStateType } from "./ATNStateType";
-import { Override } from "../Decorators";
+import { ATNState } from './ATNState';
+import { ATNStateType } from './ATNStateType';
+import { Override } from '../Decorators';
 
 /**
  *
  * @author Sam Harwell
  */
 export class BasicState extends ATNState {
-
 	@Override
 	get stateType(): ATNStateType {
 		return ATNStateType.BASIC;
 	}
-
 }

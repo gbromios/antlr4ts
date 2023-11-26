@@ -5,16 +5,16 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:49.6074365-07:00
 
-import { assert } from "./misc/Utils";
-import { CommonToken } from "./CommonToken";
-import { Interval } from "./misc/Interval";
-import { Lexer } from "./Lexer";
-import { NotNull, Override } from "./Decorators";
-import { RuleContext } from "./RuleContext";
-import { Token } from "./Token";
-import { TokenSource } from "./TokenSource";
-import { TokenStream } from "./TokenStream";
-import { WritableToken } from "./WritableToken";
+import { assert } from './misc/Utils';
+import { CommonToken } from './CommonToken';
+import { Interval } from './misc/Interval';
+import { Lexer } from './Lexer';
+import { NotNull, Override } from './Decorators';
+import { RuleContext } from './RuleContext';
+import { Token } from './Token';
+import { TokenSource } from './TokenSource';
+import { TokenStream } from './TokenStream';
+import { WritableToken } from './WritableToken';
 
 /**
  * This implementation of {@link TokenStream} loads tokens from a
@@ -69,7 +69,7 @@ export class BufferedTokenStream implements TokenStream {
 
 	constructor(@NotNull tokenSource: TokenSource) {
 		if (tokenSource == null) {
-			throw new Error("tokenSource cannot be null");
+			throw new Error('tokenSource cannot be null');
 		}
 
 		this._tokenSource = tokenSource;
@@ -132,7 +132,7 @@ export class BufferedTokenStream implements TokenStream {
 		}
 
 		if (!skipEofCheck && this.LA(1) === Token.EOF) {
-			throw new Error("cannot consume EOF");
+			throw new Error('cannot consume EOF');
 		}
 
 		if (this.sync(this.p + 1)) {
@@ -186,7 +186,12 @@ export class BufferedTokenStream implements TokenStream {
 	@Override
 	public get(i: number): Token {
 		if (i < 0 || i >= this.tokens.length) {
-			throw new RangeError("token index " + i + " out of range 0.." + (this.tokens.length - 1));
+			throw new RangeError(
+				'token index ' +
+					i +
+					' out of range 0..' +
+					(this.tokens.length - 1),
+			);
 		}
 
 		return this.tokens[i];
@@ -227,7 +232,7 @@ export class BufferedTokenStream implements TokenStream {
 	}
 
 	protected tryLB(k: number): Token | undefined {
-		if ((this.p - k) < 0) {
+		if (this.p - k < 0) {
 			return undefined;
 		}
 
@@ -239,7 +244,7 @@ export class BufferedTokenStream implements TokenStream {
 	public LT(k: number): Token {
 		let result = this.tryLT(k);
 		if (result === undefined) {
-			throw new RangeError("requested lookback index out of range");
+			throw new RangeError('requested lookback index out of range');
 		}
 
 		return result;
@@ -248,7 +253,7 @@ export class BufferedTokenStream implements TokenStream {
 	public tryLT(k: number): Token | undefined {
 		this.lazyInit();
 		if (k === 0) {
-			throw new RangeError("0 is not a valid lookahead index");
+			throw new RangeError('0 is not a valid lookahead index');
 		}
 
 		if (k < 0) {
@@ -307,7 +312,11 @@ export class BufferedTokenStream implements TokenStream {
 	 *  the token type `BitSet`.  Return an empty array if no tokens were found.  This
 	 *  method looks at both on and off channel tokens.
 	 */
-	public getTokens(start?: number, stop?: number, types?: Set<number> | number): Token[] {
+	public getTokens(
+		start?: number,
+		stop?: number,
+		types?: Set<number> | number,
+	): Token[] {
 		this.lazyInit();
 
 		if (start === undefined) {
@@ -317,8 +326,20 @@ export class BufferedTokenStream implements TokenStream {
 			stop = this.tokens.length - 1;
 		}
 
-		if (start < 0 || stop >= this.tokens.length || stop < 0 || start >= this.tokens.length) {
-			throw new RangeError("start " + start + " or stop " + stop + " not in 0.." + (this.tokens.length - 1));
+		if (
+			start < 0 ||
+			stop >= this.tokens.length ||
+			stop < 0 ||
+			start >= this.tokens.length
+		) {
+			throw new RangeError(
+				'start ' +
+					start +
+					' or stop ' +
+					stop +
+					' not in 0..' +
+					(this.tokens.length - 1),
+			);
 		}
 
 		if (start > stop) {
@@ -327,7 +348,7 @@ export class BufferedTokenStream implements TokenStream {
 
 		if (types === undefined) {
 			return this.tokens.slice(start, stop + 1);
-		} else if (typeof types === "number") {
+		} else if (typeof types === 'number') {
 			types = new Set<number>().add(types);
 		}
 
@@ -335,7 +356,9 @@ export class BufferedTokenStream implements TokenStream {
 
 		// list = tokens[start:stop]:{T t, t.type in types}
 		let filteredTokens: Token[] = this.tokens.slice(start, stop + 1);
-		filteredTokens = filteredTokens.filter((value) => typesSet.has(value.type));
+		filteredTokens = filteredTokens.filter((value) =>
+			typesSet.has(value.type),
+		);
 
 		return filteredTokens;
 	}
@@ -398,13 +421,21 @@ export class BufferedTokenStream implements TokenStream {
 	 *  the current token up until we see a token on {@link Lexer#DEFAULT_TOKEN_CHANNEL} or
 	 *  EOF. If `channel` is `-1`, find any non default channel token.
 	 */
-	public getHiddenTokensToRight(tokenIndex: number, channel: number = -1): Token[] {
+	public getHiddenTokensToRight(
+		tokenIndex: number,
+		channel: number = -1,
+	): Token[] {
 		this.lazyInit();
 		if (tokenIndex < 0 || tokenIndex >= this.tokens.length) {
-			throw new RangeError(tokenIndex + " not in 0.." + (this.tokens.length - 1));
+			throw new RangeError(
+				tokenIndex + ' not in 0..' + (this.tokens.length - 1),
+			);
 		}
 
-		let nextOnChannel: number = this.nextTokenOnChannel(tokenIndex + 1, Lexer.DEFAULT_TOKEN_CHANNEL);
+		let nextOnChannel: number = this.nextTokenOnChannel(
+			tokenIndex + 1,
+			Lexer.DEFAULT_TOKEN_CHANNEL,
+		);
 		let to: number;
 		let from: number = tokenIndex + 1;
 		// if none onchannel to right, nextOnChannel=-1 so set to = last token
@@ -421,10 +452,15 @@ export class BufferedTokenStream implements TokenStream {
 	 *  the current token up until we see a token on {@link Lexer#DEFAULT_TOKEN_CHANNEL}.
 	 *  If `channel` is `-1`, find any non default channel token.
 	 */
-	public getHiddenTokensToLeft(tokenIndex: number, channel: number = -1): Token[] {
+	public getHiddenTokensToLeft(
+		tokenIndex: number,
+		channel: number = -1,
+	): Token[] {
 		this.lazyInit();
 		if (tokenIndex < 0 || tokenIndex >= this.tokens.length) {
-			throw new RangeError(tokenIndex + " not in 0.." + (this.tokens.length - 1));
+			throw new RangeError(
+				tokenIndex + ' not in 0..' + (this.tokens.length - 1),
+			);
 		}
 
 		if (tokenIndex === 0) {
@@ -432,7 +468,10 @@ export class BufferedTokenStream implements TokenStream {
 			return [];
 		}
 
-		let prevOnChannel: number = this.previousTokenOnChannel(tokenIndex - 1, Lexer.DEFAULT_TOKEN_CHANNEL);
+		let prevOnChannel: number = this.previousTokenOnChannel(
+			tokenIndex - 1,
+			Lexer.DEFAULT_TOKEN_CHANNEL,
+		);
 		if (prevOnChannel === tokenIndex - 1) {
 			return [];
 		}
@@ -444,7 +483,11 @@ export class BufferedTokenStream implements TokenStream {
 		return this.filterForChannel(from, to, channel);
 	}
 
-	protected filterForChannel(from: number, to: number, channel: number): Token[] {
+	protected filterForChannel(
+		from: number,
+		to: number,
+		channel: number,
+	): Token[] {
 		let hidden: Token[] = new Array<Token>();
 		for (let i = from; i <= to; i++) {
 			let t: Token = this.tokens[i];
@@ -484,7 +527,7 @@ export class BufferedTokenStream implements TokenStream {
 		let start: number = interval.a;
 		let stop: number = interval.b;
 		if (start < 0 || stop < 0) {
-			return "";
+			return '';
 		}
 
 		this.fill();
@@ -492,7 +535,7 @@ export class BufferedTokenStream implements TokenStream {
 			stop = this.tokens.length - 1;
 		}
 
-		let buf: string = "";
+		let buf: string = '';
 		for (let i = start; i <= stop; i++) {
 			let t: Token = this.tokens[i];
 			if (t.type === Token.EOF) {
@@ -512,7 +555,7 @@ export class BufferedTokenStream implements TokenStream {
 			return this.getText(Interval.of(start.tokenIndex, stop.tokenIndex));
 		}
 
-		return "";
+		return '';
 	}
 
 	/** Get all tokens from lexer until EOF. */

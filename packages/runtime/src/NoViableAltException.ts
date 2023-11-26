@@ -5,15 +5,15 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:52.3255548-07:00
 
-import { ATNConfigSet } from "./atn/ATNConfigSet";
-import { Parser } from "./Parser";
-import { ParserRuleContext } from "./ParserRuleContext";
-import { RecognitionException } from "./RecognitionException";
-import { Recognizer } from "./Recognizer";
-import { Token } from "./Token";
-import { TokenStream } from "./TokenStream";
-import { IntStream } from "./IntStream";
-import { NotNull } from "./Decorators";
+import { ATNConfigSet } from './atn/ATNConfigSet';
+import { Parser } from './Parser';
+import { ParserRuleContext } from './ParserRuleContext';
+import { RecognitionException } from './RecognitionException';
+import { Recognizer } from './Recognizer';
+import { Token } from './Token';
+import { TokenStream } from './TokenStream';
+import { IntStream } from './IntStream';
+import { NotNull } from './Decorators';
 
 /** Indicates that the parser could not decide which of two or more paths
  *  to take based upon the remaining input. It tracks the starting token
@@ -46,7 +46,8 @@ export class NoViableAltException extends RecognitionException {
 		offendingToken: Token,
 		deadEndConfigs: ATNConfigSet | undefined,
 		/*@NotNull*/
-		ctx: ParserRuleContext);
+		ctx: ParserRuleContext,
+	);
 
 	constructor(
 		recognizer: Recognizer<Token, any>,
@@ -54,7 +55,8 @@ export class NoViableAltException extends RecognitionException {
 		startToken?: Token,
 		offendingToken?: Token,
 		deadEndConfigs?: ATNConfigSet,
-		ctx?: ParserRuleContext) {
+		ctx?: ParserRuleContext,
+	) {
 		if (recognizer instanceof Parser) {
 			if (input === undefined) {
 				input = recognizer.inputStream;
@@ -86,5 +88,4 @@ export class NoViableAltException extends RecognitionException {
 	get deadEndConfigs(): ATNConfigSet | undefined {
 		return this._deadEndConfigs;
 	}
-
 }

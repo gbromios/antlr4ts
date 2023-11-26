@@ -5,12 +5,12 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:50.3010112-07:00
 
-import { CharStream } from "./CharStream";
-import { CommonToken } from "./CommonToken";
-import { Interval } from "./misc/Interval";
-import { Override } from "./Decorators";
-import { TokenFactory } from "./TokenFactory";
-import { TokenSource } from "./TokenSource";
+import { CharStream } from './CharStream';
+import { CommonToken } from './CommonToken';
+import { Interval } from './misc/Interval';
+import { Override } from './Decorators';
+import { TokenFactory } from './TokenFactory';
+import { TokenSource } from './TokenSource';
 
 /**
  * This default implementation of {@link TokenFactory} creates
@@ -48,16 +48,23 @@ export class CommonTokenFactory implements TokenFactory {
 
 	@Override
 	public create(
-		source: { source?: TokenSource, stream?: CharStream },
+		source: { source?: TokenSource; stream?: CharStream },
 		type: number,
 		text: string | undefined,
 		channel: number,
 		start: number,
 		stop: number,
 		line: number,
-		charPositionInLine: number): CommonToken {
-
-		let t: CommonToken = new CommonToken(type, text, source, channel, start, stop);
+		charPositionInLine: number,
+	): CommonToken {
+		let t: CommonToken = new CommonToken(
+			type,
+			text,
+			source,
+			channel,
+			start,
+			stop,
+		);
 		t.line = line;
 		t.charPositionInLine = charPositionInLine;
 		if (text == null && this.copyText && source.stream != null) {

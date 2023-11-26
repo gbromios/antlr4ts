@@ -4,33 +4,39 @@
  */
 
 // ConvertTo-TS run at 2016-10-04T11:26:57.1954441-07:00
-import { ANTLRErrorListener } from "./ANTLRErrorListener";
-import { ATN } from "./atn/ATN";
-import { ATNSimulator } from "./atn/ATNSimulator";
-import { ConsoleErrorListener } from "./ConsoleErrorListener";
-import { IntStream } from "./IntStream";
-import { ParseInfo } from "./atn/ParseInfo";
-import { ProxyErrorListener } from "./ProxyErrorListener";
-import { RecognitionException } from "./RecognitionException";
-import { RuleContext } from "./RuleContext";
-import { SuppressWarnings, NotNull } from "./Decorators";
-import { Token } from "./Token";
-import { Vocabulary } from "./Vocabulary";
-import { VocabularyImpl } from "./VocabularyImpl";
+import { ANTLRErrorListener } from './ANTLRErrorListener';
+import { ATN } from './atn/ATN';
+import { ATNSimulator } from './atn/ATNSimulator';
+import { ConsoleErrorListener } from './ConsoleErrorListener';
+import { IntStream } from './IntStream';
+import { ParseInfo } from './atn/ParseInfo';
+import { ProxyErrorListener } from './ProxyErrorListener';
+import { RecognitionException } from './RecognitionException';
+import { RuleContext } from './RuleContext';
+import { SuppressWarnings, NotNull } from './Decorators';
+import { Token } from './Token';
+import { Vocabulary } from './Vocabulary';
+import { VocabularyImpl } from './VocabularyImpl';
 
-import * as Utils from "./misc/Utils";
+import * as Utils from './misc/Utils';
 
 export abstract class Recognizer<TSymbol, ATNInterpreter extends ATNSimulator> {
 	public static readonly EOF: number = -1;
 
-	private static tokenTypeMapCache =
-		new WeakMap<Vocabulary, ReadonlyMap<string, number>>();
-	private static ruleIndexMapCache =
-		new WeakMap<string[], ReadonlyMap<string, number>>();
+	private static tokenTypeMapCache = new WeakMap<
+		Vocabulary,
+		ReadonlyMap<string, number>
+	>();
+	private static ruleIndexMapCache = new WeakMap<
+		string[],
+		ReadonlyMap<string, number>
+	>();
 
-	@SuppressWarnings("serial")
+	@SuppressWarnings('serial')
 	@NotNull
-	private readonly _listeners: Array<ANTLRErrorListener<TSymbol>> = [ConsoleErrorListener.INSTANCE];
+	private readonly _listeners: Array<ANTLRErrorListener<TSymbol>> = [
+		ConsoleErrorListener.INSTANCE,
+	];
 
 	protected _interp!: ATNInterpreter;
 
@@ -69,7 +75,7 @@ export abstract class Recognizer<TSymbol, ATNInterpreter extends ATNSimulator> {
 				}
 			}
 
-			intermediateResult.set("EOF", Token.EOF);
+			intermediateResult.set('EOF', Token.EOF);
 			result = intermediateResult;
 			Recognizer.tokenTypeMapCache.set(vocabulary, result);
 		}
@@ -86,10 +92,13 @@ export abstract class Recognizer<TSymbol, ATNInterpreter extends ATNSimulator> {
 	public getRuleIndexMap(): ReadonlyMap<string, number> {
 		let ruleNames: string[] = this.ruleNames;
 		if (ruleNames == null) {
-			throw new Error("The current recognizer does not provide a list of rule names.");
+			throw new Error(
+				'The current recognizer does not provide a list of rule names.',
+			);
 		}
 
-		let result: ReadonlyMap<string, number> | undefined = Recognizer.ruleIndexMapCache.get(ruleNames);
+		let result: ReadonlyMap<string, number> | undefined =
+			Recognizer.ruleIndexMapCache.get(ruleNames);
 		if (result == null) {
 			result = Utils.toMap(ruleNames);
 			Recognizer.ruleIndexMapCache.set(ruleNames, result);
@@ -115,7 +124,7 @@ export abstract class Recognizer<TSymbol, ATNInterpreter extends ATNSimulator> {
 	 */
 	@NotNull
 	get serializedATN(): string {
-		throw new Error("there is no serialized ATN");
+		throw new Error('there is no serialized ATN');
 	}
 
 	/** For debugging and other purposes, might want the grammar name.
@@ -167,24 +176,28 @@ export abstract class Recognizer<TSymbol, ATNInterpreter extends ATNSimulator> {
 	public getErrorHeader(@NotNull e: RecognitionException): string {
 		let token = e.getOffendingToken();
 		if (!token) {
-			return "";
+			return '';
 		}
 		let line = token.line;
 		let charPositionInLine: number = token.charPositionInLine;
-		return "line " + line + ":" + charPositionInLine;
+		return 'line ' + line + ':' + charPositionInLine;
 	}
 
 	/**
 	 * @exception NullPointerException if `listener` is `undefined`.
 	 */
-	public addErrorListener(@NotNull listener: ANTLRErrorListener<TSymbol>): void {
+	public addErrorListener(
+		@NotNull listener: ANTLRErrorListener<TSymbol>,
+	): void {
 		if (!listener) {
-			throw new TypeError("listener must not be null");
+			throw new TypeError('listener must not be null');
 		}
 		this._listeners.push(listener);
 	}
 
-	public removeErrorListener(@NotNull listener: ANTLRErrorListener<TSymbol>): void {
+	public removeErrorListener(
+		@NotNull listener: ANTLRErrorListener<TSymbol>,
+	): void {
 		let position = this._listeners.indexOf(listener);
 		if (position !== -1) {
 			this._listeners.splice(position, 1);
@@ -201,7 +214,9 @@ export abstract class Recognizer<TSymbol, ATNInterpreter extends ATNSimulator> {
 	}
 
 	public getErrorListenerDispatch(): ANTLRErrorListener<TSymbol> {
-		return new ProxyErrorListener<TSymbol, ANTLRErrorListener<TSymbol>>(this.getErrorListeners());
+		return new ProxyErrorListener<TSymbol, ANTLRErrorListener<TSymbol>>(
+			this.getErrorListeners(),
+		);
 	}
 
 	// subclass needs to override these if there are sempreds or actions
@@ -209,20 +224,23 @@ export abstract class Recognizer<TSymbol, ATNInterpreter extends ATNSimulator> {
 	public sempred(
 		_localctx: RuleContext | undefined,
 		ruleIndex: number,
-		actionIndex: number): boolean {
+		actionIndex: number,
+	): boolean {
 		return true;
 	}
 
 	public precpred(
 		localctx: RuleContext | undefined,
-		precedence: number): boolean {
+		precedence: number,
+	): boolean {
 		return true;
 	}
 
 	public action(
 		_localctx: RuleContext | undefined,
 		ruleIndex: number,
-		actionIndex: number): void {
+		actionIndex: number,
+	): void {
 		// intentionally empty
 	}
 
@@ -238,9 +256,9 @@ export abstract class Recognizer<TSymbol, ATNInterpreter extends ATNSimulator> {
 	 *  configuration information.
 	 */
 	set state(atnState: number) {
-//		System.err.println("setState "+atnState);
+		//		System.err.println("setState "+atnState);
 		this._stateNumber = atnState;
-//		if ( traceATNStates ) _ctx.trace(atnState);
+		//		if ( traceATNStates ) _ctx.trace(atnState);
 	}
 
 	public abstract readonly inputStream: IntStream | undefined;

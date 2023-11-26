@@ -5,16 +5,16 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:36.8294453-07:00
 
-import { ATNState } from "./ATNState";
-import { Override, NotNull } from "../Decorators";
-import { RuleStartState } from "./RuleStartState";
-import { Transition } from "./Transition";
-import { TransitionType } from "./TransitionType";
+import { ATNState } from './ATNState';
+import { Override, NotNull } from '../Decorators';
+import { RuleStartState } from './RuleStartState';
+import { Transition } from './Transition';
+import { TransitionType } from './TransitionType';
 
 /** */
 export class RuleTransition extends Transition {
 	/** Ptr to the rule definition object for this rule ref */
-	public ruleIndex: number;      // no Rule object at runtime
+	public ruleIndex: number; // no Rule object at runtime
 
 	public precedence: number;
 
@@ -25,7 +25,12 @@ export class RuleTransition extends Transition {
 	public tailCall: boolean = false;
 	public optimizedTailCall: boolean = false;
 
-	constructor(@NotNull ruleStart: RuleStartState, ruleIndex: number, precedence: number, @NotNull followState: ATNState) {
+	constructor(
+		@NotNull ruleStart: RuleStartState,
+		ruleIndex: number,
+		precedence: number,
+		@NotNull followState: ATNState,
+	) {
 		super(ruleStart);
 		this.ruleIndex = ruleIndex;
 		this.precedence = precedence;
@@ -43,7 +48,11 @@ export class RuleTransition extends Transition {
 	}
 
 	@Override
-	public matches(symbol: number, minVocabSymbol: number, maxVocabSymbol: number): boolean {
+	public matches(
+		symbol: number,
+		minVocabSymbol: number,
+		maxVocabSymbol: number,
+	): boolean {
 		return false;
 	}
 }

@@ -5,13 +5,13 @@
 
 // ConvertTo-TS run at 2016-10-03T02:09:41.7434086-07:00
 
-import { assert } from "./Utils";
-import { DefaultEqualityComparator } from "./DefaultEqualityComparator";
-import { EqualityComparator } from "./EqualityComparator";
-import { NotNull, Nullable, Override, SuppressWarnings } from "../Decorators";
-import { JavaCollection, JavaSet } from "./Stubs";
-import { ObjectEqualityComparator } from "./ObjectEqualityComparator";
-import { MurmurHash } from "./MurmurHash";
+import { assert } from './Utils';
+import { DefaultEqualityComparator } from './DefaultEqualityComparator';
+import { EqualityComparator } from './EqualityComparator';
+import { NotNull, Nullable, Override, SuppressWarnings } from '../Decorators';
+import { JavaCollection, JavaSet } from './Stubs';
+import { ObjectEqualityComparator } from './ObjectEqualityComparator';
+import { MurmurHash } from './MurmurHash';
 
 /** {@link Set} implementation with closed hashing (open addressing). */
 
@@ -22,7 +22,9 @@ import { MurmurHash } from "./MurmurHash";
 const INITAL_CAPACITY: number = 16; // must be power of 2
 const LOAD_FACTOR: number = 0.75;
 
-export class Array2DHashSet<T extends { toString(): string; }> implements JavaSet<T> {
+export class Array2DHashSet<T extends { toString(): string }>
+	implements JavaSet<T>
+{
 	@NotNull
 	protected comparator: EqualityComparator<T>;
 
@@ -37,8 +39,8 @@ export class Array2DHashSet<T extends { toString(): string; }> implements JavaSe
 	constructor(set: Array2DHashSet<T>);
 	constructor(
 		comparatorOrSet?: EqualityComparator<T> | Array2DHashSet<T>,
-		initialCapacity: number = INITAL_CAPACITY) {
-
+		initialCapacity: number = INITAL_CAPACITY,
+	) {
 		if (comparatorOrSet instanceof Array2DHashSet) {
 			this.comparator = comparatorOrSet.comparator;
 			this.buckets = comparatorOrSet.buckets.slice(0);
@@ -52,7 +54,8 @@ export class Array2DHashSet<T extends { toString(): string; }> implements JavaSe
 			this.n = comparatorOrSet.n;
 			this.threshold = comparatorOrSet.threshold;
 		} else {
-			this.comparator = comparatorOrSet || DefaultEqualityComparator.INSTANCE;
+			this.comparator =
+				comparatorOrSet || DefaultEqualityComparator.INSTANCE;
 			this.buckets = this.createBuckets(initialCapacity);
 		}
 	}
@@ -160,7 +163,7 @@ export class Array2DHashSet<T extends { toString(): string; }> implements JavaSe
 		let newTable: Array<T[] | undefined> = this.createBuckets(newCapacity);
 		this.buckets = newTable;
 		this.threshold = Math.floor(newCapacity * LOAD_FACTOR);
-//		System.out.println("new size="+newCapacity+", thres="+threshold);
+		//		System.out.println("new size="+newCapacity+", thres="+threshold);
 		// rehash all existing entries
 		let oldSize: number = this.size;
 		for (let bucket of old) {
@@ -255,8 +258,7 @@ export class Array2DHashSet<T extends { toString(): string; }> implements JavaSe
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			for (let o of collection) {
 				if (!this.containsFast(this.asElementType(o))) {
 					return false;
@@ -289,10 +291,10 @@ export class Array2DHashSet<T extends { toString(): string; }> implements JavaSe
 	@Override
 	public toString(): string {
 		if (this.size === 0) {
-			return "{}";
+			return '{}';
 		}
 
-		let buf = "{";
+		let buf = '{';
 		let first: boolean = true;
 		for (let bucket of this.buckets) {
 			if (bucket == null) {
@@ -305,37 +307,37 @@ export class Array2DHashSet<T extends { toString(): string; }> implements JavaSe
 				if (first) {
 					first = false;
 				} else {
-					buf += ", ";
+					buf += ', ';
 				}
 				buf += o.toString();
 			}
 		}
-		buf += "}";
+		buf += '}';
 		return buf;
 	}
 
 	public toTableString(): string {
-		let buf = "";
+		let buf = '';
 		for (let bucket of this.buckets) {
 			if (bucket == null) {
-				buf += "null\n";
+				buf += 'null\n';
 				continue;
 			}
-			buf += "[";
+			buf += '[';
 			let first: boolean = true;
 			for (let o of bucket) {
 				if (first) {
 					first = false;
 				} else {
-					buf += " ";
+					buf += ' ';
 				}
 				if (o == null) {
-					buf += "_";
+					buf += '_';
 				} else {
 					buf += o.toString();
 				}
 			}
-			buf += "]\n";
+			buf += ']\n';
 		}
 		return buf;
 	}
@@ -353,7 +355,7 @@ export class Array2DHashSet<T extends { toString(): string; }> implements JavaSe
 	 * @returns `o` if it could be an instance of `T`, otherwise
 	 * `undefined`.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings('unchecked')
 	protected asElementType(o: any): T {
 		return o as T;
 	}
@@ -364,7 +366,7 @@ export class Array2DHashSet<T extends { toString(): string; }> implements JavaSe
 	 * @param capacity the length of the array to return
 	 * @returns the newly constructed array
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings('unchecked')
 	protected createBuckets(capacity: number): Array<T[] | undefined> {
 		return new Array<T[]>(capacity);
 	}

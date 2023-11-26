@@ -5,14 +5,14 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:49.2855056-07:00
 
-import { DefaultErrorStrategy } from "./DefaultErrorStrategy";
-import { Parser } from "./Parser";
-import { InputMismatchException } from "./InputMismatchException";
-import { Override } from "./Decorators";
-import { ParseCancellationException } from "./misc/ParseCancellationException";
-import { ParserRuleContext } from "./ParserRuleContext";
-import { RecognitionException } from "./RecognitionException";
-import { Token } from "./Token";
+import { DefaultErrorStrategy } from './DefaultErrorStrategy';
+import { Parser } from './Parser';
+import { InputMismatchException } from './InputMismatchException';
+import { Override } from './Decorators';
+import { ParseCancellationException } from './misc/ParseCancellationException';
+import { ParserRuleContext } from './ParserRuleContext';
+import { RecognitionException } from './RecognitionException';
+import { Token } from './Token';
 
 /**
  * This implementation of {@link ANTLRErrorStrategy} responds to syntax errors
@@ -48,7 +48,11 @@ export class BailErrorStrategy extends DefaultErrorStrategy {
 	 */
 	@Override
 	public recover(recognizer: Parser, e: RecognitionException): void {
-		for (let context: ParserRuleContext | undefined = recognizer.context; context; context = context.parent) {
+		for (
+			let context: ParserRuleContext | undefined = recognizer.context;
+			context;
+			context = context.parent
+		) {
 			context.exception = e;
 		}
 
@@ -61,7 +65,11 @@ export class BailErrorStrategy extends DefaultErrorStrategy {
 	@Override
 	public recoverInline(recognizer: Parser): Token {
 		let e = new InputMismatchException(recognizer);
-		for (let context: ParserRuleContext | undefined = recognizer.context; context; context = context.parent) {
+		for (
+			let context: ParserRuleContext | undefined = recognizer.context;
+			context;
+			context = context.parent
+		) {
 			context.exception = e;
 		}
 

@@ -4,15 +4,15 @@
  */
 
 // ConvertTo-TS run at 2016-10-04T11:26:52.9471863-07:00
-import { ANTLRErrorListener } from "./ANTLRErrorListener";
-import { ATNConfigSet } from "./atn/ATNConfigSet";
-import { BitSet } from "./misc/BitSet";
-import { DFA } from "./dfa/DFA";
-import { Parser } from "./Parser";
-import { SimulatorState } from "./atn/SimulatorState";
-import { Token } from "./Token";
-import * as Stubs from "./misc/Stubs";
-import * as Exception from "./RecognitionException";
+import { ANTLRErrorListener } from './ANTLRErrorListener';
+import { ATNConfigSet } from './atn/ATNConfigSet';
+import { BitSet } from './misc/BitSet';
+import { DFA } from './dfa/DFA';
+import { Parser } from './Parser';
+import { SimulatorState } from './atn/SimulatorState';
+import { Token } from './Token';
+import * as Stubs from './misc/Stubs';
+import * as Exception from './RecognitionException';
 
 /** How to emit recognition errors for parsers.
  */
@@ -66,7 +66,8 @@ export interface ParserErrorListener extends ANTLRErrorListener<Token> {
 		exact: boolean,
 		ambigAlts: BitSet | undefined,
 		/*@NotNull*/
-		configs: ATNConfigSet) => void;
+		configs: ATNConfigSet,
+	) => void;
 
 	/**
 	 * This method is called when an SLL conflict occurs and the parser is about
@@ -96,7 +97,8 @@ export interface ParserErrorListener extends ANTLRErrorListener<Token> {
 		stopIndex: number,
 		conflictingAlts: BitSet | undefined,
 		/*@NotNull*/
-		conflictState: SimulatorState) => void;
+		conflictState: SimulatorState,
+	) => void;
 
 	/**
 	 * This method is called by the parser when a full-context prediction has a
@@ -143,5 +145,6 @@ export interface ParserErrorListener extends ANTLRErrorListener<Token> {
 		stopIndex: number,
 		prediction: number,
 		/*@NotNull*/
-		acceptState: SimulatorState) => void;
+		acceptState: SimulatorState,
+	) => void;
 }

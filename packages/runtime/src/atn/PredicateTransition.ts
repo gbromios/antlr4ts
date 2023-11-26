@@ -5,11 +5,11 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:35.2826960-07:00
 
-import { AbstractPredicateTransition } from "./AbstractPredicateTransition";
-import { ATNState } from "./ATNState";
-import { NotNull, Override } from "../Decorators";
-import { SemanticContext } from "./SemanticContext";
-import { TransitionType } from "./TransitionType";
+import { AbstractPredicateTransition } from './AbstractPredicateTransition';
+import { ATNState } from './ATNState';
+import { NotNull, Override } from '../Decorators';
+import { SemanticContext } from './SemanticContext';
+import { TransitionType } from './TransitionType';
 
 /** TODO: this is old comment:
  *  A tree of semantic predicates from the grammar AST if label==SEMPRED.
@@ -20,9 +20,14 @@ import { TransitionType } from "./TransitionType";
 export class PredicateTransition extends AbstractPredicateTransition {
 	public ruleIndex: number;
 	public predIndex: number;
-	public isCtxDependent: boolean;   // e.g., $i ref in pred
+	public isCtxDependent: boolean; // e.g., $i ref in pred
 
-	constructor(@NotNull target: ATNState, ruleIndex: number, predIndex: number, isCtxDependent: boolean) {
+	constructor(
+		@NotNull target: ATNState,
+		ruleIndex: number,
+		predIndex: number,
+		isCtxDependent: boolean,
+	) {
 		super(target);
 		this.ruleIndex = ruleIndex;
 		this.predIndex = predIndex;
@@ -35,20 +40,30 @@ export class PredicateTransition extends AbstractPredicateTransition {
 	}
 
 	@Override
-	get isEpsilon(): boolean { return true; }
+	get isEpsilon(): boolean {
+		return true;
+	}
 
 	@Override
-	public matches(symbol: number, minVocabSymbol: number, maxVocabSymbol: number): boolean {
+	public matches(
+		symbol: number,
+		minVocabSymbol: number,
+		maxVocabSymbol: number,
+	): boolean {
 		return false;
 	}
 
 	get predicate(): SemanticContext.Predicate {
-		return new SemanticContext.Predicate(this.ruleIndex, this.predIndex, this.isCtxDependent);
+		return new SemanticContext.Predicate(
+			this.ruleIndex,
+			this.predIndex,
+			this.isCtxDependent,
+		);
 	}
 
 	@Override
 	@NotNull
 	public toString(): string {
-		return "pred_" + this.ruleIndex + ":" + this.predIndex;
+		return 'pred_' + this.ruleIndex + ':' + this.predIndex;
 	}
 }

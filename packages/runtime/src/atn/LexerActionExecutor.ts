@@ -5,13 +5,13 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:28.8810453-07:00
 
-import { ArrayEqualityComparator } from "../misc/ArrayEqualityComparator";
-import { CharStream } from "../CharStream";
-import { Lexer } from "../Lexer";
-import { LexerAction } from "./LexerAction";
-import { LexerIndexedCustomAction } from "./LexerIndexedCustomAction";
-import { MurmurHash } from "../misc/MurmurHash";
-import { NotNull, Override } from "../Decorators";
+import { ArrayEqualityComparator } from '../misc/ArrayEqualityComparator';
+import { CharStream } from '../CharStream';
+import { Lexer } from '../Lexer';
+import { LexerAction } from './LexerAction';
+import { LexerIndexedCustomAction } from './LexerIndexedCustomAction';
+import { MurmurHash } from '../misc/MurmurHash';
+import { NotNull, Override } from '../Decorators';
 
 /**
  * Represents an executor for a sequence of lexer actions which traversed during
@@ -65,7 +65,10 @@ export class LexerActionExecutor {
 	 * of `lexerActionExecutor` and `lexerAction`.
 	 */
 	@NotNull
-	public static append(lexerActionExecutor: LexerActionExecutor | undefined, @NotNull lexerAction: LexerAction): LexerActionExecutor {
+	public static append(
+		lexerActionExecutor: LexerActionExecutor | undefined,
+		@NotNull lexerAction: LexerAction,
+	): LexerActionExecutor {
 		if (!lexerActionExecutor) {
 			return new LexerActionExecutor([lexerAction]);
 		}
@@ -107,12 +110,18 @@ export class LexerActionExecutor {
 	public fixOffsetBeforeMatch(offset: number): LexerActionExecutor {
 		let updatedLexerActions: LexerAction[] | undefined;
 		for (let i = 0; i < this._lexerActions.length; i++) {
-			if (this._lexerActions[i].isPositionDependent && !(this._lexerActions[i] instanceof LexerIndexedCustomAction)) {
+			if (
+				this._lexerActions[i].isPositionDependent &&
+				!(this._lexerActions[i] instanceof LexerIndexedCustomAction)
+			) {
 				if (!updatedLexerActions) {
 					updatedLexerActions = this._lexerActions.slice(0);
 				}
 
-				updatedLexerActions[i] = new LexerIndexedCustomAction(offset, this._lexerActions[i]);
+				updatedLexerActions[i] = new LexerIndexedCustomAction(
+					offset,
+					this._lexerActions[i],
+				);
 			}
 		}
 
@@ -151,7 +160,11 @@ export class LexerActionExecutor {
 	 * {@link IntStream#seek} to set the `input` position to the beginning
 	 * of the token.
 	 */
-	public execute(@NotNull lexer: Lexer, input: CharStream, startIndex: number): void {
+	public execute(
+		@NotNull lexer: Lexer,
+		input: CharStream,
+		startIndex: number,
+	): void {
 		let requiresSeek: boolean = false;
 		let stopIndex: number = input.index;
 		try {
@@ -160,7 +173,7 @@ export class LexerActionExecutor {
 					let offset: number = lexerAction.offset;
 					input.seek(startIndex + offset);
 					lexerAction = lexerAction.action;
-					requiresSeek = (startIndex + offset) !== stopIndex;
+					requiresSeek = startIndex + offset !== stopIndex;
 				} else if (lexerAction.isPositionDependent) {
 					input.seek(stopIndex);
 					requiresSeek = false;
@@ -188,7 +201,12 @@ export class LexerActionExecutor {
 			return false;
 		}
 
-		return this.cachedHashCode === obj.cachedHashCode
-			&& ArrayEqualityComparator.INSTANCE.equals(this._lexerActions, obj._lexerActions);
+		return (
+			this.cachedHashCode === obj.cachedHashCode &&
+			ArrayEqualityComparator.INSTANCE.equals(
+				this._lexerActions,
+				obj._lexerActions,
+			)
+		);
 	}
 }

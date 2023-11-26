@@ -5,17 +5,17 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:38.7771056-07:00
 
-import { AcceptStateInfo } from "./AcceptStateInfo";
-import { ATN } from "../atn/ATN";
-import { ATNConfigSet } from "../atn/ATNConfigSet";
-import { BitSet } from "../misc/BitSet";
-import { LexerActionExecutor } from "../atn/LexerActionExecutor";
-import { MurmurHash } from "../misc/MurmurHash";
-import { NotNull, Override } from "../Decorators";
-import { PredictionContext } from "../atn/PredictionContext";
-import { SemanticContext } from "../atn/SemanticContext";
+import { AcceptStateInfo } from './AcceptStateInfo';
+import { ATN } from '../atn/ATN';
+import { ATNConfigSet } from '../atn/ATNConfigSet';
+import { BitSet } from '../misc/BitSet';
+import { LexerActionExecutor } from '../atn/LexerActionExecutor';
+import { MurmurHash } from '../misc/MurmurHash';
+import { NotNull, Override } from '../Decorators';
+import { PredictionContext } from '../atn/PredictionContext';
+import { SemanticContext } from '../atn/SemanticContext';
 
-import { assert } from "../misc/Utils";
+import { assert } from '../misc/Utils';
 
 /** A DFA state represents a set of possible ATN configurations.
  *  As Aho, Sethi, Ullman p. 117 says "The DFA uses its state
@@ -155,7 +155,7 @@ export class DFAState {
 
 	public setContextTarget(invokingState: number, target: DFAState): void {
 		if (!this.isContextSensitive) {
-			throw new Error("The state is not context sensitive.");
+			throw new Error('The state is not context sensitive.');
 		}
 
 		if (invokingState === PredictionContext.EMPTY_FULL_STATE_KEY) {
@@ -173,8 +173,7 @@ export class DFAState {
 				let result = new Map<number, DFAState>();
 				result.set(PredictionContext.EMPTY_FULL_STATE_KEY, existing);
 				return result;
-			}
-			else {
+			} else {
 				map.delete(-1);
 				map.set(PredictionContext.EMPTY_FULL_STATE_KEY, existing);
 			}
@@ -217,21 +216,20 @@ export class DFAState {
 
 		let other: DFAState = o;
 		let sameSet: boolean = this.configs.equals(other.configs);
-//		System.out.println("DFAState.equals: "+configs+(sameSet?"==":"!=")+other.configs);
+		//		System.out.println("DFAState.equals: "+configs+(sameSet?"==":"!=")+other.configs);
 		return sameSet;
 	}
 
 	@Override
 	public toString(): string {
-		let buf = "";
-		buf += (this.stateNumber) + (":") + (this.configs);
+		let buf = '';
+		buf += this.stateNumber + ':' + this.configs;
 		if (this.isAcceptState) {
-			buf += ("=>");
+			buf += '=>';
 			if (this.predicates) {
 				buf += this.predicates;
-			}
-			else {
-				buf += (this.prediction);
+			} else {
+				buf += this.prediction;
 			}
 		}
 		return buf.toString();
@@ -242,7 +240,7 @@ export namespace DFAState {
 	/** Map a predicate to a predicted alternative. */
 	export class PredPrediction {
 		@NotNull
-		public pred: SemanticContext;  // never null; at least SemanticContext.NONE
+		public pred: SemanticContext; // never null; at least SemanticContext.NONE
 		public alt: number;
 		constructor(@NotNull pred: SemanticContext, alt: number) {
 			this.alt = alt;
@@ -251,7 +249,7 @@ export namespace DFAState {
 
 		@Override
 		public toString(): string {
-			return "(" + this.pred + ", " + this.alt + ")";
+			return '(' + this.pred + ', ' + this.alt + ')';
 		}
 	}
 }

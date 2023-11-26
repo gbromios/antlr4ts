@@ -5,28 +5,30 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:51.7913318-07:00
 
-import { ANTLRErrorListener } from "./ANTLRErrorListener";
-import { CharStream } from "./CharStream";
-import { CommonTokenFactory } from "./CommonTokenFactory";
-import { IntegerStack } from "./misc/IntegerStack";
-import { Interval } from "./misc/Interval";
-import { IntStream } from "./IntStream";
-import { LexerATNSimulator } from "./atn/LexerATNSimulator";
-import { LexerNoViableAltException } from "./LexerNoViableAltException";
-import { Override } from "./Decorators";
-import { RecognitionException } from "./RecognitionException";
-import { Recognizer } from "./Recognizer";
-import { Token } from "./Token";
-import { TokenFactory } from "./TokenFactory";
-import { TokenSource } from "./TokenSource";
+import { ANTLRErrorListener } from './ANTLRErrorListener';
+import { CharStream } from './CharStream';
+import { CommonTokenFactory } from './CommonTokenFactory';
+import { IntegerStack } from './misc/IntegerStack';
+import { Interval } from './misc/Interval';
+import { IntStream } from './IntStream';
+import { LexerATNSimulator } from './atn/LexerATNSimulator';
+import { LexerNoViableAltException } from './LexerNoViableAltException';
+import { Override } from './Decorators';
+import { RecognitionException } from './RecognitionException';
+import { Recognizer } from './Recognizer';
+import { Token } from './Token';
+import { TokenFactory } from './TokenFactory';
+import { TokenSource } from './TokenSource';
 
 /** A lexer is recognizer that draws input symbols from a character stream.
  *  lexer grammars result in a subclass of this object. A Lexer object
  *  uses simplified match() and error recovery mechanisms in the interest
  *  of speed.
  */
-export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
-	implements TokenSource {
+export abstract class Lexer
+	extends Recognizer<number, LexerATNSimulator>
+	implements TokenSource
+{
 	public static readonly DEFAULT_MODE: number = 0;
 	public static readonly MORE: number = -2;
 	public static readonly SKIP: number = -3;
@@ -40,11 +42,14 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 	}
 
 	public static readonly MIN_CHAR_VALUE: number = 0x0000;
-	public static readonly MAX_CHAR_VALUE: number = 0x10FFFF;
+	public static readonly MAX_CHAR_VALUE: number = 0x10ffff;
 
 	public _input: CharStream;
 
-	protected _tokenFactorySourcePair: { source: TokenSource, stream: CharStream };
+	protected _tokenFactorySourcePair: {
+		source: TokenSource;
+		stream: CharStream;
+	};
 
 	/** How to create token objects */
 	protected _factory: TokenFactory = CommonTokenFactory.DEFAULT;
@@ -125,15 +130,14 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 	@Override
 	public nextToken(): Token {
 		if (this._input == null) {
-			throw new Error("nextToken requires a non-null input stream.");
+			throw new Error('nextToken requires a non-null input stream.');
 		}
 
 		// Mark start location in char stream so unbuffered streams are
 		// guaranteed at least have text of current token
 		let tokenStartMarker: number = this._input.mark();
 		try {
-			outer:
-			while (true) {
+			outer: while (true) {
 				if (this._hitEOF) {
 					return this.emitEOF();
 				}
@@ -141,21 +145,21 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 				this._token = undefined;
 				this._channel = Token.DEFAULT_CHANNEL;
 				this._tokenStartCharIndex = this._input.index;
-				this._tokenStartCharPositionInLine = this.interpreter.charPositionInLine;
+				this._tokenStartCharPositionInLine =
+					this.interpreter.charPositionInLine;
 				this._tokenStartLine = this.interpreter.line;
 				this._text = undefined;
 				do {
 					this._type = Token.INVALID_TYPE;
-//				System.out.println("nextToken line "+tokenStartLine+" at "+((char)input.LA(1))+
-//								   " in mode "+mode+
-//								   " at index "+input.index);
+					//				System.out.println("nextToken line "+tokenStartLine+" at "+((char)input.LA(1))+
+					//								   " in mode "+mode+
+					//								   " at index "+input.index);
 					let ttype: number;
 					try {
 						ttype = this.interpreter.match(this._input, this._mode);
-					}
-					catch (e) {
+					} catch (e) {
 						if (e instanceof LexerNoViableAltException) {
-							this.notifyListeners(e);		// report error
+							this.notifyListeners(e); // report error
 							this.recover(e);
 							ttype = Lexer.SKIP;
 						} else {
@@ -177,8 +181,7 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 				}
 				return this._token;
 			}
-		}
-		finally {
+		} finally {
 			// make sure we release marker after match or
 			// unbuffered char stream will keep buffering
 			this._input.release(tokenStartMarker);
@@ -205,7 +208,7 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 
 	public pushMode(m: number): void {
 		if (LexerATNSimulator.debug) {
-			console.log("pushMode " + m);
+			console.log('pushMode ' + m);
 		}
 		this._modeStack.push(this._mode);
 		this.mode(m);
@@ -213,10 +216,10 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 
 	public popMode(): number {
 		if (this._modeStack.isEmpty) {
-			throw new Error("EmptyStackException");
+			throw new Error('EmptyStackException');
 		}
 		if (LexerATNSimulator.debug) {
-			console.log("popMode back to " + this._modeStack.peek());
+			console.log('popMode back to ' + this._modeStack.peek());
 		}
 		this.mode(this._modeStack.pop());
 		return this._mode;
@@ -249,7 +252,6 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 		return this._input.sourceName;
 	}
 
-
 	/** The standard method called to automatically emit a token at the
 	 *  outermost lexical rule.  The token object should point into the
 	 *  char buffer start..stop.  If there is a text override in 'text',
@@ -268,9 +270,15 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 	public emit(token?: Token): Token {
 		if (!token) {
 			token = this._factory.create(
-				this._tokenFactorySourcePair, this._type, this._text, this._channel,
-				this._tokenStartCharIndex, this.charIndex - 1, this._tokenStartLine,
-				this._tokenStartCharPositionInLine);
+				this._tokenFactorySourcePair,
+				this._type,
+				this._text,
+				this._channel,
+				this._tokenStartCharIndex,
+				this.charIndex - 1,
+				this._tokenStartLine,
+				this._tokenStartCharPositionInLine,
+			);
 		}
 		this._token = token;
 		return token;
@@ -280,9 +288,15 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 		let cpos: number = this.charPositionInLine;
 		let line: number = this.line;
 		let eof: Token = this._factory.create(
-			this._tokenFactorySourcePair, Token.EOF, undefined,
-			Token.DEFAULT_CHANNEL, this._input.index, this._input.index - 1,
-			line, cpos);
+			this._tokenFactorySourcePair,
+			Token.EOF,
+			undefined,
+			Token.DEFAULT_CHANNEL,
+			this._input.index,
+			this._input.index - 1,
+			line,
+			cpos,
+		);
 		this.emit(eof);
 		return eof;
 	}
@@ -328,7 +342,9 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 	}
 
 	/** Override if emitting multiple tokens. */
-	get token(): Token | undefined { return this._token; }
+	get token(): Token | undefined {
+		return this._token;
+	}
 
 	set token(_token: Token | undefined) {
 		this._token = _token;
@@ -369,33 +385,43 @@ export abstract class Lexer extends Recognizer<number, LexerATNSimulator>
 
 	public notifyListeners(e: LexerNoViableAltException): void {
 		let text: string = this._input.getText(
-			Interval.of(this._tokenStartCharIndex, this._input.index));
-		let msg: string = "token recognition error at: '" +
-			this.getErrorDisplay(text) + "'";
+			Interval.of(this._tokenStartCharIndex, this._input.index),
+		);
+		let msg: string =
+			"token recognition error at: '" + this.getErrorDisplay(text) + "'";
 
-		let listener: ANTLRErrorListener<number> = this.getErrorListenerDispatch();
+		let listener: ANTLRErrorListener<number> =
+			this.getErrorListenerDispatch();
 		if (listener.syntaxError) {
-			listener.syntaxError(this, undefined, this._tokenStartLine, this._tokenStartCharPositionInLine, msg, e);
+			listener.syntaxError(
+				this,
+				undefined,
+				this._tokenStartLine,
+				this._tokenStartCharPositionInLine,
+				msg,
+				e,
+			);
 		}
 	}
 
 	public getErrorDisplay(s: string | number): string {
-		if (typeof s === "number") {
+		if (typeof s === 'number') {
 			switch (s) {
-			case Token.EOF:
-				return "<EOF>";
-			case 0x0a:
-				return "\\n";
-			case 0x09:
-				return "\\t";
-			case 0x0d:
-				return "\\r";
+				case Token.EOF:
+					return '<EOF>';
+				case 0x0a:
+					return '\\n';
+				case 0x09:
+					return '\\t';
+				case 0x0d:
+					return '\\r';
 			}
 			return String.fromCharCode(s);
 		}
-		return s.replace(/\n/g, "\\n")
-			.replace(/\t/g, "\\t")
-			.replace(/\r/g, "\\r");
+		return s
+			.replace(/\n/g, '\\n')
+			.replace(/\t/g, '\\t')
+			.replace(/\r/g, '\\r');
 	}
 
 	public getCharErrorDisplay(c: number): string {

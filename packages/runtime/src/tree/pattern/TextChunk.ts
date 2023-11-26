@@ -5,8 +5,8 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:46.2521448-07:00
 
-import { Chunk } from "./Chunk";
-import { NotNull, Override } from "../../Decorators";
+import { Chunk } from './Chunk';
+import { NotNull, Override } from '../../Decorators';
 
 /**
  * Represents a span of raw text (concrete syntax) between tags in a tree
@@ -29,7 +29,7 @@ export class TextChunk extends Chunk {
 		super();
 
 		if (text == null) {
-			throw new Error("text cannot be null");
+			throw new Error('text cannot be null');
 		}
 
 		this._text = text;

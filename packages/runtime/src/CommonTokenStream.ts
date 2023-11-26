@@ -5,10 +5,10 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:50.3953157-07:00
 
-import { BufferedTokenStream } from "./BufferedTokenStream";
-import { NotNull, Override } from "./Decorators";
-import { Token } from "./Token";
-import { TokenSource } from "./TokenSource";
+import { BufferedTokenStream } from './BufferedTokenStream';
+import { NotNull, Override } from './Decorators';
+import { Token } from './Token';
+import { TokenSource } from './TokenSource';
 
 /**
  * This class extends {@link BufferedTokenStream} with functionality to filter
@@ -49,7 +49,10 @@ export class CommonTokenStream extends BufferedTokenStream {
 	 * @param tokenSource The token source.
 	 * @param channel The channel to use for filtering tokens.
 	 */
-	constructor(@NotNull tokenSource: TokenSource, channel: number = Token.DEFAULT_CHANNEL) {
+	constructor(
+		@NotNull tokenSource: TokenSource,
+		channel: number = Token.DEFAULT_CHANNEL,
+	) {
 		super(tokenSource);
 		this.channel = channel;
 	}
@@ -61,7 +64,7 @@ export class CommonTokenStream extends BufferedTokenStream {
 
 	@Override
 	protected tryLB(k: number): Token | undefined {
-		if ((this.p - k) < 0) {
+		if (this.p - k < 0) {
 			return undefined;
 		}
 
@@ -86,7 +89,7 @@ export class CommonTokenStream extends BufferedTokenStream {
 		//System.out.println("enter LT("+k+")");
 		this.lazyInit();
 		if (k === 0) {
-			throw new RangeError("0 is not a valid lookahead index");
+			throw new RangeError('0 is not a valid lookahead index');
 		}
 
 		if (k < 0) {

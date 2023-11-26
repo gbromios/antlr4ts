@@ -5,9 +5,9 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:50.5479602-07:00
 
-import { ANTLRErrorListener } from "./ANTLRErrorListener";
-import { RecognitionException } from "./RecognitionException";
-import { Recognizer } from "./Recognizer";
+import { ANTLRErrorListener } from './ANTLRErrorListener';
+import { RecognitionException } from './RecognitionException';
+import { Recognizer } from './Recognizer';
 
 /**
  *
@@ -17,7 +17,8 @@ export class ConsoleErrorListener implements ANTLRErrorListener<any> {
 	/**
 	 * Provides a default instance of {@link ConsoleErrorListener}.
 	 */
-	public static readonly INSTANCE: ConsoleErrorListener = new ConsoleErrorListener();
+	public static readonly INSTANCE: ConsoleErrorListener =
+		new ConsoleErrorListener();
 
 	/**
 	 * {@inheritDoc}
@@ -36,7 +37,8 @@ export class ConsoleErrorListener implements ANTLRErrorListener<any> {
 		line: number,
 		charPositionInLine: number,
 		msg: string,
-		e: RecognitionException | undefined): void {
+		e: RecognitionException | undefined,
+	): void {
 		console.error(`line ${line}:${charPositionInLine} ${msg}`);
 	}
 }

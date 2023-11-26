@@ -32,6 +32,9 @@ node_modules/
 # Build products
 doc/
 
+# test/verify output, need to move elsewhere
+packages/test/*
+
 # Visual Studio build output and per-user files
 obj/
 bin/

@@ -18,7 +18,7 @@ export interface JavaCollection<E> extends Iterable<E>, Equatable {
 	add(e: E): boolean;
 	addAll(collection: Iterable<E>): boolean;
 	clear(): void;
-	contains(o: any): boolean;                         // Shouldn't argument be restricted to E?
+	contains(o: any): boolean; // Shouldn't argument be restricted to E?
 	containsAll(collection: Iterable<any>): boolean; // Shouldn't argument be restricted to Collection<E>?
 	readonly isEmpty: boolean;
 	readonly size: number;
@@ -27,7 +27,6 @@ export interface JavaCollection<E> extends Iterable<E>, Equatable {
 
 export interface JavaSet<E> extends JavaCollection<E> {
 	// Seems like Java's Set doesn't really seem to extend Java's Collection with anything...
-
 	// add(e:E): boolean;
 	// addAll(collection:Iterable<E>): boolean;
 	// clear(): void;

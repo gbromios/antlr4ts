@@ -9,20 +9,19 @@
 // as much of it may be supported natively by JavaScript. Or otherwise need
 // substantial rethink
 
-import { NotNull } from "../Decorators";
-import { Equatable } from "./Stubs";
-import { IntegerList } from "./IntegerList";
+import { NotNull } from '../Decorators';
+import { Equatable } from './Stubs';
+import { IntegerList } from './IntegerList';
 
 export function escapeWhitespace(s: string, escapeSpaces: boolean): string {
-	return escapeSpaces ? s.replace(/ /, "\u00B7") : s
-		.replace(/\t/, "\\t")
-		.replace(/\n/, "\\n")
-		.replace(/\r/, "\\r");
+	return escapeSpaces ?
+			s.replace(/ /, '\u00B7')
+		:	s.replace(/\t/, '\\t').replace(/\n/, '\\n').replace(/\r/, '\\r');
 }
 
 // Seriously: why isn't this built in to java? ugh!
 export function join(collection: Iterable<any>, separator: string): string {
-	let buf = "";
+	let buf = '';
 	let first = true;
 	for (let current of collection) {
 		if (first) {
@@ -37,7 +36,10 @@ export function join(collection: Iterable<any>, separator: string): string {
 	return buf;
 }
 
-export function equals(x: Equatable | undefined, y: Equatable | undefined): boolean {
+export function equals(
+	x: Equatable | undefined,
+	y: Equatable | undefined,
+): boolean {
 	if (x === y) {
 		return true;
 	}
@@ -173,7 +175,7 @@ export function toMap(keys: string[]): Map<string, number> {
 export function toCharArray(str: string): Uint16Array;
 export function toCharArray(data: IntegerList): Uint16Array;
 export function toCharArray(str: string | IntegerList): Uint16Array {
-	if (typeof str === "string") {
+	if (typeof str === 'string') {
 		let result = new Uint16Array(str.length);
 		for (let i = 0; i < str.length; i++) {
 			result[i] = str.charCodeAt(i);
@@ -215,9 +217,10 @@ export class AssertionError extends Error {
  *   included with any thrown AssertionError's message if provided.
  * @returns boolean — true for a truthy value (throws otherwise)
  */
-export function assert<T> (arg: T, desc?: string):
-	arg is Exclude<T, null|undefined|false|0|''>
-{
+export function assert<T>(
+	arg: T,
+	desc?: string,
+): arg is Exclude<T, null | undefined | false | 0 | ''> {
 	if (arg as any) return true;
 	else throw new AssertionError(desc);
 }

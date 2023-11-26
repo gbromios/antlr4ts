@@ -4,9 +4,9 @@
  */
 
 // ConvertTo-TS run at 2016-10-03T02:09:42.2127260-07:00
-import { EqualityComparator } from "./EqualityComparator";
-import { Override } from "../Decorators";
-import { Equatable } from "./Stubs";
+import { EqualityComparator } from './EqualityComparator';
+import { Override } from '../Decorators';
+import { Equatable } from './Stubs';
 
 /**
  * This default implementation of {@link EqualityComparator} uses object equality
@@ -14,8 +14,11 @@ import { Equatable } from "./Stubs";
  *
  * @author Sam Harwell
  */
-export class ObjectEqualityComparator implements EqualityComparator<Equatable | null | undefined> {
-	public static readonly INSTANCE: ObjectEqualityComparator = new ObjectEqualityComparator();
+export class ObjectEqualityComparator
+	implements EqualityComparator<Equatable | null | undefined>
+{
+	public static readonly INSTANCE: ObjectEqualityComparator =
+		new ObjectEqualityComparator();
 
 	/**
 	 * {@inheritDoc}
@@ -42,12 +45,14 @@ export class ObjectEqualityComparator implements EqualityComparator<Equatable | 
 	 * `a.`{@link Object#equals equals}`(b)`.
 	 */
 	@Override
-	public equals(a: Equatable | null | undefined, b: Equatable | null | undefined): boolean {
+	public equals(
+		a: Equatable | null | undefined,
+		b: Equatable | null | undefined,
+	): boolean {
 		if (a == null) {
 			return b == null;
 		}
 
 		return a.equals(b);
 	}
-
 }

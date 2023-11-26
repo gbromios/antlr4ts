@@ -5,9 +5,9 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:59.5829654-07:00
 
-import { NotNull, Override } from "./Decorators";
-import { Token } from "./Token";
-import { Vocabulary } from "./Vocabulary";
+import { NotNull, Override } from './Decorators';
+import { Token } from './Token';
+import { Vocabulary } from './Vocabulary';
 
 /**
  * This class provides a default implementation of the {@link Vocabulary}
@@ -24,7 +24,8 @@ export class VocabularyImpl implements Vocabulary {
 	 * except {@link Token#EOF}.
 	 */
 	@NotNull
-	public static readonly EMPTY_VOCABULARY: VocabularyImpl = new VocabularyImpl([], [], []);
+	public static readonly EMPTY_VOCABULARY: VocabularyImpl =
+		new VocabularyImpl([], [], []);
 
 	@NotNull
 	private readonly literalNames: Array<string | undefined>;
@@ -52,14 +53,20 @@ export class VocabularyImpl implements Vocabulary {
 	 * @see #getSymbolicName(int)
 	 * @see #getDisplayName(int)
 	 */
-	constructor(literalNames: Array<string | undefined>, symbolicNames: Array<string | undefined>, displayNames: Array<string | undefined>) {
+	constructor(
+		literalNames: Array<string | undefined>,
+		symbolicNames: Array<string | undefined>,
+		displayNames: Array<string | undefined>,
+	) {
 		this.literalNames = literalNames;
 		this.symbolicNames = symbolicNames;
 		this.displayNames = displayNames;
 		// See note here on -1 part: https://github.com/antlr/antlr4/pull/1146
 		this._maxTokenType =
-			Math.max(this.displayNames.length,
-				Math.max(this.literalNames.length, this.symbolicNames.length)) - 1;
+			Math.max(
+				this.displayNames.length,
+				Math.max(this.literalNames.length, this.symbolicNames.length),
+			) - 1;
 	}
 
 	@Override
@@ -83,7 +90,7 @@ export class VocabularyImpl implements Vocabulary {
 		}
 
 		if (tokenType === Token.EOF) {
-			return "EOF";
+			return 'EOF';
 		}
 
 		return undefined;

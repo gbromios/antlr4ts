@@ -1,10 +1,10 @@
-import "mocha";
-import * as base from "../BaseTest";
-import { TLexer } from "./gen/TLexer";
-import { TParser } from "./gen/TParser";
+import 'mocha';
+import * as base from '../BaseTest';
+import { TLexer } from './gen/TLexer';
+import { TParser } from './gen/TParser';
 
 it(`TestReferenceToListLabels.testLabels`, () => {
-	base.parserTest( {
+	base.parserTest({
 		debug: false,
 		expectedErrors: ``,
 		// tslint:disable:no-trailing-whitespace
@@ -19,6 +19,5 @@ it(`TestReferenceToListLabels.testLabels`, () => {
 		parserStartRule: (parser) => parser.a(),
 		showDFA: false,
 		testName: `testLabels`,
-		});
 	});
-
+});

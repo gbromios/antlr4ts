@@ -5,19 +5,17 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:27.7669801-07:00
 
-import { ATNStateType } from "./ATNStateType";
-import { BlockStartState } from "./BlockStartState";
-import { Override } from "../Decorators";
+import { ATNStateType } from './ATNStateType';
+import { BlockStartState } from './BlockStartState';
+import { Override } from '../Decorators';
 
 /**
  *
  * @author Sam Harwell
  */
 export class BasicBlockStartState extends BlockStartState {
-
 	@Override
 	get stateType(): ATNStateType {
 		return ATNStateType.BLOCK_START;
 	}
-
 }

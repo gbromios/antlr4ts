@@ -5,10 +5,10 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:31.0349605-07:00
 
-import { DecisionInfo } from "./DecisionInfo";
-import { DFA } from "../dfa/DFA";
-import { NotNull } from "../Decorators";
-import { ProfilingATNSimulator } from "./ProfilingATNSimulator";
+import { DecisionInfo } from './DecisionInfo';
+import { DFA } from '../dfa/DFA';
+import { NotNull } from '../Decorators';
+import { ProfilingATNSimulator } from './ProfilingATNSimulator';
 
 /**
  * This class provides access to specific and aggregate statistics gathered
@@ -162,7 +162,8 @@ export class ParseInfo {
 
 	public getDFASize(decision?: number): number {
 		if (decision) {
-			let decisionToDFA: DFA = this.atnSimulator.atn.decisionToDFA[decision];
+			let decisionToDFA: DFA =
+				this.atnSimulator.atn.decisionToDFA[decision];
 			return decisionToDFA.states.size;
 		} else {
 			let n: number = 0;

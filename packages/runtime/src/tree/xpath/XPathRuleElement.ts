@@ -4,11 +4,11 @@
  */
 
 // CONVERSTION complete, Burt Harris 10/14/2016
-import { ParserRuleContext } from "../../ParserRuleContext";
-import { Override } from "../../Decorators";
-import { ParseTree } from "../ParseTree";
-import { Trees } from "../Trees";
-import { XPathElement } from "./XPathElement";
+import { ParserRuleContext } from '../../ParserRuleContext';
+import { Override } from '../../Decorators';
+import { ParseTree } from '../ParseTree';
+import { Trees } from '../Trees';
+import { XPathElement } from './XPathElement';
 
 export class XPathRuleElement extends XPathElement {
 	protected ruleIndex: number;
@@ -23,8 +23,10 @@ export class XPathRuleElement extends XPathElement {
 		let nodes: ParseTree[] = [];
 		for (let c of Trees.getChildren(t)) {
 			if (c instanceof ParserRuleContext) {
-				if ((c.ruleIndex === this.ruleIndex && !this.invert) ||
-					(c.ruleIndex !== this.ruleIndex && this.invert)) {
+				if (
+					(c.ruleIndex === this.ruleIndex && !this.invert) ||
+					(c.ruleIndex !== this.ruleIndex && this.invert)
+				) {
 					nodes.push(c);
 				}
 			}

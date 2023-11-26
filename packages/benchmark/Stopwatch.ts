@@ -3,7 +3,7 @@
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
 
-import { TimeSpan } from "./TimeSpan";
+import { TimeSpan } from './TimeSpan';
 
 export class Stopwatch {
 	private _elapsed: number[] = [0, 0];
@@ -17,7 +17,7 @@ export class Stopwatch {
 
 	public start(): void {
 		if (this._start !== undefined) {
-			throw new Error("The stopwatch is already started.");
+			throw new Error('The stopwatch is already started.');
 		}
 
 		this._start = process.hrtime();
@@ -31,7 +31,8 @@ export class Stopwatch {
 			if (stop[0] === this._start[0]) {
 				result.nanos += stop[1] - this._start[1];
 			} else {
-				result.nanos += TimeSpan.NANOS_PER_SECOND - this._start[1] + stop[1];
+				result.nanos +=
+					TimeSpan.NANOS_PER_SECOND - this._start[1] + stop[1];
 			}
 		}
 

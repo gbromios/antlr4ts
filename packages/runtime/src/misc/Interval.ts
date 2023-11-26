@@ -5,8 +5,8 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:40.7402214-07:00
 
-import { Override } from "../Decorators";
-import { Equatable } from "./Stubs";
+import { Override } from '../Decorators';
+import { Equatable } from './Stubs';
 
 const INTERVAL_POOL_MAX_VALUE: number = 1000;
 
@@ -17,14 +17,18 @@ export class Interval implements Equatable {
 		return Interval._INVALID;
 	}
 
-	private static readonly cache: Interval[] = new Array<Interval>(INTERVAL_POOL_MAX_VALUE + 1);
+	private static readonly cache: Interval[] = new Array<Interval>(
+		INTERVAL_POOL_MAX_VALUE + 1,
+	);
 
 	/**
 	 * @param a The start of the interval
 	 * @param b The end of the interval (inclusive)
 	 */
-	constructor(public a: number, public b: number) {
-	}
+	constructor(
+		public a: number,
+		public b: number,
+	) {}
 
 	/** Interval objects are used readonly so share all with the
 	 *  same single value a==b up to some max size.  Use an array as a perfect hash.
@@ -60,8 +64,7 @@ export class Interval implements Equatable {
 	public equals(o: any): boolean {
 		if (o === this) {
 			return true;
-		}
-		else if (!(o instanceof Interval)) {
+		} else if (!(o instanceof Interval)) {
 			return false;
 		}
 
@@ -103,7 +106,9 @@ export class Interval implements Equatable {
 
 	/** Are both ranges disjoint? I.e., no overlap? */
 	public disjoint(other: Interval): boolean {
-		return this.startsBeforeDisjoint(other) || this.startsAfterDisjoint(other);
+		return (
+			this.startsBeforeDisjoint(other) || this.startsAfterDisjoint(other)
+		);
 	}
 
 	/** Are two intervals adjacent such as 0..41 and 42..42? */
@@ -117,12 +122,18 @@ export class Interval implements Equatable {
 
 	/** Return the interval computed from combining this and other */
 	public union(other: Interval): Interval {
-		return Interval.of(Math.min(this.a, other.a), Math.max(this.b, other.b));
+		return Interval.of(
+			Math.min(this.a, other.a),
+			Math.max(this.b, other.b),
+		);
 	}
 
 	/** Return the interval in common between this and o */
 	public intersection(other: Interval): Interval {
-		return Interval.of(Math.max(this.a, other.a), Math.min(this.b, other.b));
+		return Interval.of(
+			Math.max(this.a, other.a),
+			Math.min(this.b, other.b),
+		);
 	}
 
 	/** Return the interval with elements from `this` not in `other`;
@@ -130,7 +141,9 @@ export class Interval implements Equatable {
 	 *  within `this`, which would result in two disjoint intervals
 	 *  instead of the single one returned by this method.
 	 */
-	public differenceNotProperlyContained(other: Interval): Interval | undefined {
+	public differenceNotProperlyContained(
+		other: Interval,
+	): Interval | undefined {
 		let diff: Interval | undefined;
 		if (other.startsBeforeNonDisjoint(this)) {
 			// other.a to left of this.a (or same)
@@ -145,6 +158,6 @@ export class Interval implements Equatable {
 
 	@Override
 	public toString(): string {
-		return this.a + ".." + this.b;
+		return this.a + '..' + this.b;
 	}
 }

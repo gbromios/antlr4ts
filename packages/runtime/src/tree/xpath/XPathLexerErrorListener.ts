@@ -5,17 +5,21 @@
 
 // CONVERSTION complete, Burt Harris 10/14/2016
 
-import { ANTLRErrorListener } from "../../ANTLRErrorListener";
-import { Override } from "../../Decorators";
-import { Recognizer } from "../../Recognizer";
-import { RecognitionException } from "../../RecognitionException";
+import { ANTLRErrorListener } from '../../ANTLRErrorListener';
+import { Override } from '../../Decorators';
+import { Recognizer } from '../../Recognizer';
+import { RecognitionException } from '../../RecognitionException';
 
 export class XPathLexerErrorListener implements ANTLRErrorListener<number> {
 	@Override
 	public syntaxError<T extends number>(
-		recognizer: Recognizer<T, any>, offendingSymbol: T | undefined,
-		line: number, charPositionInLine: number, msg: string,
-		e: RecognitionException | undefined): void {
+		recognizer: Recognizer<T, any>,
+		offendingSymbol: T | undefined,
+		line: number,
+		charPositionInLine: number,
+		msg: string,
+		e: RecognitionException | undefined,
+	): void {
 		// intentionally empty
 	}
 }

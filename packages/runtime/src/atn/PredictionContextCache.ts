@@ -5,12 +5,12 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:35.6390614-07:00
 
-import { Array2DHashMap } from "../misc/Array2DHashMap";
-import { Override } from "../Decorators";
-import { JavaMap } from "../misc/Stubs";
-import { ObjectEqualityComparator } from "../misc/ObjectEqualityComparator";
-import { PredictionContext } from "./PredictionContext";
-import { assert } from "../misc/Utils";
+import { Array2DHashMap } from '../misc/Array2DHashMap';
+import { Override } from '../Decorators';
+import { JavaMap } from '../misc/Stubs';
+import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
+import { PredictionContext } from './PredictionContext';
+import { assert } from '../misc/Utils';
 
 /** Used to cache {@link PredictionContext} objects. Its used for the shared
  *  context cash associated with contexts in DFA states. This cache
@@ -19,14 +19,28 @@ import { assert } from "../misc/Utils";
  * @author Sam Harwell
  */
 export class PredictionContextCache {
-	public static UNCACHED: PredictionContextCache = new PredictionContextCache(false);
+	public static UNCACHED: PredictionContextCache = new PredictionContextCache(
+		false,
+	);
 
 	private contexts: JavaMap<PredictionContext, PredictionContext> =
-		new Array2DHashMap<PredictionContext, PredictionContext>(ObjectEqualityComparator.INSTANCE);
-	private childContexts: JavaMap<PredictionContextCache.PredictionContextAndInt, PredictionContext> =
-		new Array2DHashMap<PredictionContextCache.PredictionContextAndInt, PredictionContext>(ObjectEqualityComparator.INSTANCE);
-	private joinContexts: JavaMap<PredictionContextCache.IdentityCommutativePredictionContextOperands, PredictionContext> =
-		new Array2DHashMap<PredictionContextCache.IdentityCommutativePredictionContextOperands, PredictionContext>(ObjectEqualityComparator.INSTANCE);
+		new Array2DHashMap<PredictionContext, PredictionContext>(
+			ObjectEqualityComparator.INSTANCE,
+		);
+	private childContexts: JavaMap<
+		PredictionContextCache.PredictionContextAndInt,
+		PredictionContext
+	> = new Array2DHashMap<
+		PredictionContextCache.PredictionContextAndInt,
+		PredictionContext
+	>(ObjectEqualityComparator.INSTANCE);
+	private joinContexts: JavaMap<
+		PredictionContextCache.IdentityCommutativePredictionContextOperands,
+		PredictionContext
+	> = new Array2DHashMap<
+		PredictionContextCache.IdentityCommutativePredictionContextOperands,
+		PredictionContext
+	>(ObjectEqualityComparator.INSTANCE);
 
 	private enableCache: boolean;
 
@@ -48,12 +62,19 @@ export class PredictionContextCache {
 		return result;
 	}
 
-	public getChild(context: PredictionContext, invokingState: number): PredictionContext {
+	public getChild(
+		context: PredictionContext,
+		invokingState: number,
+	): PredictionContext {
 		if (!this.enableCache) {
 			return context.getChild(invokingState);
 		}
 
-		let operands: PredictionContextCache.PredictionContextAndInt = new PredictionContextCache.PredictionContextAndInt(context, invokingState);
+		let operands: PredictionContextCache.PredictionContextAndInt =
+			new PredictionContextCache.PredictionContextAndInt(
+				context,
+				invokingState,
+			);
 		let result = this.childContexts.get(operands);
 		if (!result) {
 			result = context.getChild(invokingState);
@@ -69,7 +90,11 @@ export class PredictionContextCache {
 			return PredictionContext.join(x, y, this);
 		}
 
-		let operands: PredictionContextCache.IdentityCommutativePredictionContextOperands = new PredictionContextCache.IdentityCommutativePredictionContextOperands(x, y);
+		let operands: PredictionContextCache.IdentityCommutativePredictionContextOperands =
+			new PredictionContextCache.IdentityCommutativePredictionContextOperands(
+				x,
+				y,
+			);
 		let result = this.joinContexts.get(operands);
 		if (result) {
 			return result;
@@ -101,14 +126,18 @@ export namespace PredictionContextCache {
 			}
 
 			let other: PredictionContextAndInt = obj;
-			return this.value === other.value
-				&& (this.obj === other.obj || (this.obj != null && this.obj.equals(other.obj)));
+			return (
+				this.value === other.value &&
+				(this.obj === other.obj ||
+					(this.obj != null && this.obj.equals(other.obj)))
+			);
 		}
 
 		@Override
 		public hashCode(): number {
 			let hashCode: number = 5;
-			hashCode = 7 * hashCode + (this.obj != null ? this.obj.hashCode() : 0);
+			hashCode =
+				7 * hashCode + (this.obj != null ? this.obj.hashCode() : 0);
 			hashCode = 7 * hashCode + this.value;
 			return hashCode;
 		}
@@ -142,7 +171,10 @@ export namespace PredictionContextCache {
 			}
 
 			let other: IdentityCommutativePredictionContextOperands = o;
-			return (this._x === other._x && this._y === other._y) || (this._x === other._y && this._y === other._x);
+			return (
+				(this._x === other._x && this._y === other._y) ||
+				(this._x === other._y && this._y === other._x)
+			);
 		}
 
 		@Override

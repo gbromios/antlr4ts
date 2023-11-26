@@ -5,26 +5,26 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:25.1063510-07:00
 
-import { Array2DHashMap } from "../misc/Array2DHashMap";
-import { ATNState } from "./ATNState";
-import { ATNType } from "./ATNType";
-import { DecisionState } from "./DecisionState";
-import { DFA } from "../dfa/DFA";
-import { IntervalSet } from "../misc/IntervalSet";
-import { InvalidState } from "./InvalidState";
-import { LexerAction } from "./LexerAction";
-import { LL1Analyzer } from "./LL1Analyzer";
-import { NotNull } from "../Decorators";
-import { ObjectEqualityComparator } from "../misc/ObjectEqualityComparator";
-import { PredictionContext } from "./PredictionContext";
-import { RuleContext } from "../RuleContext";
-import { RuleStartState } from "./RuleStartState";
-import { RuleStopState } from "./RuleStopState";
-import { RuleTransition } from "./RuleTransition";
-import { Token } from "../Token";
-import { TokensStartState } from "./TokensStartState";
+import { Array2DHashMap } from '../misc/Array2DHashMap';
+import { ATNState } from './ATNState';
+import { ATNType } from './ATNType';
+import { DecisionState } from './DecisionState';
+import { DFA } from '../dfa/DFA';
+import { IntervalSet } from '../misc/IntervalSet';
+import { InvalidState } from './InvalidState';
+import { LexerAction } from './LexerAction';
+import { LL1Analyzer } from './LL1Analyzer';
+import { NotNull } from '../Decorators';
+import { ObjectEqualityComparator } from '../misc/ObjectEqualityComparator';
+import { PredictionContext } from './PredictionContext';
+import { RuleContext } from '../RuleContext';
+import { RuleStartState } from './RuleStartState';
+import { RuleStopState } from './RuleStopState';
+import { RuleTransition } from './RuleTransition';
+import { Token } from '../Token';
+import { TokensStartState } from './TokensStartState';
 
-import { assert } from "../misc/Utils";
+import { assert } from '../misc/Utils';
 
 /** */
 export class ATN {
@@ -49,8 +49,10 @@ export class ATN {
 	public ruleToStopState!: RuleStopState[];
 
 	@NotNull
-	public modeNameToStartState: Map<string, TokensStartState> =
-		new Map<string, TokensStartState>();
+	public modeNameToStartState: Map<string, TokensStartState> = new Map<
+		string,
+		TokensStartState
+	>();
 
 	/**
 	 * The type of the ATN.
@@ -81,7 +83,9 @@ export class ATN {
 	public modeToStartState: TokensStartState[] = [];
 
 	private contextCache: Array2DHashMap<PredictionContext, PredictionContext> =
-		new Array2DHashMap<PredictionContext, PredictionContext>(ObjectEqualityComparator.INSTANCE);
+		new Array2DHashMap<PredictionContext, PredictionContext>(
+			ObjectEqualityComparator.INSTANCE,
+		);
 
 	@NotNull
 	public decisionToDFA: DFA[] = [];
@@ -116,11 +120,18 @@ export class ATN {
 	}
 
 	public getCachedContext(context: PredictionContext): PredictionContext {
-		return PredictionContext.getCachedContext(context, this.contextCache, new PredictionContext.IdentityHashMap());
+		return PredictionContext.getCachedContext(
+			context,
+			this.contextCache,
+			new PredictionContext.IdentityHashMap(),
+		);
 	}
 
 	public getDecisionToDFA(): DFA[] {
-		assert(this.decisionToDFA != null && this.decisionToDFA.length === this.decisionToState.length);
+		assert(
+			this.decisionToDFA != null &&
+				this.decisionToDFA.length === this.decisionToState.length,
+		);
 		return this.decisionToDFA;
 	}
 
@@ -130,7 +141,10 @@ export class ATN {
 	 *  restricted to tokens reachable staying within `s`'s rule.
 	 */
 	// @NotNull
-	public nextTokens(s: ATNState, /*@NotNull*/ ctx: PredictionContext): IntervalSet;
+	public nextTokens(
+		s: ATNState,
+		/*@NotNull*/ ctx: PredictionContext,
+	): IntervalSet;
 
 	/**
 	 * Compute the set of valid tokens that can occur starting in `s` and
@@ -151,7 +165,10 @@ export class ATN {
 				return s.nextTokenWithinRule;
 			}
 
-			s.nextTokenWithinRule = this.nextTokens(s, PredictionContext.EMPTY_LOCAL);
+			s.nextTokenWithinRule = this.nextTokens(
+				s,
+				PredictionContext.EMPTY_LOCAL,
+			);
 			s.nextTokenWithinRule.setReadonly(true);
 			return s.nextTokenWithinRule;
 		}
@@ -171,7 +188,10 @@ export class ATN {
 		this.states[state.stateNumber] = invalidState;
 	}
 
-	public defineMode(@NotNull name: string, @NotNull s: TokensStartState): void {
+	public defineMode(
+		@NotNull name: string,
+		@NotNull s: TokensStartState,
+	): void {
 		this.modeNameToStartState.set(name, s);
 		this.modeToStartState.push(s);
 		this.modeToDFA.push(new DFA(s));
@@ -233,9 +253,12 @@ export class ATN {
 	 * number `stateNumber`
 	 */
 	@NotNull
-	public getExpectedTokens(stateNumber: number, context: RuleContext | undefined): IntervalSet {
+	public getExpectedTokens(
+		stateNumber: number,
+		context: RuleContext | undefined,
+	): IntervalSet {
 		if (stateNumber < 0 || stateNumber >= this.states.length) {
-			throw new RangeError("Invalid state number.");
+			throw new RangeError('Invalid state number.');
 		}
 
 		let ctx: RuleContext | undefined = context;
@@ -248,9 +271,15 @@ export class ATN {
 		let expected: IntervalSet = new IntervalSet();
 		expected.addAll(following);
 		expected.remove(Token.EPSILON);
-		while (ctx != null && ctx.invokingState >= 0 && following.contains(Token.EPSILON)) {
+		while (
+			ctx != null &&
+			ctx.invokingState >= 0 &&
+			following.contains(Token.EPSILON)
+		) {
 			let invokingState: ATNState = this.states[ctx.invokingState];
-			let rt: RuleTransition = invokingState.transition(0) as RuleTransition;
+			let rt: RuleTransition = invokingState.transition(
+				0,
+			) as RuleTransition;
 			following = this.nextTokens(rt.followState);
 			expected.addAll(following);
 			expected.remove(Token.EPSILON);

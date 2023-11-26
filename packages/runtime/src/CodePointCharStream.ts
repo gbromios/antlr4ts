@@ -3,12 +3,12 @@
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
 
-import { assert } from "./misc/Utils";
-import { CharStream } from "./CharStream";
-import { CodePointBuffer } from "./CodePointBuffer";
-import { IntStream } from "./IntStream";
-import { Interval } from "./misc/Interval";
-import { Override } from "./Decorators";
+import { assert } from './misc/Utils';
+import { CharStream } from './CharStream';
+import { CodePointBuffer } from './CodePointBuffer';
+import { IntStream } from './IntStream';
+import { Interval } from './misc/Interval';
+import { Override } from './Decorators';
 
 /**
  * Alternative to {@link ANTLRInputStream} which treats the input
@@ -27,7 +27,12 @@ export class CodePointCharStream implements CharStream {
 
 	// Use the factory method {@link #fromBuffer(CodePointBuffer)} to
 	// construct instances of this type.
-	protected constructor(array: Uint8Array | Uint16Array | Int32Array, position: number, remaining: number, name: string) {
+	protected constructor(
+		array: Uint8Array | Uint16Array | Int32Array,
+		position: number,
+		remaining: number,
+		name: string,
+	) {
 		// TODO
 		assert(position === 0);
 		this._array = array;
@@ -44,14 +49,22 @@ export class CodePointCharStream implements CharStream {
 	 * Constructs a {@link CodePointCharStream} which provides access
 	 * to the Unicode code points stored in {@code codePointBuffer}.
 	 */
-	public static fromBuffer(codePointBuffer: CodePointBuffer): CodePointCharStream;
+	public static fromBuffer(
+		codePointBuffer: CodePointBuffer,
+	): CodePointCharStream;
 
 	/**
 	 * Constructs a named {@link CodePointCharStream} which provides access
 	 * to the Unicode code points stored in {@code codePointBuffer}.
 	 */
-	public static fromBuffer(codePointBuffer: CodePointBuffer, name: string): CodePointCharStream;
-	public static fromBuffer(codePointBuffer: CodePointBuffer, name?: string): CodePointCharStream {
+	public static fromBuffer(
+		codePointBuffer: CodePointBuffer,
+		name: string,
+	): CodePointCharStream;
+	public static fromBuffer(
+		codePointBuffer: CodePointBuffer,
+		name?: string,
+	): CodePointCharStream {
 		if (name === undefined || name.length === 0) {
 			name = IntStream.UNKNOWN_SOURCE_NAME;
 		}
@@ -70,14 +83,15 @@ export class CodePointCharStream implements CharStream {
 			codePointBuffer.array(),
 			codePointBuffer.position,
 			codePointBuffer.remaining,
-			name);
+			name,
+		);
 	}
 
 	@Override
 	public consume(): void {
 		if (this._size - this._position === 0) {
 			assert(this.LA(1) === IntStream.EOF);
-			throw new RangeError("cannot consume EOF");
+			throw new RangeError('cannot consume EOF');
 		}
 
 		this._position++;
@@ -144,19 +158,26 @@ export class CodePointCharStream implements CharStream {
 				return this._array[offset];
 		}
 
-		throw new RangeError("Not reached");
+		throw new RangeError('Not reached');
 	}
 
 	/** Return the UTF-16 encoded string for the given interval */
 	@Override
 	public getText(interval: Interval): string {
 		const startIdx: number = Math.min(interval.a, this.size);
-		const len: number = Math.min(interval.b - interval.a + 1, this.size - startIdx);
+		const len: number = Math.min(
+			interval.b - interval.a + 1,
+			this.size - startIdx,
+		);
 
 		if (this._array instanceof Int32Array) {
-			return String.fromCodePoint(...Array.from(this._array.subarray(startIdx, startIdx + len)));
+			return String.fromCodePoint(
+				...Array.from(this._array.subarray(startIdx, startIdx + len)),
+			);
 		} else {
-			return String.fromCharCode(...Array.from(this._array.subarray(startIdx, startIdx + len)));
+			return String.fromCharCode(
+				...Array.from(this._array.subarray(startIdx, startIdx + len)),
+			);
 		}
 	}
 }

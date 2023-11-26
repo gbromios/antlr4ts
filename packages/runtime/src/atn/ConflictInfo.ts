@@ -5,9 +5,9 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:28.0710131-07:00
 
-import { BitSet } from "../misc/BitSet";
-import { Override } from "../Decorators";
-import * as Utils from "../misc/Utils";
+import { BitSet } from '../misc/BitSet';
+import { Override } from '../Decorators';
+import * as Utils from '../misc/Utils';
 
 /**
  * This class stores information about a configuration conflict.
@@ -56,8 +56,10 @@ export class ConflictInfo {
 			return false;
 		}
 
-		return this.isExact === obj.isExact
-			&& Utils.equals(this.conflictedAlts, obj.conflictedAlts);
+		return (
+			this.isExact === obj.isExact &&
+			Utils.equals(this.conflictedAlts, obj.conflictedAlts)
+		);
 	}
 
 	@Override

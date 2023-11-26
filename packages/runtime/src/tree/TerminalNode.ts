@@ -5,14 +5,14 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:48.1433686-07:00
 
-import { Interval } from "../misc/Interval";
-import { Override } from "../Decorators";
-import { Parser } from "../Parser";
-import { ParseTree } from "./ParseTree";
-import { ParseTreeVisitor } from "./ParseTreeVisitor";
-import { RuleContext } from "../RuleContext";
-import { RuleNode } from "./RuleNode";
-import { Token } from "../Token";
+import { Interval } from '../misc/Interval';
+import { Override } from '../Decorators';
+import { Parser } from '../Parser';
+import { ParseTree } from './ParseTree';
+import { ParseTreeVisitor } from './ParseTreeVisitor';
+import { RuleContext } from '../RuleContext';
+import { RuleNode } from './RuleNode';
+import { Token } from '../Token';
 
 export class TerminalNode implements ParseTree {
 	public _symbol: Token;
@@ -24,7 +24,7 @@ export class TerminalNode implements ParseTree {
 
 	@Override
 	public getChild(i: number): never {
-		throw new RangeError("Terminal Node has no children.");
+		throw new RangeError('Terminal Node has no children.');
 	}
 
 	get symbol(): Token {
@@ -64,7 +64,7 @@ export class TerminalNode implements ParseTree {
 
 	@Override
 	get text(): string {
-		return this._symbol.text || "";
+		return this._symbol.text || '';
 	}
 
 	@Override
@@ -75,9 +75,9 @@ export class TerminalNode implements ParseTree {
 	@Override
 	public toString(): string {
 		if (this._symbol.type === Token.EOF) {
-			return "<EOF>";
+			return '<EOF>';
 		}
 
-		return this._symbol.text || "";
+		return this._symbol.text || '';
 	}
 }

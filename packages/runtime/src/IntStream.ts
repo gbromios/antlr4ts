@@ -16,7 +16,7 @@ export namespace IntStream {
 	 * The value returned by {@link #getSourceName} when the actual name of the
 	 * underlying source is not known.
 	 */
-	export const UNKNOWN_SOURCE_NAME: string = "<unknown>";
+	export const UNKNOWN_SOURCE_NAME: string = '<unknown>';
 }
 
 /**

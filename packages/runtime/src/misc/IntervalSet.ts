@@ -5,15 +5,15 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:40.8683480-07:00
 
-import { ArrayEqualityComparator } from "./ArrayEqualityComparator";
-import { IntegerList } from "./IntegerList";
-import { Interval } from "./Interval";
-import { IntSet } from "./IntSet";
-import { Lexer } from "../Lexer";
-import { MurmurHash } from "./MurmurHash";
-import { Override, NotNull } from "../Decorators";
-import { Token } from "../Token";
-import { Vocabulary } from "../Vocabulary";
+import { ArrayEqualityComparator } from './ArrayEqualityComparator';
+import { IntegerList } from './IntegerList';
+import { Interval } from './Interval';
+import { IntSet } from './IntSet';
+import { Lexer } from '../Lexer';
+import { MurmurHash } from './MurmurHash';
+import { Override, NotNull } from '../Decorators';
+import { Token } from '../Token';
+import { Vocabulary } from '../Vocabulary';
 
 /**
  * This class implements the {@link IntSet} backed by a sorted array of
@@ -30,7 +30,10 @@ export class IntervalSet implements IntSet {
 	private static _COMPLETE_CHAR_SET: IntervalSet;
 	static get COMPLETE_CHAR_SET(): IntervalSet {
 		if (IntervalSet._COMPLETE_CHAR_SET === undefined) {
-			IntervalSet._COMPLETE_CHAR_SET = IntervalSet.of(Lexer.MIN_CHAR_VALUE, Lexer.MAX_CHAR_VALUE);
+			IntervalSet._COMPLETE_CHAR_SET = IntervalSet.of(
+				Lexer.MIN_CHAR_VALUE,
+				Lexer.MAX_CHAR_VALUE,
+			);
 			IntervalSet._COMPLETE_CHAR_SET.setReadonly(true);
 		}
 
@@ -173,8 +176,7 @@ export class IntervalSet implements IntSet {
 				let I: Interval = other._intervals[i];
 				this.add(I.a, I.b);
 			}
-		}
-		else {
+		} else {
 			for (let value of set.toArray()) {
 				this.add(value);
 			}
@@ -183,7 +185,10 @@ export class IntervalSet implements IntSet {
 		return this;
 	}
 
-	public complementRange(minElement: number, maxElement: number): IntervalSet {
+	public complementRange(
+		minElement: number,
+		maxElement: number,
+	): IntervalSet {
 		return this.complement(IntervalSet.of(minElement, maxElement));
 	}
 
@@ -239,7 +244,10 @@ export class IntervalSet implements IntSet {
 
 		let resultI: number = 0;
 		let rightI: number = 0;
-		while (resultI < result._intervals.length && rightI < right._intervals.length) {
+		while (
+			resultI < result._intervals.length &&
+			rightI < right._intervals.length
+		) {
 			let resultInterval: Interval = result._intervals[resultI];
 			let rightInterval: Interval = right._intervals[rightI];
 
@@ -258,11 +266,17 @@ export class IntervalSet implements IntSet {
 			let beforeCurrent: Interval | undefined;
 			let afterCurrent: Interval | undefined;
 			if (rightInterval.a > resultInterval.a) {
-				beforeCurrent = new Interval(resultInterval.a, rightInterval.a - 1);
+				beforeCurrent = new Interval(
+					resultInterval.a,
+					rightInterval.a - 1,
+				);
 			}
 
 			if (rightInterval.b < resultInterval.b) {
-				afterCurrent = new Interval(rightInterval.b + 1, resultInterval.b);
+				afterCurrent = new Interval(
+					rightInterval.b + 1,
+					resultInterval.b,
+				);
 			}
 
 			if (beforeCurrent) {
@@ -273,22 +287,19 @@ export class IntervalSet implements IntSet {
 					resultI++;
 					rightI++;
 					continue;
-				}
-				else {
+				} else {
 					// replace the current interval
 					result._intervals[resultI] = beforeCurrent;
 					resultI++;
 					continue;
 				}
-			}
-			else {
+			} else {
 				if (afterCurrent) {
 					// replace the current interval
 					result._intervals[resultI] = afterCurrent;
 					rightI++;
 					continue;
-				}
-				else {
+				} else {
 					// remove the current interval (thus no need to increment resultI)
 					result._intervals.splice(resultI, 1);
 					continue;
@@ -313,7 +324,8 @@ export class IntervalSet implements IntSet {
 	/** {@inheritDoc} */
 	@Override
 	public and(other: IntSet): IntervalSet {
-		if (other.isNil) { //|| !(other instanceof IntervalSet) ) {
+		if (other.isNil) {
+			//|| !(other instanceof IntervalSet) ) {
 			// nothing in common with null set
 			return new IntervalSet();
 		}
@@ -333,12 +345,10 @@ export class IntervalSet implements IntSet {
 			if (mine.startsBeforeDisjoint(theirs)) {
 				// move this iterator looking for interval that might overlap
 				i++;
-			}
-			else if (theirs.startsBeforeDisjoint(mine)) {
+			} else if (theirs.startsBeforeDisjoint(mine)) {
 				// move other iterator looking for interval that might overlap
 				j++;
-			}
-			else if (mine.properlyContains(theirs)) {
+			} else if (mine.properlyContains(theirs)) {
 				// overlap, add intersection, get next theirs
 				if (!intersection) {
 					intersection = new IntervalSet();
@@ -346,8 +356,7 @@ export class IntervalSet implements IntSet {
 
 				intersection.addRange(mine.intersection(theirs));
 				j++;
-			}
-			else if (theirs.properlyContains(mine)) {
+			} else if (theirs.properlyContains(mine)) {
 				// overlap, add intersection, get next mine
 				if (!intersection) {
 					intersection = new IntervalSet();
@@ -355,8 +364,7 @@ export class IntervalSet implements IntSet {
 
 				intersection.addRange(mine.intersection(theirs));
 				i++;
-			}
-			else if (!mine.disjoint(theirs)) {
+			} else if (!mine.disjoint(theirs)) {
 				// overlap, add intersection
 				if (!intersection) {
 					intersection = new IntervalSet();
@@ -372,8 +380,7 @@ export class IntervalSet implements IntSet {
 				// move both iterators to next ranges
 				if (mine.startsAfterNonDisjoint(theirs)) {
 					j++;
-				}
-				else if (theirs.startsAfterNonDisjoint(mine)) {
+				} else if (theirs.startsAfterNonDisjoint(mine)) {
 					i++;
 				}
 			}
@@ -425,7 +432,7 @@ export class IntervalSet implements IntSet {
 	 */
 	get maxElement(): number {
 		if (this.isNil) {
-			throw new RangeError("set is empty");
+			throw new RangeError('set is empty');
 		}
 
 		let last: Interval = this._intervals[this._intervals.length - 1];
@@ -440,7 +447,7 @@ export class IntervalSet implements IntSet {
 	 */
 	get minElement(): number {
 		if (this.isNil) {
-			throw new RangeError("set is empty");
+			throw new RangeError('set is empty');
 		}
 
 		return this._intervals[0].a;
@@ -474,17 +481,20 @@ export class IntervalSet implements IntSet {
 			return false;
 		}
 
-		return ArrayEqualityComparator.INSTANCE.equals(this._intervals, o._intervals);
+		return ArrayEqualityComparator.INSTANCE.equals(
+			this._intervals,
+			o._intervals,
+		);
 	}
 
 	public toString(elemAreChar: boolean = false): string {
-		let buf: string = "";
+		let buf: string = '';
 		if (this._intervals == null || this._intervals.length === 0) {
-			return "{}";
+			return '{}';
 		}
 
 		if (this.size > 1) {
-			buf += "{";
+			buf += '{';
 		}
 
 		let first: boolean = true;
@@ -492,14 +502,14 @@ export class IntervalSet implements IntSet {
 			if (first) {
 				first = false;
 			} else {
-				buf += ", ";
+				buf += ', ';
 			}
 
 			let a: number = I.a;
 			let b: number = I.b;
 			if (a === b) {
 				if (a === Token.EOF) {
-					buf += "<EOF>";
+					buf += '<EOF>';
 				} else if (elemAreChar) {
 					buf += "'" + String.fromCodePoint(a) + "'";
 				} else {
@@ -507,28 +517,33 @@ export class IntervalSet implements IntSet {
 				}
 			} else {
 				if (elemAreChar) {
-					buf += "'" + String.fromCodePoint(a) + "'..'" + String.fromCodePoint(b) + "'";
+					buf +=
+						"'" +
+						String.fromCodePoint(a) +
+						"'..'" +
+						String.fromCodePoint(b) +
+						"'";
 				} else {
-					buf += a + ".." + b;
+					buf += a + '..' + b;
 				}
 			}
 		}
 
 		if (this.size > 1) {
-			buf += "}";
+			buf += '}';
 		}
 
 		return buf;
 	}
 
-	public toStringVocabulary( @NotNull vocabulary: Vocabulary): string {
+	public toStringVocabulary(@NotNull vocabulary: Vocabulary): string {
 		if (this._intervals == null || this._intervals.length === 0) {
-			return "{}";
+			return '{}';
 		}
 
-		let buf: string = "";
+		let buf: string = '';
 		if (this.size > 1) {
-			buf += "{";
+			buf += '{';
 		}
 
 		let first: boolean = true;
@@ -536,7 +551,7 @@ export class IntervalSet implements IntSet {
 			if (first) {
 				first = false;
 			} else {
-				buf += ", ";
+				buf += ', ';
 			}
 
 			let a: number = I.a;
@@ -546,7 +561,7 @@ export class IntervalSet implements IntSet {
 			} else {
 				for (let i = a; i <= b; i++) {
 					if (i > a) {
-						buf += ", ";
+						buf += ', ';
 					}
 
 					buf += this.elementName(vocabulary, i);
@@ -555,18 +570,18 @@ export class IntervalSet implements IntSet {
 		}
 
 		if (this.size > 1) {
-			buf += "}";
+			buf += '}';
 		}
 
 		return buf;
 	}
 
 	@NotNull
-	protected elementName( @NotNull vocabulary: Vocabulary, a: number): string {
+	protected elementName(@NotNull vocabulary: Vocabulary, a: number): string {
 		if (a === Token.EOF) {
-			return "<EOF>";
+			return '<EOF>';
 		} else if (a === Token.EPSILON) {
-			return "<EPSILON>";
+			return '<EPSILON>';
 		} else {
 			return vocabulary.getDisplayName(a);
 		}
@@ -583,7 +598,7 @@ export class IntervalSet implements IntSet {
 
 		for (let i = 0; i < numIntervals; i++) {
 			let I: Interval = this._intervals[i];
-			n += (I.b - I.a + 1);
+			n += I.b - I.a + 1;
 		}
 
 		return n;
@@ -662,7 +677,8 @@ export class IntervalSet implements IntSet {
 				break;
 			}
 			// if in middle a..x..b, split interval
-			if (el > a && el < b) { // found in this interval
+			if (el > a && el < b) {
+				// found in this interval
 				let oldb: number = I.b;
 				this._intervals[i] = Interval.of(I.a, el - 1); // [a..x-1]
 				this.add(el + 1, oldb); // add [x+1..b]

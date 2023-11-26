@@ -5,8 +5,8 @@
 
 // ConvertTo-TS run at 2016-10-04T11:26:57.6271221-07:00
 
-import { Dependents } from "./Dependents";
-import { Parser } from "./Parser";
+import { Dependents } from './Dependents';
+import { Parser } from './Parser';
 
 /**
  * Declares a dependency upon a grammar rule, along with a set of zero or more dependent rules.
@@ -17,13 +17,17 @@ import { Parser } from "./Parser";
  * @author Sam Harwell
  */
 export function RuleDependency(dependency: DependencySpecification) {
-	return (target: object, propertyKey: PropertyKey, propertyDescriptor: PropertyDescriptor) => {
+	return (
+		target: object,
+		propertyKey: PropertyKey,
+		propertyDescriptor: PropertyDescriptor,
+	) => {
 		// intentionally empty
 	};
 }
 
 export interface DependencySpecification {
-	readonly recognizer: { new (...args: any[]): Parser; };
+	readonly recognizer: { new (...args: any[]): Parser };
 
 	readonly rule: number;
 

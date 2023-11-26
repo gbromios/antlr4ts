@@ -4,11 +4,11 @@
  */
 
 // CONVERSTION complete, Burt Harris 10/14/2016
-import { ParserRuleContext } from "../../ParserRuleContext";
-import { Override } from "../../Decorators";
-import { ParseTree } from "../ParseTree";
-import { Trees } from "../Trees";
-import { XPathElement } from "./XPathElement";
+import { ParserRuleContext } from '../../ParserRuleContext';
+import { Override } from '../../Decorators';
+import { ParseTree } from '../ParseTree';
+import { Trees } from '../Trees';
+import { XPathElement } from './XPathElement';
 
 /**
  * Either `ID` at start of path or `...//ID` in middle of path.
