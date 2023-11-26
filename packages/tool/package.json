@@ -1,7 +1,6 @@
 {
   "name": "antlr4ts-cli",
-  "version": "0.5.0-dev",
-  "preferGlobal": true,
+  "version": "0.6.0-dev",
   "description": "ANTLR 4 command line tool for TypeScript",
   "files": [
     "LICENSE",
@@ -29,5 +28,6 @@
   "bugs": {
     "url": "https://github.com/tunnelvisionlabs/antlr4ts/issues"
   },
-  "homepage": "https://github.com/tunnelvisionlabs/antlr4ts/tool#readme"
+  "homepage": "https://github.com/tunnelvisionlabs/antlr4ts/tool#readme",
+  "type":
 }

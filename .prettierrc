@@ -1,0 +1,4 @@
+useTabs: true
+singleQuote: true
+# not too familiar with this one, but apparently it's meant to become standard
+experimentalTernaries: true

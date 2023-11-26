@@ -3,15 +3,14 @@
  * Licensed under the BSD-3-Clause license. See LICENSE file in the project root for license information.
  */
 
-import {Equatable} from "../src/misc/Stubs";
+import type {Equatable} from "../src/misc/Stubs";
 import {Array2DHashSet} from "../src/misc/Array2DHashSet";
 import {MurmurHash} from "../src/misc/MurmurHash";
-import { suite, test } from "@testdeck/mocha";
 import * as assert from "assert";
 
 class EquatableTest implements Equatable {
 
-	constructor( public a: string, public b: string ){}
+	constructor( public readonly a: string, public readonly b: string ) {}
 
 	public equals(o: any) {
 		if (this === o) {
@@ -82,14 +81,3 @@ describe("Array2DHashSet", () => {
 		assert(!set.contains(beta), "value difference ignored");
 	});
 });
-
-//
-// This exercises the @testdesk/mocha package's ability to
-// use more object-oriented test structure using decorators.
-//
-@suite class DecoratorDriven {
-	@test
-	public "Comparison by value"() {
-		assert(alpha.equals(alpha_again));
-	}
-}

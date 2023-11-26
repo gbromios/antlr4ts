@@ -2,19 +2,15 @@
   "compilerOptions": {
     "outDir": "target",
     "sourceMap": true,
-    "module": "commonjs",
-    "target": "es2015",
-    "lib": [
-      "es6"
-    ],
+    "inlineSources": true,
+    "module": "nodenext",
+    "moduleResolution": "bundler",
+    "target": "esnext",
+    "lib": ["ESNext"],
     "noImplicitAny": true,
-    "strictNullChecks": true,
-    "experimentalDecorators": true,
+    "strict": true,
     "declaration": true,
     "preserveConstEnums": true,
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
     "types": [
       "node",
       "mocha"
@@ -22,6 +18,6 @@
   },
   "exclude": [
     "node_modules",
-    "target"
+    "dist"
   ]
 }

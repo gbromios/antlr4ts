@@ -1,0 +1,6 @@
+# Build Artifacts
+gen/
+src/tree/xpath/XPathLexer.interp
+src/tree/xpath/XPathLexer.tokens
+src/tree/xpath/XPathLexer.ts
+target/
