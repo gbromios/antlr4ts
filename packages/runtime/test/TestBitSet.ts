@@ -20,60 +20,60 @@ describe('BitSet Tests', () => {
 
 	describe('empty', () => {
 		it('has zero length', () => {
-			assert.strictEqual(empty.length(), 0);
+			expect(empty.length()).toStrictEqual(0);
 		});
 		it('has zero cardinality', () => {
-			assert.strictEqual(empty.cardinality(), 0);
+			expect(empty.cardinality()).toStrictEqual(0);
 		});
 		it('.isEmpty', () => {
-			assert(empty.isEmpty);
+			expect(empty.isEmpty).toBe(true);
 		});
 		it('.toString()', () => {
-			assert.strictEqual(empty.toString(), '{}');
+			expect(empty.toString()).toStrictEqual('{}');
 		});
 
 		it('no set bits', () => {
-			assert.strictEqual(empty.nextSetBit(0), -1);
-			assert.strictEqual(empty.nextSetBit(1), -1);
-			assert.strictEqual(empty.nextSetBit(100), -1);
+			expect(empty.nextSetBit(0)).toStrictEqual(-1);
+			expect(empty.nextSetBit(1)).toStrictEqual(-1);
+			expect(empty.nextSetBit(100)).toStrictEqual(-1);
 		});
 
 		it('nextClearBit', () => {
-			assert.strictEqual(empty.nextClearBit(0), 0);
-			assert.strictEqual(empty.nextClearBit(1), 1);
-			assert.strictEqual(empty.nextClearBit(100), -1);
+			expect(empty.nextClearBit(0)).toStrictEqual(0);
+			expect(empty.nextClearBit(1)).toStrictEqual(1);
+			expect(empty.nextClearBit(100)).toStrictEqual(-1);
 		});
 
 		it('never intersects', () => {
-			assert(!empty.intersects(empty));
-			assert(!empty.intersects(primes));
-			assert(!primes.intersects(empty));
+			expect(empty.intersects(empty)).toBe(false);
+			expect(empty.intersects(primes)).toBe(false);
+			expect(primes.intersects(empty)).toBe(false);
 		});
 
 		it('equals itself', () => {
-			assert(!empty.equals([1, 3]));
+			expect(empty.equals([1, 3])).toBe(false);
 		});
 
 		it('equals itself', () => {
-			assert(empty.equals(empty));
+			expect(empty.equals(empty)).toBe(true);
 		});
 
 		it('equals oversize', () => {
 			const o = new BitSet(100);
-			assert(o.size >= 100);
-			assert(o.size <= 116);
-			assert(o.isEmpty);
-			assert(o.equals(empty));
-			assert(empty.equals(o));
+			expect(o.size >= 100).toBe(true);
+			expect(o.size <= 116).toBe(true);
+			expect(o.isEmpty).toBe(true);
+			expect(o.equals(empty)).toBe(true);
+			expect(empty.equals(o)).toBe(true);
 		});
 
-		it('grows on deman', () => {
+		it('grows on demand', () => {
 			const a = primes.clone();
 			a.set(1000, 1050);
 			a.xor(primes);
 			a.flip(1004, 1050);
 			a.clear(2000, 2003);
-			assert.strictEqual(a.toString(), '{1000, 1001, 1002, 1003}');
+			expect(a.toString()).toStrictEqual('{1000, 1001, 1002, 1003}');
 		});
 
 		it('oversize truncation', () => {
@@ -81,138 +81,138 @@ describe('BitSet Tests', () => {
 			const p = new BitSet(200);
 			let a = o.clone();
 			a.and(p);
-			assert(a.isEmpty);
-			assert.strictEqual(a.size, 0);
+			expect(a.isEmpty).toBe(true);
+			expect(a.size).toStrictEqual(0);
 
 			a = p.clone();
 			a.and(o);
-			assert(a.isEmpty);
-			assert.strictEqual(a.size, 0);
+			expect(a.isEmpty).toBe(true);
+			expect(a.size).toStrictEqual(0);
 
 			a = o.clone();
 			a.or(p);
-			assert(a.isEmpty);
-			assert.strictEqual(a.size, 0);
+			expect(a.isEmpty).toBe(true);
+			expect(a.size).toStrictEqual(0);
 
 			a = p.clone();
 			a.or(o);
-			assert(a.isEmpty);
-			assert.strictEqual(a.size, 0);
+			expect(a.isEmpty).toBe(true);
+			expect(a.size).toStrictEqual(0);
 
 			a = o.clone();
 			a.xor(p);
-			assert(a.isEmpty);
-			assert.strictEqual(a.size, 0);
+			expect(a.isEmpty).toBe(true);
+			expect(a.size).toStrictEqual(0);
 
 			a = p.clone();
 			a.xor(o);
-			assert(a.isEmpty);
-			assert.strictEqual(a.size, 0);
+			expect(a.isEmpty).toBe(true);
+			expect(a.size).toStrictEqual(0);
 
 			a = o.clone();
 			a.andNot(p);
-			assert(a.isEmpty);
-			assert.strictEqual(a.size, 0);
+			expect(a.isEmpty).toBe(true);
+			expect(a.size).toStrictEqual(0);
 
 			a = p.clone();
 			a.andNot(o);
-			assert(a.isEmpty);
-			assert.strictEqual(a.size, 0);
+			expect(a.isEmpty).toBe(true);
+			expect(a.size).toStrictEqual(0);
 
 			a = p.clone();
 			a.clear(7, 1000);
-			assert(a.isEmpty);
-			assert.strictEqual(a.size, 208);
+			expect(a.isEmpty).toBe(true);
+			expect(a.size).toStrictEqual(208);
 
 			a = p.clone();
 			a.set(75);
 			a.xor(o);
-			assert.strictEqual(a.toString(), '{75}');
+			expect(a.toString()).toStrictEqual('{75}');
 		});
 	});
 
 	describe('evens', () => {
 		it('has bits set', () => {
 			for (let i = 0; i < 100; i += 2) {
-				assert.strictEqual(evens.get(i), true);
+				expect(evens.get(i)).toBe(true);
 			}
 		});
 
 		it('has bits clear', () => {
 			for (let i = 1; i < 100; i += 2) {
-				assert.strictEqual(evens.get(i), false);
+				expect(evens.get(i)).toBe(false);
 			}
 		});
 
 		it('JavaScript style iteration works', () => {
 			let count = 0;
 			for (let n of evens) {
-				assert.strictEqual(n % 2, 0);
+				expect(n % 2).toStrictEqual(0);
 				count++;
 			}
-			assert.strictEqual(count, 50);
+			expect(count).toStrictEqual(50);
 		});
 
 		it('misc tests', () => {
-			assert.strictEqual(evens.get(100), false);
-			assert.strictEqual(evens.get(101), false);
-			assert.strictEqual(evens.cardinality(), 50);
+			expect(evens.get(100)).toBe(false);
+			expect(evens.get(101)).toBe(false);
+			expect(evens.cardinality()).toStrictEqual(50);
 		});
 
 		it('hash collisions', () => {
-			assert.notStrictEqual(evens.hashCode(), 0);
-			assert.notStrictEqual(evens.hashCode(), primes.hashCode());
+			expect(evens.hashCode()).not.toStrictEqual(0);
+			expect(evens.hashCode()).not.toStrictEqual(primes.hashCode());
 		});
 
 		it('copy constructor', () => {
 			const a = new BitSet(evens);
 			for (let i = 0; i < 100; i += 2) {
-				assert.strictEqual(a.get(i), true);
+				expect(a.get(i)).toBe(true);
 			}
 			for (let i = 1; i < 100; i += 2) {
-				assert.strictEqual(a.get(i), false);
+				expect(a.get(i)).toBe(false);
 			}
 		});
 
 		it('set bits and clear bits', () => {
-			assert.strictEqual(evens.nextSetBit(60), 60);
-			assert.strictEqual(evens.nextSetBit(61), 62);
-			assert.strictEqual(evens.nextClearBit(60), 61);
-			assert.strictEqual(evens.nextClearBit(61), 61);
-			assert.strictEqual(evens.previousSetBit(60), 60);
-			assert.strictEqual(evens.previousSetBit(59), 58);
-			assert.strictEqual(evens.previousClearBit(81), 81);
-			assert.strictEqual(evens.previousClearBit(80), 79);
+			expect(evens.nextSetBit(60)).toStrictEqual(60);
+			expect(evens.nextSetBit(61)).toStrictEqual(62);
+			expect(evens.nextClearBit(60)).toStrictEqual(61);
+			expect(evens.nextClearBit(61)).toStrictEqual(61);
+			expect(evens.previousSetBit(60)).toStrictEqual(60);
+			expect(evens.previousSetBit(59)).toStrictEqual(58);
+			expect(evens.previousClearBit(81)).toStrictEqual(81);
+			expect(evens.previousClearBit(80)).toStrictEqual(79);
 		});
 
 		it('lengthy bit scans', () => {
 			let a = new BitSet([50, 70, 90]);
 			a.clear(90);
-			assert.strictEqual(a.nextSetBit(0), 50);
-			assert.strictEqual(a.nextSetBit(51), 70);
-			assert.strictEqual(a.nextSetBit(71), -1);
-			assert.strictEqual(a.previousSetBit(1000), 70);
-			assert.strictEqual(a.previousSetBit(69), 50);
+			expect(a.nextSetBit(0)).toStrictEqual(50);
+			expect(a.nextSetBit(51)).toStrictEqual(70);
+			expect(a.nextSetBit(71)).toStrictEqual(-1);
+			expect(a.previousSetBit(1000)).toStrictEqual(70);
+			expect(a.previousSetBit(69)).toStrictEqual(50);
 		});
 
 		it('lengthy bit scans', () => {
 			let a = new BitSet([50, 70, 90]);
 			a.clear(90);
 			a.flip(0, 100);
-			assert.strictEqual(a.nextClearBit(0), 50);
-			assert.strictEqual(a.nextClearBit(51), 70);
-			assert.strictEqual(a.nextClearBit(71), -1);
-			assert.strictEqual(a.previousClearBit(100), 70);
-			assert.strictEqual(a.previousClearBit(69), 50);
+			expect(a.nextClearBit(0)).toStrictEqual(50);
+			expect(a.nextClearBit(51)).toStrictEqual(70);
+			expect(a.nextClearBit(71)).toStrictEqual(-1);
+			expect(a.previousClearBit(100)).toStrictEqual(70);
+			expect(a.previousClearBit(69)).toStrictEqual(50);
 		});
 	});
 
 	describe('primes', () => {
 		it('length()', () => {
-			assert.strictEqual(primes.length(), 98);
+			expect(primes.length()).toStrictEqual(98);
 		});
 		it('cardinality()', () => {
-			assert.strictEqual(primes.cardinality(), 25);
+			expect(primes.cardinality()).toStrictEqual(25);
 		});
 		it('toString() as expected', () => {
 			const s = primes.toString();
@@ -224,34 +224,34 @@ describe('BitSet Tests', () => {
 		it('and operation', () => {
 			const a = new BitSet(evens);
 			a.and(primes);
-			assert.strictEqual(a.cardinality(), 1);
-			assert.strictEqual(a.length(), 3);
-			assert.strictEqual(a.get(2), true);
-			assert.strictEqual(a.get(9), false);
-			assert.strictEqual(a.toString(), '{2}');
-			assert(!a.intersects(empty));
-			assert(a.intersects(evens));
-			assert(a.intersects(primes));
+			expect(a.cardinality()).toStrictEqual(1);
+			expect(a.length()).toStrictEqual(3);
+			expect(a.get(2)).toBe(true);
+			expect(a.get(9)).toBe(false);
+			expect(a.toString()).toStrictEqual('{2}');
+			expect(a.intersects(empty)).toBe(false);
+			expect(a.intersects(evens)).toBe(true);
+			expect(a.intersects(primes)).toBe(true);
 		});
 		it('or operation', () => {
 			const a = new BitSet(evens);
 			a.or(primes);
-			assert.strictEqual(a.cardinality(), 74);
-			assert.strictEqual(a.length(), 99);
-			assert.strictEqual(a.get(2), true);
-			assert.strictEqual(a.get(3), true);
-			assert.strictEqual(a.get(4), true);
-			assert.strictEqual(a.get(9), false);
+			expect(a.cardinality()).toStrictEqual(74);
+			expect(a.length()).toStrictEqual(99);
+			expect(a.get(2)).toBe(true);
+			expect(a.get(3)).toBe(true);
+			expect(a.get(4)).toBe(true);
+			expect(a.get(9)).toBe(false);
 		});
 		it('xor operation', () => {
 			const a = evens.clone();
 			a.xor(evens);
-			assert(a.isEmpty);
+			expect(a.isEmpty).toBe(true);
 			const b = evens.clone();
 			b.xor(primes);
 			const c = evens.clone();
 			c.or(primes);
-			assert.strictEqual(b.cardinality(), c.cardinality() - 1);
+			expect(b.cardinality()).toStrictEqual(c.cardinality() - 1);
 		});
 	});
 
@@ -274,17 +274,17 @@ describe('BitSet Tests', () => {
 
 			const b = ninetys.clone();
 			b.or(tens);
-			assert(a.equals(b));
+			expect(a.equals(b)).toBe(true);
 		});
 
 		it('primes and composites isEmpty', () => {
 			let a = primes.clone();
 			a.and(composites);
-			assert(a.isEmpty);
+			expect(a.isEmpty).toBe(true);
 		});
 
 		it('primes and composites do not intersect', () => {
-			assert(!primes.intersects(composites));
+			expect(primes.intersects(composites)).toBe(false);
 		});
 
 		it('ninetys', () => {
@@ -297,10 +297,10 @@ describe('BitSet Tests', () => {
 		it('ninetys and prime', () => {
 			const ninetySeven = new BitSet(primes);
 			ninetySeven.and(ninetys);
-			assert.strictEqual(ninetySeven.toString(), '{97}');
-			assert(ninetySeven.equals(new BitSet([97])));
-			assert(!ninetySeven.equals(primes));
-			assert(!ninetySeven.equals(empty));
+			expect(ninetySeven.toString()).toStrictEqual('{97}');
+			expect(ninetySeven.equals(new BitSet([97]))).toBe(true);
+			expect(ninetySeven.equals(primes)).toBe(false);
+			expect(ninetySeven.equals(empty)).toBe(false);
 		});
 
 		it('composites', () => {
@@ -313,10 +313,12 @@ describe('BitSet Tests', () => {
 		it('ninetys xor prime', () => {
 			const x = new BitSet(primes);
 			x.xor(composites);
-			assert.strictEqual(x.get(0), false);
-			assert.strictEqual(x.get(1), false);
+			it('0 is not prime or composite', () => expect(x.get(0)).toBe(false))
+			it('1 is not prime or composite', () => expect(x.get(1)).toBe(false))
 			for (let i = 2; i < 100; i++) {
-				assert.strictEqual(x.get(i), true, `x[${i}]`);
+				it(`${i} is either prime or composite`, () =>
+					expect(x.get(i)).toBe(true)
+				);
 			}
 		});
 
@@ -332,29 +334,29 @@ describe('BitSet Tests', () => {
 		it('prime and composites ', () => {
 			const x = new BitSet(primes);
 			x.and(composites);
-			assert(x, '{}');
+			expect(x.toString()).toStrictEqual('{}');
 		});
 
 		it('clear', () => {
 			const x = new BitSet(primes);
 			x.clear(10, 100);
 			x.clear(2);
-			assert.strictEqual(x.toString(), '{3, 5, 7}');
+			expect(x.toString()).toStrictEqual('{3, 5, 7}');
 
 			const y = primes.clone();
 			y.clear();
-			assert.strictEqual(y.toString(), '{}');
+			expect(y.toString()).toStrictEqual('{}');
 		});
 
 		it('primes.get(1,11)', () => {
 			const x = primes.get(1, 11);
-			assert.strictEqual(x.toString(), '{2, 3, 5, 7, 11}');
+			expect(x.toString()).toStrictEqual('{2, 3, 5, 7, 11}');
 		});
 
 		it('set(range) & and()', () => {
 			const a = ninetys.clone();
 			a.and(primes);
-			assert(a.toString(), '{97}');
+			expect(a.toString()).toStrictEqual('{97}');
 		});
 	});
 

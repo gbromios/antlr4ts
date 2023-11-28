@@ -5,34 +5,33 @@
 
 import { MurmurHash } from '../src/misc/MurmurHash';
 
-import { suite, test } from '@testdeck/mocha';
+describe('MurmurHash', () => {
+	describe('given an empty array', () => {
+		it('produces 0 when seeded with 0', () =>
+			expect(MurmurHash.hashCode([], 0)).toStrictEqual(0)
+		);
+		it ('produces a stable/known value when seeded with 1', () =>
+			expect(MurmurHash.hashCode([], 1)).toStrictEqual(1364076727)
+		)
+	});
 
-import * as assert from 'assert';
+	describe('given the array [0]', () => {
+		it('produces a stable/known value when seeded with 0', () =>
+			expect(MurmurHash.hashCode([0], 0)).toStrictEqual(593689054)
+		);
 
-@suite
-export class TestMurmurHash {
-	@test
-	public testMurmurHash_Empty(): void {
-		assert.strictEqual(0, MurmurHash.hashCode([], 0));
-	}
+		it('produces a stable/known value when seeded with 1', () =>
+			expect(MurmurHash.hashCode([0], 1)).toStrictEqual(2028806445)
+		);
+	});
 
-	@test
-	public testMurmurHash_EmptyWithSeed(): void {
-		assert.strictEqual(1364076727, MurmurHash.hashCode([], 1));
-	}
+	describe('given the array [0, 1]', () => {
+		it('produces a stable/known value when seeded with 0', () =>
+			expect(MurmurHash.hashCode([0, 1], 0)).toStrictEqual(987256456)
+		);
 
-	@test
-	public testMurmurHash_Single(): void {
-		assert.strictEqual(593689054, MurmurHash.hashCode([0], 0));
-	}
-
-	@test
-	public testMurmurHash_SingleWithSeed(): void {
-		assert.strictEqual(2028806445, MurmurHash.hashCode([0], 1));
-	}
-
-	@test
-	public testMurmurHash_Multiple(): void {
-		assert.strictEqual(987256456, MurmurHash.hashCode([0, 1], 0));
-	}
-}
+		it('produces a stable/known value when seeded with 1', () =>
+			expect(MurmurHash.hashCode([0], 1)).toStrictEqual(2028806445)
+		);
+	});
+})

@@ -187,11 +187,11 @@ export class Array2DHashSet<T extends { toString(): string }>
 		return existing === t;
 	}
 
-	get size(): number {
+	public get size(): number {
 		return this.n;
 	}
 
-	get isEmpty(): boolean {
+	public get isEmpty(): boolean {
 		return this.n === 0;
 	}
 

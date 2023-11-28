@@ -5,36 +5,30 @@
 
 import { BufferedTokenStream } from '../src/BufferedTokenStream';
 import { CharStreams } from '../src/CharStreams';
-import { Token } from '../src/Token';
 import { XPathLexer, TOKEN } from '../src/tree/xpath/XPathLexer';
-
-import { suite, test } from '@testdeck/mocha';
-
-import * as assert from 'assert';
 
 /**
  * This class contains tests for specific API functionality in `TokenStream` and derived types.
  */
-@suite
-export class TestTokenStream {
+describe('BufferedTokenStream', () => {
 	/**
 	 * This is a targeted regression test for antlr/antlr4#1584 (`BufferedTokenStream` cannot be reused after EOF).
 	 */
-	@test
-	public testBufferedTokenStreamReuseAfterFill(): void {
+	it('CAN be reused after fill', () => {
 		let firstInput = CharStreams.fromString('A');
 		let tokenStream = new BufferedTokenStream(new XPathLexer(firstInput));
 		tokenStream.fill();
-		assert.strictEqual(tokenStream.size, 2);
-		assert.strictEqual(tokenStream.get(0).type, TOKEN.TOKEN_REF);
-		assert.strictEqual(tokenStream.get(1).type, TOKEN.EOF);
+		expect(tokenStream.size).toStrictEqual(2);
+		expect(tokenStream.get(0).type).toStrictEqual(TOKEN.TOKEN_REF);
+		expect(tokenStream.get(1).type).toStrictEqual(TOKEN.EOF);
 
 		let secondInput = CharStreams.fromString('A/');
 		tokenStream.tokenSource = new XPathLexer(secondInput);
 		tokenStream.fill();
-		assert.strictEqual(tokenStream.size, 3);
-		assert.strictEqual(tokenStream.get(0).type, TOKEN.TOKEN_REF);
-		assert.strictEqual(tokenStream.get(1).type, TOKEN.ROOT);
-		assert.strictEqual(tokenStream.get(2).type, TOKEN.EOF);
-	}
-}
+		expect(tokenStream.size).toStrictEqual(3);
+		expect(tokenStream.get(0).type).toStrictEqual(TOKEN.TOKEN_REF);
+		expect(tokenStream.get(1).type).toStrictEqual(TOKEN.ROOT);
+		expect(tokenStream.get(2).type).toStrictEqual(TOKEN.EOF);
+	})
+});
+

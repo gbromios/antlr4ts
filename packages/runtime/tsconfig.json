@@ -3,7 +3,7 @@
 		"outDir": "dist",
 		"sourceMap": true,
 		"inlineSources": true,
-		"module": "nodenext",
+		"module": "esnext",
 		"moduleResolution": "bundler",
 		"target": "esnext",
 		"lib": ["ESNext"],
@@ -11,7 +11,9 @@
 		"strict": true,
 		"declaration": true,
 		"preserveConstEnums": true,
-		"types": ["node", "mocha"]
+		"types": ["node", "vitest/globals"],
+    "noEmit": true,
+    "esModuleInterop": true
 	},
 	"exclude": ["node_modules", "dist"]
 }
